@@ -21,9 +21,9 @@ export const logout = async (): Promise<AuthResponseLogout> => {
   return data;
 };
 
-export const refresh = async (): Promise<AuthResponseRefresh> => {
-  const { data } = await nextServer.post<AuthResponseRefresh>('/auth/refresh');
-  return data;
+export const checkServerSession = async (): Promise<boolean> => {
+  const { data } = await nextServer.post<AuthResponseRefresh>('/auth/session');
+  return data.success;
 };
 
 // /me/current
