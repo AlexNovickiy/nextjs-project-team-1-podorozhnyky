@@ -1,10 +1,52 @@
+:root {
+  --font-nunito-sans: 'Nunito Sans', sans-serif;
+}
+
 body {
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-    Cantarell, 'Helvetica Neue', sans-serif;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  font-family: var(--font-nunito-sans);
+  font-weight: 400;
+  background-color: #f7f9ff;
+  color: #000;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.main {
+  flex: 1;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
   margin: 0;
-  background-color: #f8f9fa;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: currentColor;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button {
+  cursor: pointer;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }

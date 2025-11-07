@@ -1,35 +1,29 @@
+// app/layout.tsx
 import type { Metadata } from 'next';
-import { Roboto } from 'next/font/google';
-import './globals.css';
-import 'modern-normalize';
+import { nunitoSans } from './fonts';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
-import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import css from '@/app/Home.module.css';
-import { Toaster } from 'react-hot-toast';
 import AuthProvider from '@/components/AuthProvider/AuthProvider';
-
-const roboto = Roboto({
-  variable: '--font-roboto',
-  subsets: ['latin'],
-  weight: ['100', '300', '400', '500', '700', '900'],
-  display: 'swap',
-});
+import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
+import './globals.css';
+import styles from './Home.module.css';
+import { Toaster } from 'react-hot-toast';
 
 export const metadata: Metadata = {
-  title: 'NoteHub',
-  description: 'A platform for note-taking and organization',
+  title: 'Podorozhnyky',
+  description:
+    'A platform for searching travel places and sharing your own experience',
   openGraph: {
-    title: 'NoteHub',
-    description: 'A platform for note-taking and organization',
-    url: 'https://08-zustand-eight-virid.vercel.app',
+    title: 'Podorozhnyky',
+    description:
+      'A platform for searching travel places and sharing your own experience',
+    url: 'https://localhost:3000',
     images: [
       {
-        url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
+        url: '', // placeholder
         width: 1200,
         height: 630,
-        alt: 'NoteHub - A platform for note-taking and organization',
+        alt: 'Podorozhnyky - A platform for searching travel places and sharing your own experience',
       },
     ],
   },
@@ -38,21 +32,23 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
   modal,
-}: Readonly<{ children: React.ReactNode; modal: React.ReactNode }>) {
+}: Readonly<{
+  children: React.ReactNode;
+  modal: React.ReactNode;
+}>) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable}`}>
-        <Toaster position="top-right" />
+      <body className={`${nunitoSans.variable}`}>
         <TanStackProvider>
+          <Toaster position="top-right" />
           <AuthProvider>
             <Header />
-            <main className={css.main}>
-              {children}
-              {modal}
-            </main>
+            <div className={styles.container}>
+              <main>{children}</main>
+            </div>
             <Footer />
+            {modal}
           </AuthProvider>
-          <ReactQueryDevtools initialIsOpen={false} />
         </TanStackProvider>
       </body>
     </html>

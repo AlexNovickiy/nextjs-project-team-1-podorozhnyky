@@ -1,10 +1,30 @@
-export type NewUser = {
+export interface IUser {
+  _id: string;
+  name: string;
   email: string;
-  password: string;
+  avatarUrl: string;
+  description: string;
+  favorites: string[];
+  articlesAmount?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IApiResponse {
+  data: { user: IUser };
+}
+
+export type PaginatedUsersResponse = {
+  page: number;
+  perPage: number;
+  totalPages: number;
+  totalItems: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  data: IUser[];
 };
 
-export interface User {
-  username: string;
-  email: string;
-  avatar: string;
+export interface UpdateUser {
+  description?: string;
+  userPhoto?: string;
 }

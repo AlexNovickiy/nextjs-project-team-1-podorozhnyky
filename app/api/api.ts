@@ -3,6 +3,6 @@ import axios, { AxiosError } from 'axios';
 export type ApiError = AxiosError<{ error: string }>;
 
 export const api = axios.create({
-  baseURL: 'https://notehub-api.goit.study',
+  baseURL: 'https://localhost:4000',
   withCredentials: true,
 });
