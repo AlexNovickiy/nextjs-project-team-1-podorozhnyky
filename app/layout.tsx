@@ -6,6 +6,7 @@ import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
 import './globals.css';
 import styles from './Home.module.css';
 import { Toaster } from 'react-hot-toast';
+import 'modern-normalize';
 
 export const metadata: Metadata = {
   title: 'Podorozhnyky',
