@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import TravellerInfo from '../../../components/TravellerInfo/TravellerInfo';
-import TravellersStories from '../../../components/TravellersStories/TravellersStories';
+import TravellerInfo from '../../../../components/TravellerInfo/TravellerInfo';
+import TravellersStories from '../../../../components/TravellersStories/TravellersStories';
 
 const ProfilePage: React.FC = () => {
   const [tab, setTab] = useState<'saved' | 'own'>('saved');

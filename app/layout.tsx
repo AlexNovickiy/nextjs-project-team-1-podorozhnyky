@@ -1,8 +1,6 @@
 // app/layout.tsx
 import type { Metadata } from 'next';
 import { nunitoSans } from './fonts';
-import Header from '@/components/Header/Header';
-import Footer from '@/components/Footer/Footer';
 import AuthProvider from '@/components/AuthProvider/AuthProvider';
 import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
 import './globals.css';
@@ -29,26 +27,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-  modal,
-}: Readonly<{
+type RootLayoutProps = {
   children: React.ReactNode;
-  modal: React.ReactNode;
-}>) {
+};
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en">
+    <html lang="uk">
       <body className={`${nunitoSans.variable}`}>
         <TanStackProvider>
           <Toaster position="top-right" />
-          <AuthProvider>
-            <Header />
-            <div className={styles.container}>
-              <main>{children}</main>
-            </div>
-            <Footer />
-            {modal}
-          </AuthProvider>
+          <AuthProvider>{children}</AuthProvider>
         </TanStackProvider>
       </body>
     </html>

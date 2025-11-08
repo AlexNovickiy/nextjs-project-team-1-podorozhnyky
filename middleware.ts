@@ -3,8 +3,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { checkServerSession } from './lib/api/serverApi';
 import { parse } from 'cookie';
 
-const publicPaths = ['/sign-in', '/sign-up'];
-const privatePaths = ['/profile', '/notes'];
+const publicPaths = ['/auth/login', '/auth/register'];
+const privatePaths = ['/profile', '/stories-create', '/user-edit'];
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
@@ -58,7 +58,7 @@ export async function middleware(req: NextRequest) {
     }
 
     if (isPrivatePath) {
-      return NextResponse.redirect(new URL('/sign-in', req.url));
+      return NextResponse.redirect(new URL('/auth/login', req.url));
     }
   }
 
@@ -72,5 +72,11 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/profile/:path*', '/notes/:path*', '/sign-in', '/sign-up'],
+  matcher: [
+    '/profile/:path*',
+    '/stories-create/:path*',
+    '/user-edit/:path*',
+    '/auth/login',
+    '/auth/register',
+  ],
 };

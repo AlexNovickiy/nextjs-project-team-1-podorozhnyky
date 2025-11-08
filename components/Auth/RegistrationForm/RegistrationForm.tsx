@@ -3,7 +3,8 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-import axios, { AxiosError } from 'axios';
+import { nextServer } from '@/lib/api/api';
+import axios from 'axios';
 
 interface RegisterValues {
   name: string;
@@ -31,7 +32,7 @@ export default function RegistrationForm() {
     const { setSubmitting, setStatus } = helpers;
     try {
       setStatus(null);
-      await axios.post('/api/auth/register', values);
+      await nextServer.post('/api/auth/register', values);
       router.push('/auth/login');
     } catch (error: unknown) {
       const message =

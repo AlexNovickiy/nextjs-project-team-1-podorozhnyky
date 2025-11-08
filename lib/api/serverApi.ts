@@ -15,15 +15,18 @@ import {
 } from '@/types/story';
 import { ICategory } from '@/types/category';
 import { AuthResponseRefresh, AuthResponseLogout } from '@/types/auth';
+import { AxiosResponse } from 'axios';
 
 export const logout = async (): Promise<AuthResponseLogout> => {
   const { data } = await nextServer.post<AuthResponseLogout>('/auth/logout');
   return data;
 };
 
-export const checkServerSession = async (): Promise<boolean> => {
-  const { data } = await nextServer.post<AuthResponseRefresh>('/auth/session');
-  return data.success;
+export const checkServerSession = async (): Promise<
+  AxiosResponse<AuthResponseRefresh>
+> => {
+  const response = await nextServer.post<AuthResponseRefresh>('/auth/session');
+  return response;
 };
 
 // /me/current
