@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import TravellerInfo from '../../../../components/TravellerInfo/TravellerInfo';
 import TravellersStories from '../../../../components/TravellersStories/TravellersStories';

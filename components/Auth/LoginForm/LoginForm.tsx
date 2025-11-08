@@ -5,6 +5,7 @@ import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useAuthStore } from '@/lib/store/authStore';
+import { nextServer } from '@/lib/api/api';
 
 interface LoginValues {
   email: string;
@@ -27,7 +28,7 @@ export default function LoginForm() {
     const { setSubmitting, setStatus } = helpers;
     try {
       setStatus(null);
-      const data = await axios.post('/api/auth/login', values);
+      const data = await nextServer.post('/api/auth/login', values);
       setUser(data.data.user);
       router.push('/profile');
     } catch (error: unknown) {
