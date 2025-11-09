@@ -1,0 +1,35 @@
+.wrapper_btn {
+  display: flex;
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 24px;
+}
+.link {
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.5;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+.link:hover:not(.active) {
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.active {
+  border-bottom: 1px solid var(--border);
+  cursor: default;
+}
+/* Styles for Tablet devices */
+@media screen and (min-width: 768px) {
+  .wrapper_btn {
+    max-width: 644px;
+  }
+}
+
+/* Styles for Desktop devices */
+@media screen and (min-width: 1440px) {
+  .link {
+    font-size: 18px;
+  }
+}

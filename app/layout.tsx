@@ -1,12 +1,12 @@
 // app/layout.tsx
-import type { Metadata } from 'next';
-import { nunitoSans } from './fonts';
 import AuthProvider from '@/components/AuthProvider/AuthProvider';
 import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
-import './globals.css';
-import styles from './Home.module.css';
-import { Toaster } from 'react-hot-toast';
 import 'modern-normalize';
+import type { Metadata } from 'next';
+import { Toaster } from 'react-hot-toast';
+import ThemeToggle from '../components/ThemeToggle/ThemeToggle';
+import { nunitoSans } from './fonts';
+import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Podorozhnyky',
@@ -34,8 +34,21 @@ type RootLayoutProps = {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="uk">
+    <html lang="uk" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+          try {
+            const theme = localStorage.getItem('theme');
+            if (theme) document.documentElement.dataset.theme = theme;
+          } catch (e) {}
+        `,
+          }}
+        />
+      </head>
       <body className={`${nunitoSans.variable}`}>
+        <ThemeToggle />
         <TanStackProvider>
           <Toaster position="top-right" />
           <AuthProvider>{children}</AuthProvider>

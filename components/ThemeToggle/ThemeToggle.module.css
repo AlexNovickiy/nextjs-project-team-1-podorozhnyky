@@ -1,0 +1,17 @@
+.themeToggle {
+  position: absolute;
+  bottom: 16px;
+
+  right: 16px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background-color: var(--background);
+  color: var(--text);
+  cursor: pointer;
+  transition: 0.3s all ease;
+}
+
+.themeToggle:hover {
+  opacity: 0.8;
+}

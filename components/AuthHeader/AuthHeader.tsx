@@ -1,25 +1,15 @@
-import React from 'react';
 import Link from 'next/link';
+import css from './AuthHeader.module.css';
 
 export default function AuthHeader() {
   return (
-    <header style={{ padding: '1rem 0', borderBottom: '1px solid #eee' }}>
-      <nav
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        <Link
-          href="/"
-          style={{
-            fontSize: '1.5rem',
-            fontWeight: 'bold',
-            textDecoration: 'none',
-          }}
-        >
-          Podorozhnyky
+    <header className={css.header}>
+      <nav className={css.nav}>
+        <Link href="/" className={css.logo}>
+          <svg className={css.logo_icon} width="32" height="32">
+            <use href="/sprite.svg#icon-plant_logo" />
+          </svg>
+          Подорожники
         </Link>
       </nav>
     </header>
