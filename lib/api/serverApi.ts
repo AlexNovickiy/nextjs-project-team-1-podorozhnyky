@@ -16,6 +16,7 @@ import {
 import { ICategory } from '@/types/category';
 import { AuthResponseRefresh, AuthResponseLogout } from '@/types/auth';
 import { AxiosResponse } from 'axios';
+import { cookies } from 'next/headers';
 
 export const logout = async (): Promise<AuthResponseLogout> => {
   const { data } = await nextServer.post<AuthResponseLogout>('/auth/logout');
@@ -25,7 +26,16 @@ export const logout = async (): Promise<AuthResponseLogout> => {
 export const checkServerSession = async (): Promise<
   AxiosResponse<AuthResponseRefresh>
 > => {
-  const response = await nextServer.post<AuthResponseRefresh>('/auth/session');
+  const cookieStore = await cookies();
+  const response = await nextServer.post<AuthResponseRefresh>(
+    '/auth/session',
+    {},
+    {
+      headers: {
+        Cookie: cookieStore.toString(),
+      },
+    }
+  );
   return response;
 };
 

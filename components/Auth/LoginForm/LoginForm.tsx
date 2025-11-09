@@ -1,78 +1,147 @@
 'use client';
-import React from 'react';
-import { useRouter } from 'next/navigation';
-import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
-import * as Yup from 'yup';
-import axios from 'axios';
-import { useAuthStore } from '@/lib/store/authStore';
-import { nextServer } from '@/lib/api/api';
 
+import { nextServer } from '@/lib/api/api';
+import { useAuthStore } from '@/lib/store/authStore';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import * as Yup from 'yup';
+import css from './LoginForm.module.css';
 interface LoginValues {
   email: string;
   password: string;
 }
 
-const schema = Yup.object().shape({
-  email: Yup.string().email('Невірний email').required('Обовʼязкове поле'),
-  password: Yup.string().required('Обовʼязкове поле'),
+const loginSchema = Yup.object({
+  email: Yup.string()
+    .email('Невірний email')
+    .max(64, 'Максимум 64 символів')
+    .required("Обов'язкове поле"),
+  password: Yup.string()
+    .min(8, 'Мінімум 8 символів')
+    .max(128, 'Максимум 128 символів')
+    .required("Обов'язкове поле"),
 });
 
 export default function LoginForm() {
   const router = useRouter();
   const setUser = useAuthStore(state => state.setUser);
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const handleSubmit = async (
     values: LoginValues,
-    helpers: FormikHelpers<LoginValues>
+    {
+      setSubmitting,
+      setStatus,
+    }: {
+      setSubmitting: (s: boolean) => void;
+      setStatus: (s: string | null) => void;
+    }
   ) => {
-    const { setSubmitting, setStatus } = helpers;
     try {
       setStatus(null);
-      const data = await nextServer.post('/api/auth/login', values);
-      setUser(data.data.user);
+      const { data } = await nextServer.post('/auth/login', values);
+      setUser(data.user);
       router.push('/profile');
-    } catch (error: unknown) {
-      const message =
-        axios.isAxiosError(error) &&
-        error.response?.data &&
-        typeof error.response.data === 'object'
-          ? ((error.response.data as { message?: string }).message ??
-            'Помилка входу')
-          : error instanceof Error
-            ? error.message
-            : 'Помилка входу';
-      setStatus(message);
+    } catch {
+      setStatus('Вхід не виконано. Спробуйте ще раз.');
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <div className="auth-form">
-      <Formik
-        initialValues={{ email: '', password: '' } as LoginValues}
-        validationSchema={schema}
+    <div className={css.authForm}>
+      <Formik<LoginValues>
+        initialValues={{ email: '', password: '' }}
+        validationSchema={loginSchema}
         onSubmit={handleSubmit}
+        validateOnMount
       >
-        {({ isSubmitting, isValid, status }) => (
-          <Form noValidate>
-            <h1>Увійти</h1>
+        {({
+          isSubmitting,
+          isValid,
+          status,
+          setStatus,
+          handleChange,
+          errors,
+          touched,
+        }) => (
+          <Form noValidate className={css.form}>
+            <h1 className={css.title}>Вхід</h1>
+            <p className={css.text}>Вітаємо знову у спільноту мандрівників!</p>
 
-            <div className="field">
-              <label htmlFor="email">Email</label>
-              <Field id="email" name="email" type="email" />
-              <ErrorMessage name="email" component="div" className="error" />
+            <div className={css.field}>
+              <label htmlFor="email" className={css.label}>
+                Пошта*
+              </label>
+              <Field
+                id="email"
+                name="email"
+                type="email"
+                placeholder="hello@podorozhnyky.ua"
+                className={`${css.input} ${
+                  (errors.email && touched.email) || status
+                    ? css.input_error
+                    : ''
+                }`}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  handleChange(e);
+                  if (status) setStatus(null);
+                }}
+              />
+              <ErrorMessage
+                name="email"
+                component="div"
+                className={css.error}
+              />
             </div>
 
-            <div className="field">
-              <label htmlFor="password">Пароль</label>
-              <Field id="password" name="password" type="password" />
-              <ErrorMessage name="password" component="div" className="error" />
+            <div className={css.field}>
+              <label htmlFor="password" className={css.label}>
+                Пароль*
+              </label>
+              <div className={css.passwordWrapper}>
+                <Field
+                  id="password"
+                  name="password"
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="********"
+                  className={`${css.input} ${
+                    (errors.password && touched.password) || status
+                      ? css.input_error
+                      : ''
+                  }`}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    handleChange(e);
+                    if (status) setStatus(null);
+                  }}
+                />
+                <button
+                  type="button"
+                  className={css.togglePassword}
+                  onClick={() => setShowPassword(prev => !prev)}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+              <ErrorMessage
+                name="password"
+                component="div"
+                className={css.error}
+              />
             </div>
 
-            {status && <div className="status">{status}</div>}
+            {/* ===== STATUS MESSAGE ===== */}
+            {status && <div className={css.status}>{status}</div>}
 
-            <button type="submit" disabled={!isValid || isSubmitting}>
+            <button
+              type="submit"
+              disabled={!isValid || isSubmitting}
+              className={css.submitBtn}
+            >
               {isSubmitting ? 'Вхід...' : 'Увійти'}
             </button>
           </Form>

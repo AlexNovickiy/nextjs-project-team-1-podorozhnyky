@@ -1,18 +1,118 @@
 :root {
+  /* === Base Colors === */
+  --color-white: #ffffff;
+  --color-neutral-lightest: #f2f2f2;
+  --color-neutral-lighter: #d8d8d8;
+  --color-neutral-light: #b2b2b2;
+  --color-neutral: #7f7f7f;
+  --color-neutral-dark: #4c4c4c;
+  --color-neutral-darker: #191919;
+  --color-neutral-darkest: #000;
+
+  /* === Royal Blue Palette === */
+  --color-royal-blue-lightest: #f7f9ff;
+  --color-royal-blue-lighter: #e8eeff;
+  --color-royal-blue-light: #7a96ea;
+  --color-royal-blue: #4169e1;
+  --color-royal-blue-dark: #3454b4;
+  --color-royal-blue-darker: #1a2a5a;
+  --color-royal-blue-darkest: #131f43;
+
+  /* === Utility Colors === */
+  --color-red: #b00101;
+  --opacity-transparent: rgba(255, 255, 255, 0);
+
+  /* === Opacity Tokens === */
+  --opacity-white-5: rgba(255, 255, 255, 0.05);
+  --opacity-white-10: rgba(255, 255, 255, 0.1);
+  --opacity-white-15: rgba(255, 255, 255, 0.15);
+  --opacity-white-20: rgba(255, 255, 255, 0.2);
+  --opacity-white-30: rgba(255, 255, 255, 0.3);
+  --opacity-white-40: rgba(255, 255, 255, 0.4);
+  --opacity-white-50: rgba(255, 255, 255, 0.5);
+  --opacity-white-60: rgba(255, 255, 255, 0.6);
+
+  --opacity-neutral-darkest-5: rgba(0, 0, 0, 0.05);
+  --opacity-neutral-darkest-10: rgba(0, 0, 0, 0.1);
+  --opacity-neutral-darkest-15: rgba(0, 0, 0, 0.15);
+  --opacity-neutral-darkest-20: rgba(0, 0, 0, 0.2);
+  --opacity-neutral-darkest-30: rgba(0, 0, 0, 0.3);
+  --opacity-neutral-darkest-40: rgba(0, 0, 0, 0.4);
+  --opacity-neutral-darkest-50: rgba(0, 0, 0, 0.5);
+  --opacity-neutral-darkest-60: rgba(0, 0, 0, 0.6);
+
+  /* === Font === */
   --font-nunito-sans: 'Nunito Sans', sans-serif;
+  --font-family: 'Nunito Sans', sans-serif;
+  --second-family: 'Sora', sans-serif;
+
+  /* === Color Scheme 1 (Light) === */
+  --color-scheme-1-background: var(--color-white);
+  --color-scheme-1-text: var(--color-neutral-darkest);
+  --color-scheme-1-border: var(--opacity-neutral-darkest-15);
+  --color-scheme-1-accent: var(--color-royal-blue);
+  --color-scheme-1-foreground: var(--color-neutral-lightest);
+  --color-scheme-1-input-text: var(--opacity-neutral-darkest-60);
+  /* === Color Scheme 2 (Blue) === */
+  --color-scheme-2-background: var(--color-royal-blue-lighter);
+  --color-scheme-2-text: var(--color-neutral-darkest);
+  --color-scheme-2-border: var(--opacity-neutral-darkest-15);
+  --color-scheme-2-accent: var(--color-royal-blue);
+  --color-scheme-2-foreground: var(--color-royal-blue-lighter);
+  --color-scheme-2-input-text: var(--opacity-neutral-darkest-60);
+  /* === Color Scheme 3 (Dark) === */
+  --color-scheme-3-background: var(--color-neutral-darker);
+  --color-scheme-3-text: var(--color-white);
+  --color-scheme-3-border: var(--opacity-white-15);
+  --color-scheme-3-accent: var(--color-royal-blue-light);
+  --color-scheme-3-foreground: var(--color-neutral-dark);
+  --color-scheme-3-input-text: var(--opacity-white-60);
 }
 
+/* =========================================
+             Theme Activation
+   ========================================= */
+:root[data-theme='color-scheme-1'] {
+  --background: var(--color-scheme-1-background);
+  --text: var(--color-scheme-1-text);
+  --border: var(--color-scheme-1-border);
+  --accent: var(--color-scheme-1-accent);
+  --foreground: var(--color-scheme-1-foreground);
+  --input-text: var(--opacity-neutral-darkest-60);
+}
+
+:root[data-theme='color-scheme-2'] {
+  --background: var(--color-scheme-2-background);
+  --text: var(--color-scheme-2-text);
+  --border: var(--color-scheme-2-border);
+  --accent: var(--color-scheme-2-accent);
+  --foreground: var(--color-scheme-2-foreground);
+  --input-text: var(--opacity-neutral-darkest-60);
+}
+
+:root[data-theme='color-scheme-3'] {
+  --background: var(--color-scheme-3-background);
+  --text: var(--color-scheme-3-text);
+  --border: var(--color-scheme-3-border);
+  --accent: var(--color-scheme-3-accent);
+  --foreground: var(--color-scheme-3-foreground);
+  --input-text: var(--opacity-white-60);
+}
+
+html,
 body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
   font-family: var(--font-nunito-sans);
-  font-weight: 400;
-  background-color: #f7f9ff;
-  color: #000;
   font-size: 18px;
+  font-weight: 400;
   line-height: 1.5;
-}
-
-.main {
-  flex: 1;
+  background-color: var(--background);
+  color: var(--text);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 h1,
@@ -39,14 +139,28 @@ a {
   color: currentColor;
   text-decoration: none;
   cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+a:hover {
+  opacity: 0.8;
 }
 
 button {
   cursor: pointer;
+  font: inherit;
+  background: none;
+  border: none;
+  outline: none;
+  transition: all 0.2s ease;
 }
 
 img {
   display: block;
   max-width: 100%;
   height: auto;
+}
+
+.main {
+  flex: 1;
 }

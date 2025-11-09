@@ -1,16 +1,9 @@
 import React from 'react';
-
+import css from './AuthFooter.module.css';
 export default function AuthFooter() {
   return (
-    <footer
-      style={{
-        padding: '2rem 0',
-        borderTop: '1px solid #eee',
-        marginTop: 'auto',
-        textAlign: 'center',
-      }}
-    >
-      <p>© 2024 Podorozhnyky</p>
+    <footer className={css.footer}>
+      <p className={css.text}>© 2025 Подорожники</p>
     </footer>
   );
 }
