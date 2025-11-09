@@ -42,7 +42,7 @@ export default function LoginForm() {
   ) => {
     try {
       setStatus(null);
-      const { data } = await nextServer.post('/api/auth/login', values);
+      const { data } = await nextServer.post('/auth/login', values);
       setUser(data.user);
       router.push('/profile');
     } catch {
