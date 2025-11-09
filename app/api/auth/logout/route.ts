@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server';
-import { api } from '../../api';
-import { cookies } from 'next/headers';
 import { isAxiosError } from 'axios';
+import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
 import { logErrorResponse } from '../../_utils/utils';
+import { api } from '../../api';
 
 export async function POST() {
   try {
@@ -10,16 +10,16 @@ export async function POST() {
 
     const accessToken = cookieStore.get('accessToken')?.value;
     const refreshToken = cookieStore.get('refreshToken')?.value;
-
+    const sessionId = cookieStore.get('sessionId')?.value;
     await api.post('auth/logout', null, {
       headers: {
-        Cookie: `accessToken=${accessToken}; refreshToken=${refreshToken}`,
+        Cookie: `accessToken=${accessToken}; refreshToken=${refreshToken}; sessionId=${sessionId}`,
       },
     });
 
     cookieStore.delete('accessToken');
     cookieStore.delete('refreshToken');
-
+    cookieStore.delete('sessionId');
     return NextResponse.json(
       { message: 'Logged out successfully' },
       { status: 200 }
