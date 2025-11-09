@@ -12,17 +12,25 @@ export async function POST() {
     const refreshToken = cookieStore.get('refreshToken')?.value;
 
     if (accessToken) {
+      console.log('Access token exists.', accessToken);
       return NextResponse.json({ success: true });
     }
 
     if (refreshToken) {
-      const apiRes = await api.post('auth/session', {
-        headers: {
-          Cookie: cookieStore.toString(),
-        },
-      });
+      console.log('Refresh token exists.', refreshToken);
+      const apiRes = await api.post(
+        '/auth/refresh',
+        {},
+        {
+          headers: {
+            Cookie: cookieStore.toString(),
+          },
+        }
+      );
 
       const setCookie = apiRes.headers['set-cookie'];
+
+      console.log(setCookie);
 
       if (setCookie) {
         const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie];
@@ -31,8 +39,7 @@ export async function POST() {
 
           const options = {
             expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
-            path: parsed.Path,
-            maxAge: Number(parsed['Max-Age']),
+            httpOnly: parsed.HttpOnly !== undefined,
           };
 
           if (parsed.accessToken)

@@ -24,14 +24,16 @@ export async function middleware(req: NextRequest) {
           const parsed = parse(cookieStr);
           const options = {
             expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
-            path: parsed.Path,
-            maxAge: Number(parsed['Max-Age']),
+            httpOnly: parsed.HttpOnly !== undefined,
           };
           if (parsed.accessToken) {
             cookieStore.set('accessToken', parsed.accessToken, options);
           }
           if (parsed.refreshToken) {
             cookieStore.set('refreshToken', parsed.refreshToken, options);
+          }
+          if (parsed.sessionId) {
+            cookieStore.set('sessionId', parsed.sessionId, options);
           }
         }
 
