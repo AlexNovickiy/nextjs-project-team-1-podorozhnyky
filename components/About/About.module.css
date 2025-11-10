@@ -1,0 +1,28 @@
+.sectionAbout {
+  background-color: aliceblue;
+}
+.aboutContent {
+  display: flex;
+  flex-direction: row;
+}
+.description {
+  background-color: aliceblue;
+}
+.featuresContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+}
+.features {
+  background-color: lavender;
+}
+
+.feature {
+  background-color: lightyellow;
+}
+.featureTitle {
+  background-color: lightskyblue;
+}
+.featureDescription {
+  background-color: lightsalmon;
+}
