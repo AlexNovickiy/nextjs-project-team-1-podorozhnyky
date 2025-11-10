@@ -60,12 +60,18 @@ export const fetchCurrentUser = async (): Promise<IApiResponse> => {
 
 // === STORIES  ===
 export const fetchStories = async (
-  params: URLSearchParams
+  perPage: number,
+  page: number,
+  category: ICategory | null
 ): Promise<PaginatedStoriesResponse> => {
-  const { data } = await nextServer.get<PaginatedStoriesResponse>('/stories', {
-    params,
+  const { data } = await nextServer.get('/stories', {
+    params: {
+      perPage,
+      page,
+      category: category?.name,
+    },
   });
-  return data;
+  return data.data;
 };
 
 export const fetchStoryById = async (storyId: string): Promise<IStory> => {
@@ -104,8 +110,10 @@ export const fetchAuthors = async (
   return data;
 };
 
-export const fetchAuthorById = async (userId: string): Promise<IUser> => {
-  const { data } = await nextServer.get<IUser>(`/users/${userId}`);
+export const fetchAuthorById = async (
+  userId: string
+): Promise<IApiResponse> => {
+  const { data } = await nextServer.get(`/users/${userId}`);
   return data;
 };
 
@@ -130,4 +138,9 @@ export const removeFavorite = async (storyId: string): Promise<IUser> => {
 export const fetchCategories = async (): Promise<ICategory[]> => {
   const { data } = await nextServer.get<ICategory[]>('/categories');
   return data;
+};
+
+export const fetchCategoryById = async (id: string): Promise<ICategory> => {
+  const { data } = await nextServer.get(`/categories/${id}`);
+  return data.data;
 };

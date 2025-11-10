@@ -1,5 +1,7 @@
+import TravellersStories from '@/components/TravellersStories/TravellersStories';
+
 const StoriesPage = () => {
-  return <div>Stories Page</div>;
+  return <TravellersStories category={null} perPage={9} />;
 };
 
 export default StoriesPage;

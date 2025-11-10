@@ -79,6 +79,12 @@
   --accent: var(--color-scheme-1-accent);
   --foreground: var(--color-scheme-1-foreground);
   --input-text: var(--opacity-neutral-darkest-60);
+  --card: var(--color-scheme-2-background);
+  --button: var(--opacity-neutral-darkest-5);
+  --button-border: var(--color-scheme-2-border);
+  --button-hover: var(--color-royal-blue);
+  --button-hover-text: var(--color-white);
+  --button-active: var(--color-royal-blue-darker);
 }
 
 :root[data-theme='color-scheme-2'] {
@@ -88,6 +94,12 @@
   --accent: var(--color-scheme-2-accent);
   --foreground: var(--color-scheme-2-foreground);
   --input-text: var(--opacity-neutral-darkest-60);
+  --card: var(--color-scheme-1-background);
+  --button: var(--opacity-neutral-darkest-5);
+  --button-border: var(--color-scheme-2-border);
+  --button-hover: var(--color-royal-blue);
+  --button-hover-text: var(--color-white);
+  --button-active: var(--color-royal-blue-darker);
 }
 
 :root[data-theme='color-scheme-3'] {
@@ -97,6 +109,12 @@
   --accent: var(--color-scheme-3-accent);
   --foreground: var(--color-scheme-3-foreground);
   --input-text: var(--opacity-white-60);
+  --card: var(--color-scheme-3-background);
+  --button: var(--opacity-white-10);
+  --button-border: var(--opacity-transparent);
+  --button-hover: var(--color-royal-blue-lighter);
+  --button-hover-text: var(--color-scheme-1-text);
+  --button-active: var(--color-royal-blue-light);
 }
 
 html,
