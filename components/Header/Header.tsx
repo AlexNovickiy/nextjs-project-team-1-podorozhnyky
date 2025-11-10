@@ -5,6 +5,7 @@ import { useAuthStore } from '../../lib/store/authStore';
 import css from './Header.module.css';
 
 export default function Header() {
+  const { user, isAuthenticated, clearIsAuthenticated } = useAuthStore();
   const handleLogout = async () => {
     try {
       const res = await logout();
@@ -16,7 +17,7 @@ export default function Header() {
       alert('Logout error');
     }
   };
-  const { user, isAuthenticated, clearIsAuthenticated } = useAuthStore();
+
   if (!isAuthenticated) {
     return (
       <div>
