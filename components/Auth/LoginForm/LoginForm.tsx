@@ -44,7 +44,7 @@ export default function LoginForm() {
       setStatus(null);
       const { data } = await nextServer.post('/auth/login', values);
       setUser(data.user);
-      router.push('/profile');
+      router.push('/');
     } catch {
       setStatus('Вхід не виконано. Спробуйте ще раз.');
     } finally {

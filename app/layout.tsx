@@ -40,9 +40,29 @@ export default function RootLayout({ children }: RootLayoutProps) {
           dangerouslySetInnerHTML={{
             __html: `
           try {
-            const theme = localStorage.getItem('theme');
-            if (theme) document.documentElement.dataset.theme = theme;
-          } catch (e) {}
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+              // Якщо користувач вручну обрав тему
+              document.documentElement.dataset.theme = savedTheme;
+            } else {
+              // Якщо ні — беремо системну
+              const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+              document.documentElement.dataset.theme = prefersDark
+                ? 'color-scheme-3'  // темна
+                : 'color-scheme-1'; // світла
+            }
+
+            // Якщо системна тема змінюється — оновлюємо (якщо нема ручного вибору)
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+              if (!localStorage.getItem('theme')) {
+                document.documentElement.dataset.theme = e.matches
+                  ? 'color-scheme-3'
+                  : 'color-scheme-1';
+              }
+            });
+          } catch (e) {
+            console.error('Theme init failed', e);
+          }
         `,
           }}
         />
