@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { api } from '../../api';
-import { cookies } from 'next/headers';
-import { parse } from 'cookie';
 import { isAxiosError } from 'axios';
+import { parse } from 'cookie';
+import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
 import { logErrorResponse } from '../../_utils/utils';
+import { api } from '../../api';
 
 export async function POST(req: NextRequest) {
   try {
@@ -28,6 +28,8 @@ export async function POST(req: NextRequest) {
           cookieStore.set('accessToken', parsed.accessToken, options);
         if (parsed.refreshToken)
           cookieStore.set('refreshToken', parsed.refreshToken, options);
+        if (parsed.sessionId)
+          cookieStore.set('sessionId', parsed.sessionId, options);
       }
       return NextResponse.json(apiRes.data, { status: apiRes.status });
     }
