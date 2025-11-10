@@ -50,7 +50,7 @@ export default function RegistrationForm() {
       setStatus(null);
       const { data } = await nextServer.post('/auth/register', values);
       setUser(data.user);
-      router.push('/profile');
+      router.push('/');
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         const status = err.response?.status;
