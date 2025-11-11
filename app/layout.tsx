@@ -4,6 +4,7 @@ import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
 import 'modern-normalize';
 import type { Metadata } from 'next';
 import { Toaster } from 'react-hot-toast';
+import ThemeSync from '../components/ThemeSync/ThemeSync';
 import ThemeToggle from '../components/ThemeToggle/ThemeToggle';
 import { nunitoSans } from './fonts';
 import './globals.css';
@@ -39,35 +40,41 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <script
           dangerouslySetInnerHTML={{
             __html: `
-          try {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-              // Якщо користувач вручну обрав тему
-              document.documentElement.dataset.theme = savedTheme;
-            } else {
-              // Якщо ні — беремо системну
-              const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-              document.documentElement.dataset.theme = prefersDark
-                ? 'color-scheme-3'  // темна
-                : 'color-scheme-1'; // світла
-            }
-
-            // Якщо системна тема змінюється — оновлюємо (якщо нема ручного вибору)
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-              if (!localStorage.getItem('theme')) {
-                document.documentElement.dataset.theme = e.matches
-                  ? 'color-scheme-3'
-                  : 'color-scheme-1';
-              }
-            });
-          } catch (e) {
-            console.error('Theme init failed', e);
+      try {
+        const path = window.location.pathname || '';
+        const isAuth = path.startsWith('/auth');
+        const savedTheme = localStorage.getItem('theme');
+       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        let theme;
+        if (savedTheme === 'color-scheme-3') {
+          theme = 'color-scheme-3';
+        } 
+        else {
+          if (prefersDark) {
+            theme = 'color-scheme-3';
+          } else {
+            theme = isAuth ? 'color-scheme-1' : 'color-scheme-2';
           }
-        `,
+        }
+        document.documentElement.dataset.theme = theme;
+        const mq = window.matchMedia('(prefers-color-scheme: dark)');
+        mq.addEventListener('change', e => {
+          if (!localStorage.getItem('theme') || localStorage.getItem('theme') !== 'color-scheme-3') {
+            const newTheme = e.matches
+              ? 'color-scheme-3'
+              : (window.location.pathname.startsWith('/auth') ? 'color-scheme-1' : 'color-scheme-2');
+            document.documentElement.dataset.theme = newTheme;
+          }
+        });
+      } catch (e) {
+        console.error('Theme init failed', e);
+      }
+    `,
           }}
         />
       </head>
       <body className={`${nunitoSans.variable}`}>
+        <ThemeSync />
         <ThemeToggle />
         <TanStackProvider>
           <Toaster position="top-right" />
