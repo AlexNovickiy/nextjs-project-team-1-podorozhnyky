@@ -11,6 +11,9 @@ export type AuthResponseRegister = {
 export type AuthResponseLogin = {
   status: number;
   message: string;
+  data: {
+    user: IUser;
+  };
 };
 
 export type AuthResponseLogout = {
@@ -30,6 +33,13 @@ export type AuthResponseResetEmail = {
 export type RegisterCredentials = {
   name: string;
   email: string;
+  password: string;
+};
+export type SendResetEmailCredentials = {
+  email: string;
+};
+export type AuthResetPwdCredentials = {
+  token: string;
   password: string;
 };
 

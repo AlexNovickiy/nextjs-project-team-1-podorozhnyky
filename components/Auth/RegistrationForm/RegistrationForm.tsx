@@ -1,6 +1,5 @@
 'use client';
 
-import { nextServer } from '@/lib/api/api';
 import { useAuthStore } from '@/lib/store/authStore';
 import axios from 'axios';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
@@ -8,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import * as Yup from 'yup';
+import { register } from '../../../lib/api/clientApi';
 import css from './RegistrationForm.module.css';
 
 interface RegisterValues {
@@ -48,7 +48,7 @@ export default function RegistrationForm() {
   ) => {
     try {
       setStatus(null);
-      const { data } = await nextServer.post('/auth/register', values);
+      const { data } = await register(values);
       setUser(data.user);
       router.push('/');
     } catch (err: unknown) {
