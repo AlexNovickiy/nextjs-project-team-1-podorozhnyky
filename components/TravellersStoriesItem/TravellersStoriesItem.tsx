@@ -19,29 +19,33 @@ const TravellersStoriesItem = ({ story }: TravellersStoriesItemProps) => {
     return `${day}.${month}.${year}`;
   };
 
-  const shortenArticle = (article: string) => {
-    if (article.length > 120) {
-      const slicedArticle = article.slice(0, 120);
-      return slicedArticle + '...';
-    } else {
-      return article;
-    }
-  };
-
   return (
     <li className={css.storyCard}>
-      <Image
-        className={css.mainImage}
-        src={story.img}
-        alt={story.title}
-        width={335}
-        height={223}
-      />
+      {story.img ? (
+        <Image
+          className={css.mainImage}
+          src={story.img}
+          alt={story.title}
+          width={335}
+          height={223}
+        />
+      ) : (
+        <Image
+          className={css.mainImage}
+          src="/placeholder-image.png"
+          alt={story.title}
+          width={335}
+          height={223}
+        />
+      )}
       <div className={css.contentWrapper}>
-        <p className={css.category}>{story.category.name}</p>
-        <h2 className={css.title}>{story.title}</h2>
-        <p className={css.description}>{shortenArticle(story.article)}</p>
-        {story.ownerId && (
+        <div>
+          <p className={css.category}>{story.category.name}</p>
+          <h2 className={css.title}>{story.title}</h2>
+          <p className={css.description}>{story.article}</p>
+        </div>
+
+        <div>
           <div className={css.userWrapper}>
             <Image
               className={css.avatarImage}
@@ -64,14 +68,15 @@ const TravellersStoriesItem = ({ story }: TravellersStoriesItemProps) => {
               </div>
             </div>
           </div>
-        )}
-        <div className={css.buttonsWrapper}>
-          <button className={css.showStory}>Переглянути статтю</button>
-          <button className={css.bookmarkStory}>
-            <svg className={css.bookmarkIcon} width="24" height="24">
-              <use href="/sprite.svg#icon-bookmark"></use>
-            </svg>
-          </button>
+
+          <div className={css.buttonsWrapper}>
+            <button className={css.showStory}>Переглянути статтю</button>
+            <button className={css.bookmarkStory}>
+              <svg className={css.bookmarkIcon} width="24" height="24">
+                <use href="/sprite.svg#icon-bookmark"></use>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </li>
