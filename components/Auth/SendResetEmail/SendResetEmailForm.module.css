@@ -101,23 +101,6 @@ input:-webkit-autofill:active {
 .togglePassword:hover {
   scale: 1.1;
 }
-.passwordField {
-  margin-bottom: 40px;
-}
-.forgotLink {
-  position: absolute;
-  right: 12px;
-  top: 55px;
-  transform: translateY(-12px);
-  font-size: 14px;
-  color: var(--accent);
-  text-decoration: none;
-  transition: scale 0.2s ease;
-}
-.forgotLink:hover,
-.forgotLink:focus {
-  scale: 1.05;
-}
 
 .status {
   position: absolute;
@@ -186,19 +169,10 @@ input:-webkit-autofill:active {
     font-size: 18px;
   }
   .submitBtn {
+    margin-top: 32px;
     font-size: 18px;
   }
   .status {
     bottom: 55px;
-  }
-  .forgotLink {
-    position: absolute;
-    right: 14px;
-    top: 60px;
-
-    font-size: 16px;
-  }
-  .passwordField {
-    margin-bottom: 45px;
   }
 }

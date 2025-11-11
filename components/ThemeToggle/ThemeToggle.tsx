@@ -1,68 +1,89 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import css from './ThemeToggle.module.css';
 
-const themes = ['color-scheme-1', 'color-scheme-2', 'color-scheme-3'] as const;
-
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<(typeof themes)[number] | null>(null);
+  const pathname = usePathname();
+  const [theme, setTheme] = useState<string | null>(null);
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('theme') as
-        | (typeof themes)[number]
-        | null;
+      const isAuth = pathname.startsWith('/auth');
+      const saved = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia(
+        '(prefers-color-scheme: dark)'
+      ).matches;
+
+      let initial: string;
+
       if (saved) {
-        setTheme(saved);
-        document.documentElement.setAttribute('data-theme', saved);
+        // 👇 якщо користувач уже вибрав тему
+        if (saved === 'color-scheme-3') {
+          initial = 'color-scheme-3'; // темна глобальна
+        } else if (saved === 'color-scheme-1' || saved === 'color-scheme-2') {
+          // світла — своя для /auth чи ні
+          initial = isAuth ? 'color-scheme-1' : 'color-scheme-2';
+        } else {
+          initial = prefersDark
+            ? 'color-scheme-3'
+            : isAuth
+              ? 'color-scheme-1'
+              : 'color-scheme-2';
+        }
       } else {
-        // Якщо нема збереженої — підлаштовуємося під системну тему
-        const prefersDark = window.matchMedia(
-          '(prefers-color-scheme: dark)'
-        ).matches;
-        const systemTheme = prefersDark ? 'color-scheme-3' : 'color-scheme-1';
-        setTheme(systemTheme);
-        document.documentElement.setAttribute('data-theme', systemTheme);
+        // перше відвідування — системна
+        initial = prefersDark
+          ? 'color-scheme-3'
+          : isAuth
+            ? 'color-scheme-1'
+            : 'color-scheme-2';
       }
 
-      // Автоматичне оновлення при зміні системної теми (якщо не вибрана вручну)
+      setTheme(initial);
+      document.documentElement.setAttribute('data-theme', initial);
+
+      // слухаємо зміну системної теми тільки якщо користувач ще не вибрав
       const listener = (e: MediaQueryListEvent) => {
         if (!localStorage.getItem('theme')) {
-          const newTheme = e.matches ? 'color-scheme-3' : 'color-scheme-1';
+          const newTheme = e.matches
+            ? 'color-scheme-3'
+            : isAuth
+              ? 'color-scheme-1'
+              : 'color-scheme-2';
           setTheme(newTheme);
           document.documentElement.setAttribute('data-theme', newTheme);
         }
       };
 
-      window
-        .matchMedia('(prefers-color-scheme: dark)')
-        .addEventListener('change', listener);
-      return () =>
-        window
-          .matchMedia('(prefers-color-scheme: dark)')
-          .removeEventListener('change', listener);
+      const mq = window.matchMedia('(prefers-color-scheme: dark)');
+      mq.addEventListener('change', listener);
+      return () => mq.removeEventListener('change', listener);
     } catch (err) {
       console.error('Theme init error', err);
     }
-  }, []);
+  }, [pathname]);
 
   const toggleTheme = () => {
     if (!theme) return;
-    const currentIndex = themes.indexOf(theme);
-    const nextTheme = themes[(currentIndex + 1) % themes.length];
-    setTheme(nextTheme);
-    document.documentElement.setAttribute('data-theme', nextTheme);
-    localStorage.setItem('theme', nextTheme);
+
+    const isAuth = pathname.startsWith('/auth');
+    const lightTheme = isAuth ? 'color-scheme-1' : 'color-scheme-2';
+    const newTheme = theme === 'color-scheme-3' ? lightTheme : 'color-scheme-3';
+
+    setTheme(newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme);
+
+    // ✅ зберігаємо і темну, і світлу (окремо)
+    localStorage.setItem('theme', newTheme);
   };
 
-  if (!theme) return null; // щоб кнопка не мигала
+  if (!theme) return null;
 
   return (
     <button onClick={toggleTheme} className={css.themeToggle}>
-      {theme === 'color-scheme-1' && '🌞'}
-      {theme === 'color-scheme-2' && '💙'}
-      {theme === 'color-scheme-3' && '🌙'}
+      {theme === 'color-scheme-3' ? '🌙' : '🌞'}
     </button>
   );
 }
