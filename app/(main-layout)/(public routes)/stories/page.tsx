@@ -1,7 +1,30 @@
-import TravellersStories from '@/components/TravellersStories/TravellersStories';
+import { fetchServerStories as fetchStories } from '@/lib/api/serverApi';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query';
+import StoriesClient from './Stories.client';
+import { ICategory } from '@/types/category';
 
-const StoriesPage = () => {
-  return <TravellersStories category={null} perPage={1} />;
+const StoriesPage = async () => {
+  const queryClient = new QueryClient();
+
+  const perPage = 9;
+  const page = 1;
+  const category: ICategory | null = null;
+
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: ['stories', (category as ICategory | null)?._id ?? 'all'],
+    queryFn: () => fetchStories(perPage, page, category),
+    initialPageParam: 1,
+  });
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <StoriesClient category={category} perPage={perPage} />
+    </HydrationBoundary>
+  );
 };
 
 export default StoriesPage;

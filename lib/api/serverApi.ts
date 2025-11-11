@@ -46,13 +46,20 @@ export const fetchCurrentUser = async (): Promise<IApiResponse> => {
 };
 
 // === STORIES  ===
-export const fetchStories = async (
-  params: URLSearchParams
+export const fetchServerStories = async (
+  perPage: number,
+  page: number,
+  category: ICategory | null
 ): Promise<PaginatedStoriesResponse> => {
-  const { data } = await nextServer.get<PaginatedStoriesResponse>('/stories', {
-    params,
+  const { data } = await nextServer.get('/stories', {
+    params: {
+      perPage,
+      page,
+      category: category?.name,
+    },
   });
-  return data;
+
+  return data.data;
 };
 
 export const fetchStoryById = async (storyId: string): Promise<IStory> => {

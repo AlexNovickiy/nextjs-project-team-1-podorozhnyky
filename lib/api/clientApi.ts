@@ -71,12 +71,7 @@ export const fetchStories = async (
       category: category?.name,
     },
   });
-  console.log('Axios params used:', {
-    perPage,
-    page,
-    category: category?.name,
-    data: data.data.perPage,
-  });
+
   return data.data;
 };
 
