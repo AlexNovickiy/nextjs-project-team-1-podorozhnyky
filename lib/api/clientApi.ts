@@ -1,28 +1,30 @@
 // lib/api/clientApi.ts
-import { nextServer } from './api';
+import {
+  AuthResetPwdCredentials,
+  AuthResponseLogin,
+  AuthResponseLogout,
+  AuthResponseRefresh,
+  AuthResponseRegister,
+  LoginCredentials,
+  RegisterCredentials,
+  SendResetEmailCredentials,
+} from '@/types/auth';
+import { ICategory } from '@/types/category';
+import {
+  CreateStory,
+  CreateStoryResponse,
+  IStory,
+  PaginatedStoriesResponse,
+  UpdateStory,
+  UpdateStoryResponse,
+} from '@/types/story';
 import {
   IApiResponse,
   IUser,
   PaginatedUsersResponse,
   UpdateUser,
 } from '@/types/user';
-import {
-  PaginatedStoriesResponse,
-  IStory,
-  CreateStoryResponse,
-  UpdateStoryResponse,
-  UpdateStory,
-  CreateStory,
-} from '@/types/story';
-import { ICategory } from '@/types/category';
-import {
-  AuthResponseRefresh,
-  AuthResponseRegister,
-  AuthResponseLogin,
-  AuthResponseLogout,
-  LoginCredentials,
-  RegisterCredentials,
-} from '@/types/auth';
+import { nextServer } from './api';
 
 // === AUTH ===
 
@@ -40,6 +42,17 @@ export const register = async (credentials: RegisterCredentials) => {
     credentials
   );
   return data;
+};
+
+export const sendResetEmail = async (
+  credentials: SendResetEmailCredentials
+): Promise<void> => {
+  await nextServer.post('/auth/send-reset-email', credentials);
+};
+export const resetPwd = async (
+  credentials: AuthResetPwdCredentials
+): Promise<void> => {
+  await nextServer.post('/auth/reset-pwd', credentials);
 };
 
 export const logout = async (): Promise<AuthResponseLogout> => {

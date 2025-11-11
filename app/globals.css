@@ -54,7 +54,7 @@
   --color-scheme-1-foreground: var(--color-neutral-lightest);
   --color-scheme-1-input-text: var(--opacity-neutral-darkest-60);
   /* === Color Scheme 2 (Blue) === */
-  --color-scheme-2-background: var(--color-royal-blue-lighter);
+  --color-scheme-2-background: var(--color-royal-blue-lightest);
   --color-scheme-2-text: var(--color-neutral-darkest);
   --color-scheme-2-border: var(--opacity-neutral-darkest-15);
   --color-scheme-2-accent: var(--color-royal-blue);

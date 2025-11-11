@@ -1,12 +1,13 @@
 'use client';
 
-import { nextServer } from '@/lib/api/api';
 import { useAuthStore } from '@/lib/store/authStore';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import * as Yup from 'yup';
+import { login } from '../../../lib/api/clientApi';
 import css from './LoginForm.module.css';
 interface LoginValues {
   email: string;
@@ -42,9 +43,9 @@ export default function LoginForm() {
   ) => {
     try {
       setStatus(null);
-      const { data } = await nextServer.post('/auth/login', values);
+      const { data } = await login(values);
       setUser(data.user);
-      router.push('/profile');
+      router.push('/');
     } catch {
       setStatus('Вхід не виконано. Спробуйте ще раз.');
     } finally {
@@ -99,7 +100,7 @@ export default function LoginForm() {
               />
             </div>
 
-            <div className={css.field}>
+            <div className={`${css.field} ${css.passwordField}`}>
               <label htmlFor="password" className={css.label}>
                 Пароль*
               </label>
@@ -119,6 +120,7 @@ export default function LoginForm() {
                     if (status) setStatus(null);
                   }}
                 />
+
                 <button
                   type="button"
                   className={css.togglePassword}
@@ -126,6 +128,9 @@ export default function LoginForm() {
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
+                <Link href="/auth/send-reset-email" className={css.forgotLink}>
+                  Забули пароль?
+                </Link>
               </div>
               <ErrorMessage
                 name="password"
@@ -134,7 +139,6 @@ export default function LoginForm() {
               />
             </div>
 
-            {/* ===== STATUS MESSAGE ===== */}
             {status && <div className={css.status}>{status}</div>}
 
             <button
