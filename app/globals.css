@@ -68,7 +68,7 @@
   --color-scheme-3-accent: var(--color-royal-blue-light);
   --color-scheme-3-foreground: var(--color-neutral-dark);
   --color-scheme-3-input-text: var(--opacity-white-60);
-  --color-scheme-3-background-footer: var(--color-neutral-darker);
+  --color-scheme-3-background-footer: var(--color-neutral-dark);
 }
 
 /* =========================================

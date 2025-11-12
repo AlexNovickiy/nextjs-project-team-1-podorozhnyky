@@ -2,9 +2,7 @@ import css from './Footer.module.css';
 import Link from 'next/link';
 import mainCss from '@/app/Home.module.css';
 
-type Props = { isAuthenticated?: boolean };
-
-export default function Footer({ isAuthenticated = false }: Props) {
+export default function Footer() {
   return (
     <footer className={css.footer}>
       <div className={mainCss.container}>
@@ -71,43 +69,21 @@ export default function Footer({ isAuthenticated = false }: Props) {
 
           <nav className={css.nav}>
             <ul className={css.nav_list}>
-              {isAuthenticated ? (
-                <>
-                  <li className={css.nav_item}>
-                    <Link className={css.nav_link} href="/">
-                      Головна
-                    </Link>
-                  </li>
-                  <li className={css.nav_item}>
-                    <Link className={css.nav_link} href="/stories">
-                      Історії
-                    </Link>
-                  </li>
-                  <li className={css.nav_item}>
-                    <Link className={css.nav_link} href="/travellers">
-                      Мандрівники
-                    </Link>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li className={css.nav_item}>
-                    <Link className={css.nav_link} href="/">
-                      Головна
-                    </Link>
-                  </li>
-                  <li className={css.nav_item}>
-                    <Link className={css.nav_link} href="/stories">
-                      Історії
-                    </Link>
-                  </li>
-                  <li className={css.nav_item}>
-                    <Link className={css.nav_link} href="/travellers">
-                      Мандрівники
-                    </Link>
-                  </li>
-                </>
-              )}
+              <li className={css.nav_item}>
+                <Link className={css.nav_link} href="/">
+                  Головна
+                </Link>
+              </li>
+              <li className={css.nav_item}>
+                <Link className={css.nav_link} href="/stories">
+                  Історії
+                </Link>
+              </li>
+              <li className={css.nav_item}>
+                <Link className={css.nav_link} href="/travellers">
+                  Мандрівники
+                </Link>
+              </li>
             </ul>
           </nav>
         </div>

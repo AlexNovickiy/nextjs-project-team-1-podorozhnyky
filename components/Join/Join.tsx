@@ -5,11 +5,11 @@ import mainCss from '@/app/Home.module.css';
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/lib/store/authStore';
 
-type Props = { isAuthenticated?: boolean };
-
-const Join: React.FC<Props> = ({ isAuthenticated = false }) => {
+const Join = () => {
   const router = useRouter();
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
 
   const handleClick = () => {
     const route = isAuthenticated ? '/profile' : '/auth/register';
