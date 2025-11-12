@@ -29,7 +29,7 @@ export default function Header() {
   return (
     <header className={css.header}>
       <div>
-        <p>👋 Привіт, {user?.name}</p>
+        <p className={css.greeting}>👋 Привіт, {user?.name}</p>
 
         <button
           style={{ color: 'white' }}
