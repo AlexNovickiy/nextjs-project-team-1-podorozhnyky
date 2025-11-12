@@ -2,9 +2,10 @@
 
 .footer {
   padding: 48px 0px;
-  background-color: #e8eeff;
+  background-color: var(--background-footer);
   text-align: center;
   min-width: 335px;
+  margin-top: auto;
 }
 
 .logo {
@@ -33,7 +34,7 @@
   font-size: 17px;
   line-height: 1.1;
   letter-spacing: -0.01em;
-  color: var(--color-scheme-1-text);
+  color: var(--text);
 }
 
 .links {
@@ -49,7 +50,7 @@
 
 .footer_icon {
   display: block;
-  fill: var(--color-scheme-2-text);
+  fill: var(--text);
   width: 32px;
   height: 32px;
 }
@@ -75,7 +76,7 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 1.5;
-  color: var(--color-scheme-2-text);
+  color: var(--text);
 }
 
 .inscription {
@@ -93,7 +94,7 @@
   font-weight: 400;
   font-size: 12px;
   line-height: 1.5;
-  color: var(--color-scheme-2-text);
+  color: var(--text);
 }
 
 .logo_link:hover,

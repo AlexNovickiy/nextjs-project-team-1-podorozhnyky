@@ -17,12 +17,12 @@ const Join: React.FC<Props> = ({ isAuthenticated = false }) => {
   };
 
   return (
-    <div className={mainCss.container}>
-      <section
-        id="join"
-        aria-labelledby="join-title"
-        className={css.join_section}
-      >
+    <section
+      id="join"
+      aria-labelledby="join-title"
+      className={css.join_section}
+    >
+      <div className={mainCss.container}>
         <div className={css.texts}>
           <h2 id="join-title" className={css.join_to}>
             Приєднуйтесь до нашої <br className={css.tab}></br>спільноти
@@ -36,8 +36,8 @@ const Join: React.FC<Props> = ({ isAuthenticated = false }) => {
             {isAuthenticated ? 'Збережені' : 'Зареєструватися'}
           </button>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 };
 

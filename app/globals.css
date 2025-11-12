@@ -60,6 +60,7 @@
   --color-scheme-2-accent: var(--color-royal-blue);
   --color-scheme-2-foreground: var(--color-royal-blue-lighter);
   --color-scheme-2-input-text: var(--opacity-neutral-darkest-60);
+  --color-scheme-2-background-footer: var(--color-royal-blue-lighter);
   /* === Color Scheme 3 (Dark) === */
   --color-scheme-3-background: var(--color-neutral-darker);
   --color-scheme-3-text: var(--color-white);
@@ -67,6 +68,7 @@
   --color-scheme-3-accent: var(--color-royal-blue-light);
   --color-scheme-3-foreground: var(--color-neutral-dark);
   --color-scheme-3-input-text: var(--opacity-white-60);
+  --color-scheme-3-background-footer: var(--color-neutral-darker);
 }
 
 /* =========================================
@@ -79,6 +81,7 @@
   --accent: var(--color-scheme-1-accent);
   --foreground: var(--color-scheme-1-foreground);
   --input-text: var(--opacity-neutral-darkest-60);
+  --background-footer: var(--color-scheme-3-background);
 }
 
 :root[data-theme='color-scheme-2'] {
@@ -88,6 +91,7 @@
   --accent: var(--color-scheme-2-accent);
   --foreground: var(--color-scheme-2-foreground);
   --input-text: var(--opacity-neutral-darkest-60);
+  --background-footer: var(--color-scheme-2-background-footer);
 }
 
 :root[data-theme='color-scheme-3'] {
@@ -97,6 +101,8 @@
   --accent: var(--color-scheme-3-accent);
   --foreground: var(--color-scheme-3-foreground);
   --input-text: var(--opacity-white-60);
+
+  --background-footer: var(--color-scheme-3-background-footer);
 }
 
 html,

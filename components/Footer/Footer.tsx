@@ -92,17 +92,17 @@ export default function Footer({ isAuthenticated = false }: Props) {
               ) : (
                 <>
                   <li className={css.nav_item}>
-                    <Link className={css.nav_link} href="/auth/register">
+                    <Link className={css.nav_link} href="/">
                       Головна
                     </Link>
                   </li>
                   <li className={css.nav_item}>
-                    <Link className={css.nav_link} href="/auth/register">
+                    <Link className={css.nav_link} href="/stories">
                       Історії
                     </Link>
                   </li>
                   <li className={css.nav_item}>
-                    <Link className={css.nav_link} href="/auth/register">
+                    <Link className={css.nav_link} href="/travellers">
                       Мандрівники
                     </Link>
                   </li>
