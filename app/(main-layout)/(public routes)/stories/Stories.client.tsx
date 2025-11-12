@@ -49,8 +49,8 @@ const StoriesClient = ({ category }: StoriesClientProps) => {
   const stories = data?.pages.flatMap(page => page.data) ?? [];
 
   return (
-    <>
-      <h1>Історії Мандрівників</h1>
+    <section className={css.container}>
+      <h1 className={css.title}>Історії Мандрівників</h1>
       {isMobile ? (
         <div className={css.mobileCategory}>Mobile</div>
       ) : (
@@ -69,7 +69,7 @@ const StoriesClient = ({ category }: StoriesClientProps) => {
       )}
       {error && <p>Щось пішло не так</p>}
       {isLoading && <p>Завантаження</p>}
-    </>
+    </section>
   );
 };
 
