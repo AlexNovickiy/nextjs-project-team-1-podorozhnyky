@@ -1,3 +1,4 @@
+import GetOauthUrl from '@/components/Auth/GetOauthUrl/GetOauthUrl';
 import LoginForm from '@/components/Auth/LoginForm/LoginForm';
 import RegistrationForm from '@/components/Auth/RegistrationForm/RegistrationForm';
 import ResetPasswordForm from '@/components/Auth/ResetPasswordForm/ResetPasswordForm';
@@ -6,7 +7,12 @@ import Link from 'next/link';
 import css from './Auth.module.css';
 type AuthProps = {
   params: Promise<{
-    authType: 'register' | 'login' | 'send-reset-email' | 'reset-pwd';
+    authType:
+      | 'register'
+      | 'login'
+      | 'send-reset-email'
+      | 'reset-pwd'
+      | 'get-oauth-url';
   }>;
 };
 
@@ -17,6 +23,7 @@ export default async function AuthPage({ params }: AuthProps) {
   const isLogin = authType === 'login';
   const isSendResetEmail = authType === 'send-reset-email';
   const isResetPwd = authType === 'reset-pwd';
+  const isGetOauthUrl = authType === 'get-oauth-url';
 
   return (
     <>
@@ -41,6 +48,7 @@ export default async function AuthPage({ params }: AuthProps) {
       {isLogin && <LoginForm />}
       {isSendResetEmail && <SendResetEmailForm />}
       {isResetPwd && <ResetPasswordForm />}
+      {isGetOauthUrl && <GetOauthUrl />}
     </>
   );
 }
