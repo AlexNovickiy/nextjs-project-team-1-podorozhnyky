@@ -15,14 +15,18 @@ const StoriesPage = async () => {
   const category: ICategory | null = null;
 
   await queryClient.prefetchInfiniteQuery({
-    queryKey: ['stories', (category as ICategory | null)?._id ?? 'all'],
+    queryKey: [
+      'stories',
+      (category as ICategory | null)?._id ?? 'all',
+      perPage,
+    ],
     queryFn: () => fetchStories(perPage, page, category),
     initialPageParam: 1,
   });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <StoriesClient category={category} perPage={perPage} />
+      <StoriesClient category={category} />
     </HydrationBoundary>
   );
 };
