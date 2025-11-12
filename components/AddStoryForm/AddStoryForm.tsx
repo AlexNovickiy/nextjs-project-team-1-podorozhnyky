@@ -1,50 +1,46 @@
 'use client';
 
 import { Form, Formik, Field, ErrorMessage, FormikHelpers } from 'formik';
-import { useId, useEffect, useState, use } from 'react';
+import { useId, useEffect, useState, useRef } from 'react';
 import React from 'react';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { ICategory } from '../../types/category';
-
-//import { fetchCategories } from '@/lib/api/serverApi';
 import css from './AddStoryForm.module.css';
+import Image from 'next/image';
 
 const validationSchema = Yup.object<FormValues>({
   storyImage: Yup.mixed<File>()
-  .required("Зображення є обов'язковим")
-  .test(
-    'fileSize',
-    'Розмір файлу не повинен перевищувати 2 МБ.',
-    value => {
-      return value && value.size <= 2 * 1024 * 1024;  // Проверка размера файла (не более 2МБ)
-    }
-  )
-  .test(
-    'fileType',
-    'Невірний формат файлу',
-    value => {
-      if (!value) return true;  // Если файл не выбран, то пропускаем проверку
-      return ['image/jpeg', 'image/png', 'image/gif'].includes(value.type);  // Проверка типа файла
-    }
-  ),
-
-  title: Yup.string().required("Заголовок є обов'язковим").max(80, 'Максимальна довжина заголовка - 80 символів'),
+    .nullable()
+    .required("Зображення є обов'язковим")
+    .test('fileSize', 'Розмір файлу не повинен перевищувати 2 МБ.', value => {
+      return value ? value.size <= 2 * 1024 * 1024 : true;
+    })
+    .test(
+      'fileType',
+      'Невірний формат файлу',
+      value =>
+        !value ||
+        ['image/webp', 'image/jpeg', 'image/png', 'image/gif'].includes(
+          value.type
+        )
+    ),
+  title: Yup.string()
+    .required("Заголовок є обов'язковим")
+    .max(80, 'Максимальна довжина заголовка - 80 символів'),
   category: Yup.string().required("Категорія є обов'язковою"),
-  shortDescription: Yup.string()
-    .max(61, 'Максимальна довжина опису - 61 символ'),
+  shortDescription: Yup.string().max(
+    61,
+    'Максимальна довжина опису - 61 символ'
+  ),
   description: Yup.string()
     .required("Текст історії є обов'язковим")
     .max(2500, 'Текст повинен бути не більше 2500 символів'),
 });
 
-export interface AddStoryFormProps {
-  storyId?: string;
-}
-
 interface FormValues {
-  storyImage: null;
+  storyImage: File | null;
   title: string;
   category: string;
   shortDescription: string;
@@ -71,18 +67,36 @@ const mockCategories = [
   { _id: '68fb50c80ae91338641121f9', name: 'Океанія' },
 ];
 
-const AddStoryForm = ({ storyId }: AddStoryFormProps) => {
+const AddStoryForm = ({}: { storyId?: string }) => {
   const fieldId = useId();
   const [initialValues, setInitialValues] = useState<FormValues>(formValues);
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [modalError, setModalError] = useState(false);
+  const [preview, setPreview] = useState<string>('/placeholder-image.png');
+  const previewUrlRef = useRef<string | null>(null);
+  const [mounted, setMounted] = useState(false);
   const maxDescriptionLength = 61;
-
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = async (values: FormValues, { resetForm }: FormikHelpers<FormValues>) => {
+  const handleSubmit = async (
+    values: FormValues,
+    { resetForm }: FormikHelpers<FormValues>
+  ) => {
     try {
-      const response = await axios.post('/api/stories', values);
+      const formData = new FormData();
+      formData.append('storyImage', values.storyImage as File);
+      formData.append('title', values.title);
+      formData.append('category', values.category);
+      formData.append('shortDescription', values.shortDescription);
+      formData.append('description', values.description);
+
+      const response = await axios.post('/api/stories', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
       if (response.status === 200) {
         router.push(`/stories/${response.data.storyId}`);
         resetForm();
@@ -103,26 +117,19 @@ const AddStoryForm = ({ storyId }: AddStoryFormProps) => {
       }));
     }
   }, []);
-  // useEffect(() => {
-  //   const loadCategories = async () => {
-  //     try {
-  //       const categories = await fetchCategories();
-  //       setCategories(categories);
-  //     } catch (error) {
-  //       console.error('Помилка при отриманні категорій:', error);
-  //     }
-  //   };
 
-  //   loadCategories();
-  // }, []);
+  // Render only on client to avoid hydration mismatches from browser extensions
+  useEffect(() => {
+    setMounted(true);
+    return () => {
+      if (previewUrlRef.current) {
+        URL.revokeObjectURL(previewUrlRef.current);
+        previewUrlRef.current = null;
+      }
+    };
+  }, []);
 
-  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-
-    // if (value.length <= maxDescriptionLength) {
-    //   setDescription(value);
-    // }
-  }
+  if (!mounted) return null;
 
   return (
     <>
@@ -136,20 +143,51 @@ const AddStoryForm = ({ storyId }: AddStoryFormProps) => {
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
+        enableReinitialize
         validationSchema={validationSchema}
+        validateOnMount={true}
       >
-        {({ isValid, dirty, values }) => (
+        {({ isValid, values, setFieldValue, isSubmitting }) => (
           <Form noValidate className={css.form}>
             <div className={css.formGroupInput}>
               <label>Oбкладинка статті</label>
-              <img
-                src="/placeholder-Image.png"
+              <Image
+                src={preview}
                 alt="Прев'ю"
                 className="cover-preview"
+                width={400}
+                height={225}
+                unoptimized
               />
-              <button type="button" className={css.uploadBtn}>
+
+              <button
+                type="button"
+                className={css.uploadBtn}
+                onClick={() => fileInputRef.current?.click()}
+              >
                 Завантажити фото
               </button>
+
+              <input
+                type="file"
+                accept="image/*"
+                style={{ display: 'none' }}
+                ref={fileInputRef}
+                onChange={e => {
+                  const fileList = e.currentTarget.files?.[0] ?? null;
+                  if (fileList) {
+                    setFieldValue('storyImage', fileList, true);
+                    // Update preview and revoke previous blob URL to prevent memory leaks
+                    if (previewUrlRef.current) {
+                      URL.revokeObjectURL(previewUrlRef.current);
+                    }
+                    const objectUrl = URL.createObjectURL(fileList);
+                    previewUrlRef.current = objectUrl;
+                    setPreview(objectUrl);
+                  }
+                }}
+              />
+
               <label htmlFor={`${fieldId}-title`} className={css.label}>
                 Заголовок
               </label>
@@ -193,7 +231,10 @@ const AddStoryForm = ({ storyId }: AddStoryFormProps) => {
                 className={css.error}
               />
 
-              <label htmlFor={`${fieldId}-shortDescription`} className={css.label}>
+              <label
+                htmlFor={`${fieldId}-shortDescription`}
+                className={css.label}
+              >
                 Короткий опис
               </label>
               <Field
@@ -202,10 +243,10 @@ const AddStoryForm = ({ storyId }: AddStoryFormProps) => {
                 id={`${fieldId}-shortDescription`}
                 className={css.shortDescription}
                 placeholder="Введіть короткий опис історії"
-              
               />
               <div className={css.descriptionCounter}>
-                Лишилось символів: {maxDescriptionLength - (values.shortDescription?.length || 0)}
+                Лишилось символів:{' '}
+                {maxDescriptionLength - (values.shortDescription?.length || 0)}
               </div>
               <ErrorMessage
                 name="shortDescription"
@@ -213,7 +254,7 @@ const AddStoryForm = ({ storyId }: AddStoryFormProps) => {
                 className={css.error}
               />
 
-              <label htmlFor={`${fieldId}-text`} className={css.label}>
+              <label htmlFor={`${fieldId}-description`} className={css.label}>
                 Текст історії
               </label>
               <Field
@@ -223,15 +264,20 @@ const AddStoryForm = ({ storyId }: AddStoryFormProps) => {
                 className={css.description}
                 placeholder="Ваша історія тут"
               />
-              <ErrorMessage name="description" component="div" className={css.error} />
+              <ErrorMessage
+                name="description"
+                component="div"
+                className={css.error}
+              />
             </div>
+
             <div className={css.formGroupBtn}>
               <button
                 type="submit"
                 className={css.submitBtn}
-                disabled={!(isValid && dirty)}
+                disabled={!isValid || isSubmitting}
               >
-                Зберегти
+                {isSubmitting ? 'Зберігається...' : 'Зберегти'}
               </button>
               <button type="button" className={css.cancelBtn}>
                 Відмінити
@@ -242,6 +288,6 @@ const AddStoryForm = ({ storyId }: AddStoryFormProps) => {
       </Formik>
     </>
   );
-}
+};
 
 export default AddStoryForm;
