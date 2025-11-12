@@ -2,24 +2,24 @@
 .section {
   position: relative;
   width: 100%;
-  min-height: 820px;
-  margin-top: -72px;
-  padding-top: 72px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  min-height: 812px;
   overflow: hidden;
+  padding-top: 196px;
+  padding-bottom: 331px;
 }
 
 @media screen and (min-width: 768px) {
   .section {
     min-height: 634px;
+    padding-top: 244px;
+    padding-bottom: 117px;
   }
 }
 
 @media screen and (min-width: 1440px) {
   .section {
-    min-height: 820px;
+    min-height: 900px;
+    padding-bottom: 347px;
   }
 }
 
@@ -115,21 +115,18 @@
 .content {
   display: flex;
   flex-direction: column;
-  gap: 16px;
   max-width: 335px;
 }
 
 @media screen and (min-width: 768px) {
   .content {
     max-width: 500px;
-    gap: 24px;
   }
 }
 
 @media screen and (min-width: 1440px) {
   .content {
     max-width: 600px;
-    gap: 32px;
   }
 }
 
@@ -142,6 +139,7 @@
   letter-spacing: -0.01em;
   color: var(--color-white);
   margin: 0;
+  margin-bottom: 24px;
 }
 
 @media screen and (min-width: 768px) {
@@ -164,6 +162,7 @@
   line-height: 1.5;
   color: var(--color-white);
   margin: 0;
+  margin-bottom: 32px;
 }
 
 @media screen and (min-width: 768px) {

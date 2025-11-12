@@ -1,10 +1,11 @@
 import React from 'react';
 import css from './About.module.css';
+import mainCss from '@/app/Home.module.css';
 
 const About: React.FC = () => {
   return (
     <section className={css.section} aria-labelledby="about-title">
-      <div className={css.container}>
+      <div className={mainCss.container}>
         <div className={css.aboutContent}>
           <h2 id="about-title" className={css.title}>
             Проєкт, створений для тих, хто живе подорожами
