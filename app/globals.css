@@ -54,12 +54,13 @@
   --color-scheme-1-foreground: var(--color-neutral-lightest);
   --color-scheme-1-input-text: var(--opacity-neutral-darkest-60);
   /* === Color Scheme 2 (Blue) === */
-  --color-scheme-2-background: var(--color-royal-blue-lighter);
+  --color-scheme-2-background: var(--color-royal-blue-lightest);
   --color-scheme-2-text: var(--color-neutral-darkest);
   --color-scheme-2-border: var(--opacity-neutral-darkest-15);
   --color-scheme-2-accent: var(--color-royal-blue);
   --color-scheme-2-foreground: var(--color-royal-blue-lighter);
   --color-scheme-2-input-text: var(--opacity-neutral-darkest-60);
+  --color-scheme-2-background-footer: var(--color-royal-blue-lighter);
   /* === Color Scheme 3 (Dark) === */
   --color-scheme-3-background: var(--color-neutral-darker);
   --color-scheme-3-text: var(--color-white);
@@ -67,6 +68,7 @@
   --color-scheme-3-accent: var(--color-royal-blue-light);
   --color-scheme-3-foreground: var(--color-neutral-dark);
   --color-scheme-3-input-text: var(--opacity-white-60);
+  --color-scheme-3-background-footer: var(--color-neutral-dark);
 }
 
 /* =========================================
@@ -85,6 +87,7 @@
   --button-hover: var(--color-royal-blue);
   --button-hover-text: var(--color-white);
   --button-active: var(--color-royal-blue-darker);
+  --background-footer: var(--color-scheme-3-background);
 }
 
 :root[data-theme='color-scheme-2'] {
@@ -100,6 +103,7 @@
   --button-hover: var(--color-royal-blue);
   --button-hover-text: var(--color-white);
   --button-active: var(--color-royal-blue-darker);
+  --background-footer: var(--color-scheme-2-background-footer);
 }
 
 :root[data-theme='color-scheme-3'] {
@@ -115,6 +119,7 @@
   --button-hover: var(--color-royal-blue-lighter);
   --button-hover-text: var(--color-scheme-1-text);
   --button-active: var(--color-royal-blue-light);
+  --background-footer: var(--color-scheme-3-background-footer);
 }
 
 html,
