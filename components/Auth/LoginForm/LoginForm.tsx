@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import * as Yup from 'yup';
 import { login } from '../../../lib/api/clientApi';
+import LoginGoogleBtn from '../../LoginGoogleBtn/LoginGoogleBtn';
 import css from './LoginForm.module.css';
 interface LoginValues {
   email: string;
@@ -148,6 +149,7 @@ export default function LoginForm() {
             >
               {isSubmitting ? 'Вхід...' : 'Увійти'}
             </button>
+            <LoginGoogleBtn />
           </Form>
         )}
       </Formik>

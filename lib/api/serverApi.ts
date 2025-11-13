@@ -41,7 +41,7 @@ export const checkServerSession = async (): Promise<
 
 // /me/current
 export const fetchCurrentUser = async (): Promise<IApiResponse> => {
-  const { data } = await nextServer.get<IApiResponse>('/me/current');
+  const { data } = await nextServer.get<IApiResponse>('/users/me');
   return data;
 };
 

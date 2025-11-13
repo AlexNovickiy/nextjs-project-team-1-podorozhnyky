@@ -18,28 +18,28 @@ export default function Header() {
     }
   };
 
-  if (!isAuthenticated) {
-    return (
-      <div>
-        <p>❌ Ви не авторизовані</p>
-        <Link href="/auth/login">Увійти</Link>
-      </div>
-    );
-  }
   return (
     <header className={css.header}>
-      <div>
-        <p>👋 Привіт, {user?.name}</p>
-
-        <button
-          style={{ color: 'white' }}
-          onClick={() => {
-            handleLogout();
-          }}
-        >
-          Вийти
-        </button>
-      </div>
+      {isAuthenticated ? (
+        <div>
+          <p className={css.greeting}>👋 Привіт, {user?.name}</p>
+          <button
+            style={{ color: 'white' }}
+            onClick={() => {
+              handleLogout();
+            }}
+          >
+            Вийти
+          </button>
+        </div>
+      ) : (
+        <div>
+          <p className={css.greeting}>❌ Ви не авторизовані</p>
+          <Link href="/auth/login" style={{ color: 'white' }}>
+            Увійти
+          </Link>
+        </div>
+      )}
     </header>
   );
 }
