@@ -7,22 +7,41 @@ import { fetchAuthorById } from '@/lib/api/clientApi';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
 
-type TravellerInfoProps = { travellerId?: string };
+type TravellerInfoProps = { travellerId?: string; traveller?: IUser | null };
 
-const TravellerInfo: React.FC<TravellerInfoProps> = ({ travellerId }) => {
-  const [traveller, setTraveller] = useState<IUser | null>(null);
+// const MOCK_TRAVELLER: IUser = {
+//   _id: 'mock-1',
+//   name: 'Дмитро Романенко',
+//   description:
+//     'Привіт! Я Дмитро. Люблю знаходити приховані перлини у кожній поїздці та ділитися ними. Світ повний дивовижних відкриттів!',
+//   avatarUrl: '/images/avatar.jpg',
+//   email: 'alex@example.com',
+//   favorites: [],
+//   createdAt: new Date().toISOString(),
+//   updatedAt: new Date().toISOString(),
+// };
+
+const TravellerInfo: React.FC<TravellerInfoProps> = ({
+  travellerId,
+  traveller,
+}) => {
+  const [localTraveller, setLocalTraveller] = useState<IUser | null>(traveller ?? null);
+  // const [localTraveller, setLocalTraveller] = useState<IUser | null>(
+  //   traveller ?? MOCK_TRAVELLER
+  // );
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!travellerId) {
-      return;
-    }
+    if (traveller) return;
+
+    if (!travellerId) return;
+
     const loadTraveller = async () => {
       try {
         setIsLoading(true);
 
         const data = await fetchAuthorById(travellerId);
-        setTraveller(data);
+        setLocalTraveller(data);
       } catch (error) {
         console.error('Помилка завантаження мандрівника:', error);
         toast.error('Не вдалось завантажити дані про мандрівника.');
@@ -31,9 +50,9 @@ const TravellerInfo: React.FC<TravellerInfoProps> = ({ travellerId }) => {
       }
     };
     loadTraveller();
-  }, [travellerId]);
+  }, [traveller, travellerId]);
 
-  if (isLoading) {
+  if (isLoading && !localTraveller) {
     return (
       <section className={css.travellerInfo} aria-label="traveller info">
         <p>Завантаження інформації про мандрівника...</p>
@@ -41,7 +60,7 @@ const TravellerInfo: React.FC<TravellerInfoProps> = ({ travellerId }) => {
     );
   }
 
-  if (!traveller) {
+  if (!localTraveller) {
     return null;
   }
 
@@ -49,8 +68,8 @@ const TravellerInfo: React.FC<TravellerInfoProps> = ({ travellerId }) => {
     <section className={css.travellerInfo} aria-label="traveller info">
       <div className={css.travellerImage}>
         <Image
-          src={traveller.avatarUrl}
-          alt={`Фото мандрівника ${traveller.name}`}
+          src={localTraveller.avatarUrl}
+          alt={`Фото мандрівника ${localTraveller.name}`}
           width={199}
           height={199}
           className={css.avatar}
@@ -58,8 +77,8 @@ const TravellerInfo: React.FC<TravellerInfoProps> = ({ travellerId }) => {
       </div>
 
       <div className={css.travellerDetails}>
-        <h3 className={css.travellerName}>{traveller.name}</h3>
-        <p className={css.travellerDescription}>{traveller.description}</p>
+        <h3 className={css.travellerName}>{localTraveller.name}</h3>
+        <p className={css.travellerDescription}>{localTraveller.description}</p>
       </div>
     </section>
   );
