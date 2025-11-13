@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import * as Yup from 'yup';
 import { register } from '../../../lib/api/clientApi';
+import LoginGoogleBtn from '../../LoginGoogleBtn/LoginGoogleBtn';
 import css from './RegistrationForm.module.css';
 
 interface RegisterValues {
@@ -187,6 +188,7 @@ export default function RegistrationForm() {
             >
               {isSubmitting ? 'Реєстрація...' : 'Зареєструватись'}
             </button>
+            <LoginGoogleBtn />
           </Form>
         )}
       </Formik>

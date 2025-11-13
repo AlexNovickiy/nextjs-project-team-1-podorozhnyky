@@ -10,6 +10,7 @@
   color: var(--text);
   cursor: pointer;
   transition: 0.3s all ease;
+  z-index: 1001;
 }
 
 .themeToggle:hover {
