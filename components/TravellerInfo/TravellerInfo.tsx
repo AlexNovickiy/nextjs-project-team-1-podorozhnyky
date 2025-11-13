@@ -15,19 +15,16 @@ const TravellerInfo: React.FC<TravellerInfoProps> = ({ travellerId }) => {
 
   useEffect(() => {
     if (!travellerId) {
-      console.warn('travellerId не переданий у компонент TravellerInfo!');
       return;
     }
-    console.log('travellerId у TravellerInfo:', travellerId);
     const loadTraveller = async () => {
       try {
         setIsLoading(true);
 
         const data = await fetchAuthorById(travellerId);
-        console.log('Отримані дані мандрівника:', data);
         setTraveller(data);
       } catch (error) {
-        console.error('Помилка завантаження мандріника:', error);
+        console.error('Помилка завантаження мандрівника:', error);
         toast.error('Не вдалось завантажити дані про мандрівника.');
       } finally {
         setIsLoading(false);
