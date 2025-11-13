@@ -1,6 +1,10 @@
+import { IUser } from '@/types/user';
 import React from 'react';
 
-type TravellerInfoProps = { travellerId?: string };
+type TravellerInfoProps = {
+  travellerId: string;
+  traveller?: IUser | null; 
+};
 
 const TravellerInfo: React.FC<TravellerInfoProps> = ({ travellerId }) => {
   return (

@@ -1,83 +1,123 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import { HydrationBoundary, dehydrate, QueryClient } from "@tanstack/react-query";
+
 import TravellerInfo from "@/components/TravellerInfo/TravellerInfo";
 import MessageNoStories from "@/components/MessageNoStories/MessageNoStories";
+import TravellerStoriesWrapper from "@/components/TravellersStories/TravellerStoriesWrapper";
 
-// 👇 React Query SSR hydration
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import { QueryClient } from "@tanstack/react-query";
+import type { IUser, GetUserByIdResponse } from "@/types/user";
+import type { PaginatedStoriesResponse } from "@/types/story";
 
-// 👇 Клієнтський адаптивний список (перша сторінка буде догружена за його perPage)
-import TravellersStoriesResponsive from "@/components/TravellersStories/TravellersStoriesResponsive";
+type PageProps = { params: { travellerId: string } };
 
-// --- тип пропсів сторінки
-export type TravellerPageProps = { params: { travellerId: string } };
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "";
 
-// --- SSR-фетч першої порції (user + articles для page=1)
-async function fetchTravellerFirstPage(travellerId: string) {
-  // Ходи через свій проксі-роут, щоб не світити бекенд напряму
+
+async function fetchTravellerFirstPage(
+  travellerId: string
+): Promise<{ user: IUser | null; storiesPage: PaginatedStoriesResponse }> {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URL ?? ""}/api/users/${travellerId}?page=1&perPage=6`,
+    `${APP_URL}/api/users/${travellerId}?page=1&perPage=6`,
     { next: { revalidate: 60 } }
   );
 
   if (res.status === 404) notFound();
   if (!res.ok) throw new Error(`Failed to load traveller: ${res.status}`);
 
-  const json = await res.json();
-  const user = json?.data?.user ?? null;
-  const firstPage = {
+  const json: GetUserByIdResponse = await res.json();
+
+  const user: IUser | null = json.data.user;
+
+  const storiesPage: PaginatedStoriesResponse = {
     page: json.page,
     perPage: json.perPage,
+    totalPages: json.totalPages,
+    totalItems: json.totalItems,
     hasNextPage: json.hasNextPage,
-    data: json?.data?.articles ?? [],
+    hasPreviousPage: json.hasPreviousPage,
+    data: json.data.articles,
   };
 
-  return { user, firstPage };
+  return { user, storiesPage };
 }
 
-// --- опціонально: базова мета без додаткового фетчу (можеш розширити під себе)
-export const metadata = {
-  title: "Профіль мандрівника | Подорожники",
-  description: "Публічний профіль мандрівника та його історії подорожей.",
-};
+export async function generateMetadata(
+  { params }: { params: { travellerId: string } }
+): Promise<Metadata> {
+  const { travellerId } = params;
+  const { user } = await fetchTravellerFirstPage(travellerId);
 
-export default async function TravellerPage({ params }: TravellerPageProps) {
+  const name = user?.name ?? "Traveller";
+  const desc =
+    user?.description ??
+    "Публічний профіль мандрівника та його історії подорожей.";
+  const url = `/travellers/${encodeURIComponent(travellerId)}`;
+  const image =
+    user?.avatarUrl ||
+    "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg"; // add url for logo
+
+  return {
+    title: `${name} | Подорожники`,
+    description: desc,
+    openGraph: {
+      title: `${name} | Подорожники`,
+      description: desc,
+      url,
+      type: "profile",
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: `${name} profile`,
+        },
+      ],
+    },
+  };
+}
+
+
+export default async function TravellerPage({ params }: PageProps) {
   const { travellerId } = params;
 
-  // 1) SSR: тягнемо першу порцію даних
-  const { user, firstPage } = await fetchTravellerFirstPage(travellerId);
-  const hasStories = (firstPage.data?.length ?? 0) > 0;
+  const { user, storiesPage } = await fetchTravellerFirstPage(travellerId);
+  const hasStories = storiesPage.data.length > 0;
 
-  // 2) Підготовка кэша React Query для infiniteQuery
-  //    ВАЖЛИВО: тут ми сідуємо під perPage=6 (desktop).
-  //    Якщо у клієнта perPage=4 (tablet/mobile), у нього буде інший queryKey → піде свій fetch.
   const qc = new QueryClient();
-  if (hasStories) {
-    qc.setQueryData(["traveller-stories", travellerId, 6], {
-      pages: [firstPage],
+
+  if (hasStories) {    
+    qc.setQueryData(["traveller-stories", travellerId, storiesPage.perPage], {
+      pages: [storiesPage],
       pageParams: [1],
     });
   }
-  const dehydrated = dehydrate(qc);
+
+  const state = dehydrate(qc);
 
   return (
     <main>
       <section aria-label="traveller info">
-        {/* Якщо інший дев робить TravellerInfo і йому достатньо id — лиши так. */}
-        <TravellerInfo travellerId={travellerId} />
+        <div data-wrapper>         
+          <TravellerInfo travellerId={travellerId} traveller={user ?? undefined} />
+        </div>
       </section>
 
       <section aria-label="traveller stories">
-        <h2>Історії Мандрівника</h2>
+        <div data-wrapper>
+          <h2>Історії Мандрівника</h2>
 
-        {hasStories ? (
-          <HydrationBoundary state={dehydrated}>
-            {/* Клієнтський компонент сам визначить perPage (4 / 6) і зробить infiniteQuery */}
-            <TravellersStoriesResponsive travellerId={travellerId} />
-          </HydrationBoundary>
-        ) : (
-          <MessageNoStories />
-        )}
+          {hasStories ? (
+            <HydrationBoundary state={state}>
+              <TravellerStoriesWrapper
+                travellerId={travellerId}
+                initialStories={storiesPage} // только сторисы + пагинация
+              />
+            </HydrationBoundary>
+          ) : (
+            <MessageNoStories />
+          )}
+        </div>
       </section>
     </main>
   );

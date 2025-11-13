@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 
-// 6 для ≥1440, 4 для <1440 (планшет/мобайл)
 export function useResponsivePerPage() {
   const [perPage, setPerPage] = useState<4 | 6>(6);
 
