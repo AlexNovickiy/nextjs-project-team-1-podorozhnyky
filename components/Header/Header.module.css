@@ -19,7 +19,7 @@
   width: 100%;
   margin: 0 auto;
   min-width: 320px;
-  padding: 16px 20px;
+  padding: 16px 0;
 
   display: flex;
   justify-content: space-between;
@@ -69,7 +69,7 @@
 }
 @media (min-width: 768px) {
   .headerContainer {
-    padding: 32px 16px;
+    padding: 32px 0;
     max-width: 1439px;
   }
   .storyTablet {
@@ -104,7 +104,7 @@
   }
 
   .headerContainer {
-    padding: 16px 64px;
+    padding: 16px 0;
     font-size: 18px;
     line-height: 1.5;
   }

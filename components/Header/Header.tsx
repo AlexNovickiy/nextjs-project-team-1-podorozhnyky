@@ -7,6 +7,7 @@ import AuthNavigation from '../AuthNavigation/AuthNavigation';
 import { usePathname } from 'next/navigation';
 import MobileMenu from '../MobileMenu/MobileMenu';
 import { useState } from 'react';
+import mainCss from '@/app/Home.module.css';
 
 export default function Header() {
   const { user, isAuthenticated, clearIsAuthenticated } = useAuthStore();
@@ -45,101 +46,103 @@ export default function Header() {
   return (
     <>
       <header className={finalHeaderClass}>
-        <div className={css.headerContainer}>
-          <Link className={css.headerLinkLogo} href="/">
-            <div className={css.logo_icon}>
-              <svg className={css.logo_iconSvg} width="23" height="23">
-                <use href="/sprite.svg#icon-plant_logo" />
-              </svg>
-            </div>
-            <span className={css.logoName}>Подорожники</span>
-          </Link>
+        <div className={mainCss.container}>
+          <div className={css.headerContainer}>
+            <Link className={css.headerLinkLogo} href="/">
+              <div className={css.logo_icon}>
+                <svg className={css.logo_iconSvg} width="23" height="23">
+                  <use href="/sprite.svg#icon-plant_logo" />
+                </svg>
+              </div>
+              <span className={css.logoName}>Подорожники</span>
+            </Link>
 
-          <div className={css.navAndMenuControls}>
-            <nav aria-label="Main Navigation" className={css.navigation}>
-              <ul className={css.navList}>
-                <li className={css.navigationItem}>
-                  <Link className={css.headerLinkNav} href="/">
-                    Головна
-                  </Link>
-                </li>
-                <li className={css.navigationItem}>
-                  <Link className={css.headerLinkNav} href="/stories">
-                    Історії
-                  </Link>
-                </li>
-                <li className={css.navigationItem}>
-                  <Link className={css.headerLinkNav} href="/travellers">
-                    Мандрівники
-                  </Link>
-                </li>
-              </ul>
+            <div className={css.navAndMenuControls}>
+              <nav aria-label="Main Navigation" className={css.navigation}>
+                <ul className={css.navList}>
+                  <li className={css.navigationItem}>
+                    <Link className={css.headerLinkNav} href="/">
+                      Головна
+                    </Link>
+                  </li>
+                  <li className={css.navigationItem}>
+                    <Link className={css.headerLinkNav} href="/stories">
+                      Історії
+                    </Link>
+                  </li>
+                  <li className={css.navigationItem}>
+                    <Link className={css.headerLinkNav} href="/travellers">
+                      Мандрівники
+                    </Link>
+                  </li>
+                </ul>
 
-              <ul className={css.navigationItemProfile}>
-                {isAuthenticated ? (
-                  <>
-                    <AuthNavigation />
-                    <li className={css.LogoutListSvg}>
-                      <button
-                        className={css.logoutButtonSvg}
-                        onClick={handleLogout}
+                <ul className={css.navigationItemProfile}>
+                  {isAuthenticated ? (
+                    <>
+                      <AuthNavigation />
+                      <li className={css.LogoutListSvg}>
+                        <button
+                          className={css.logoutButtonSvg}
+                          onClick={handleLogout}
+                        >
+                          <svg width="24" height="24">
+                            <use href="/sprite.svg#icon-logout" />
+                          </svg>
+                        </button>
+                      </li>
+                    </>
+                  ) : (
+                    <>
+                      <li
+                        className={`${css.navigationAuth} ${finalNavigationLog}`}
                       >
-                        <svg width="24" height="24">
-                          <use href="/sprite.svg#icon-logout" />
-                        </svg>
-                      </button>
-                    </li>
-                  </>
-                ) : (
-                  <>
-                    <li
-                      className={`${css.navigationAuth} ${finalNavigationLog}`}
-                    >
-                      <Link
-                        href="/auth/login"
-                        prefetch={false}
-                        className={css.linkAuth}
+                        <Link
+                          href="/auth/login"
+                          prefetch={false}
+                          className={css.linkAuth}
+                        >
+                          Вхід
+                        </Link>
+                      </li>
+                      <li
+                        className={`${css.navigationAuth} ${finalNavigationReg}`}
                       >
-                        Вхід
-                      </Link>
-                    </li>
-                    <li
-                      className={`${css.navigationAuth} ${finalNavigationReg}`}
-                    >
-                      <Link
-                        href="/auth/register"
-                        prefetch={false}
-                        className={css.linkAuth}
-                      >
-                        Реєстрація
-                      </Link>
-                    </li>
-                  </>
-                )}
-              </ul>
-            </nav>
+                        <Link
+                          href="/auth/register"
+                          prefetch={false}
+                          className={css.linkAuth}
+                        >
+                          Реєстрація
+                        </Link>
+                      </li>
+                    </>
+                  )}
+                </ul>
+              </nav>
 
-            {isAuthenticated && (
-              <button className={`${css.storyTablet} ${finalStoryTabButton}`}>
-                <Link
-                  href="/stories-create/create"
-                  className={css.storyTabletLink}
-                  prefetch={false}
-                >
-                  Опублікувати Історію
-                </Link>
+              {isAuthenticated && (
+                <button className={`${css.storyTablet} ${finalStoryTabButton}`}>
+                  <Link
+                    href="/stories-create/create"
+                    className={css.storyTabletLink}
+                    prefetch={false}
+                  >
+                    Опублікувати Історію
+                  </Link>
+                </button>
+              )}
+
+              <button
+                className={`${css.mobileMenuButtonBase} ${finalMenuButton}`}
+                onClick={() => setIsMobileMenuOpen(true)}
+                aria-label="Open mobile menu"
+              >
+                <svg width="24" height="24">
+                  <use href="/sprite.svg#icon-menu" />
+                </svg>
               </button>
-            )}
-
-            <button
-              className={`${css.mobileMenuButtonBase} ${finalMenuButton}`}
-              onClick={() => setIsMobileMenuOpen(true)}
-              aria-label="Open mobile menu"
-            >
-              <svg width="24" height="24">
-                <use href="/sprite.svg#icon-menu" />
-              </svg>
-            </button>
+            </div>
           </div>
         </div>
       </header>
