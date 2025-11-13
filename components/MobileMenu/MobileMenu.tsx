@@ -2,6 +2,7 @@ import Link from 'next/link';
 import css from './MobileMenu.module.css';
 import Image from 'next/image';
 import { IUser } from '@/types/user';
+import { useEffect } from 'react';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -20,6 +21,16 @@ export default function MobileMenu({
   user,
   handleLogout,
 }: MobileMenuProps) {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const finalStoryButtonEl = isHomePage
