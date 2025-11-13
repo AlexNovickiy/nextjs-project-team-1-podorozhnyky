@@ -64,6 +64,12 @@ export const checkSession = async (): Promise<boolean> => {
   const { data } = await nextServer.post<AuthResponseRefresh>('/auth/session');
   return data.success;
 };
+export const getGoogleAuthUrl = async () => {
+  const res = await nextServer.get('/auth/google-url');
+  return res.data?.data ?? { url: '' };
+};
+export const loginWithGoogle = (body: { code: string }) =>
+  nextServer.post('/auth/login/google', body);
 
 // /me/current
 export const fetchCurrentUser = async (): Promise<IApiResponse> => {

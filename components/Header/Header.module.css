@@ -1,21 +1,26 @@
 .header {
-  display: flex;
+  position: fixed;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: #333;
-  color: white;
+  background-color: transparent;
+  color: var(--text);
+  display: flex;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 100;
 }
 
 .header a {
   text-decoration: none;
-  color: white;
+  color: var(--text);
   font-size: 1.5rem;
   font-weight: bold;
 }
 
 .header a:hover {
-  color: #ddd;
+  color: var(--text-hover);
 }
 
 .navigation {
@@ -29,10 +34,14 @@
 
 .navigation li a {
   text-decoration: none;
-  color: white;
+  color: var(--text);
   font-size: 1rem;
 }
 
 .navigation li a:hover {
-  color: #ddd;
+  color: var(--text-hover);
+}
+
+.greeting {
+  color: white;
 }
