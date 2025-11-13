@@ -3,12 +3,15 @@
 import { IStory } from '@/types/story';
 import Image from 'next/image';
 import css from './TravellersStoriesItem.module.css';
+import { useRouter } from 'next/navigation';
 
 interface TravellersStoriesItemProps {
   story: IStory;
 }
 
 const TravellersStoriesItem = ({ story }: TravellersStoriesItemProps) => {
+  const router = useRouter();
+
   const ISODateToDate = (isoDate: string) => {
     const date = new Date(isoDate);
 
@@ -17,6 +20,10 @@ const TravellersStoriesItem = ({ story }: TravellersStoriesItemProps) => {
     const year = date.getFullYear();
 
     return `${day}.${month}.${year}`;
+  };
+
+  const handleClick = (storyId: string) => {
+    router.push(`/stories/${storyId}`);
   };
 
   return (
@@ -70,7 +77,12 @@ const TravellersStoriesItem = ({ story }: TravellersStoriesItemProps) => {
           </div>
 
           <div className={css.buttonsWrapper}>
-            <button className={css.showStory}>Переглянути статтю</button>
+            <button
+              className={css.showStory}
+              onClick={() => handleClick(story._id)}
+            >
+              Переглянути статтю
+            </button>
             <button className={css.bookmarkStory}>
               <svg className={css.bookmarkIcon} width="24" height="24">
                 <use href="/sprite.svg#icon-bookmark"></use>

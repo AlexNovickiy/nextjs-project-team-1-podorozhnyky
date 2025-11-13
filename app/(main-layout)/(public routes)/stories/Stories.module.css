@@ -44,16 +44,26 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  gap: 5px;
   margin-bottom: 40px;
 }
 
 .categoriesItem {
+  outline: 1px solid var(--opacity-transparent);
+  border-radius: 8px;
+  transition: outline 0.2s ease;
+}
+
+.categoriesItem:hover {
+  outline: 1px solid var(--border);
 }
 
 .categoriesButton {
   border: 1px solid var(--opacity-transparent);
   border-radius: 8px;
   padding: 6px 12px;
+  font-weight: 500;
+  font-size: 16px;
   color: var(--text);
 }
 
@@ -120,5 +130,9 @@
   .title {
     font-size: 56px;
     margin-top: 48px;
+  }
+
+  .categoriesButton {
+    font-size: 18px;
   }
 }
