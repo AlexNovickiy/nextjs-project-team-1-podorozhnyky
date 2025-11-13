@@ -11,8 +11,7 @@ import type { PaginatedStoriesResponse } from "@/types/story";
 
 type PageProps = { params: { travellerId: string } };
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "";
-
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
 async function fetchTravellerFirstPage(
   travellerId: string
@@ -43,7 +42,7 @@ async function fetchTravellerFirstPage(
 }
 
 export async function generateMetadata(
-  { params }: { params: { travellerId: string } }
+  { params }: PageProps
 ): Promise<Metadata> {
   const { travellerId } = params;
   const { user } = await fetchTravellerFirstPage(travellerId);
@@ -55,7 +54,7 @@ export async function generateMetadata(
   const url = `/travellers/${encodeURIComponent(travellerId)}`;
   const image =
     user?.avatarUrl ||
-    "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg"; // add url for logo
+    "https://res.cloudinary.com/dqujodhbn/image/upload/v1763048903/podorozhnyky_logo_meta_f5harm.jpg";
 
   return {
     title: `${name} | Подорожники`,
