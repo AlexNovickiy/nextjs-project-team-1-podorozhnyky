@@ -16,6 +16,8 @@
   align-items: center;
   justify-content: center;
   text-align: center;
+  object-fit: cover;
+  max-height: 223px;
 }
 
 .contentWrapper {
@@ -160,11 +162,19 @@
   .storyCard {
     flex-basis: calc((100% - 24px) / 2);
   }
+
+  .mainImage {
+    max-height: 226px;
+  }
 }
 
 @media screen and (min-width: 1440px) {
   .storyCard {
     flex-basis: calc((100% - 24px) / 3);
+  }
+
+  .mainImage {
+    max-height: 280px;
   }
 
   .category,

@@ -69,8 +69,8 @@ const StoriesClient = () => {
       return data;
     },
     initialPageParam: 1,
-    getNextPageParam: lastPageParam =>
-      lastPageParam.hasNextPage ? lastPageParam.page + 1 : undefined,
+    getNextPageParam: lastPage =>
+      lastPage.hasNextPage ? lastPage.page + 1 : undefined,
     placeholderData: keepPreviousData,
     refetchOnMount: false,
   });
@@ -108,8 +108,8 @@ const StoriesClient = () => {
           </ul>
         </div>
       )}
-      <TravellersStories stories={stories} />
-      {hasNextPage && (
+      {stories && <TravellersStories stories={stories} />}
+      {hasNextPage && data?.pages.at(-1)?.hasNextPage && (
         <button
           className={css.paginationButton}
           type="button"

@@ -6,7 +6,7 @@ import css from './TravellersStoriesItem.module.css';
 import { useRouter } from 'next/navigation';
 
 interface TravellersStoriesItemProps {
-  story: IStory;
+  story: IStory | undefined;
 }
 
 const TravellersStoriesItem = ({ story }: TravellersStoriesItemProps) => {
@@ -28,7 +28,7 @@ const TravellersStoriesItem = ({ story }: TravellersStoriesItemProps) => {
 
   return (
     <li className={css.storyCard}>
-      {story.img ? (
+      {story?.img ? (
         <Image
           className={css.mainImage}
           src={story.img}
@@ -40,56 +40,60 @@ const TravellersStoriesItem = ({ story }: TravellersStoriesItemProps) => {
         <Image
           className={css.mainImage}
           src="/placeholder-image.png"
-          alt={story.title}
+          alt={story?.title ?? 'Placeholder Image'}
           width={335}
           height={223}
         />
       )}
       <div className={css.contentWrapper}>
-        <div>
-          <p className={css.category}>{story.category.name}</p>
-          <h2 className={css.title}>{story.title}</h2>
-          <p className={css.description}>{story.article}</p>
-        </div>
+        {story && (
+          <div>
+            <p className={css.category}>{story?.category.name}</p>
+            <h2 className={css.title}>{story?.title}</h2>
+            <p className={css.description}>{story?.article}</p>
+          </div>
+        )}
 
-        <div>
-          <div className={css.userWrapper}>
-            <Image
-              className={css.avatarImage}
-              src={story.ownerId.avatarUrl}
-              alt={story.ownerId.name}
-              width={48}
-              height={48}
-            />
-            <div className={css.userInfoWrapper}>
-              <p className={css.userName}>{story.ownerId.name}</p>
-              <div className={css.infoWrapper}>
-                <p className={css.date}>{ISODateToDate(story.date)}</p>
-                <span>•</span>
-                <div className={css.favoriteWrapper}>
-                  <p className={css.favoriteCount}>{story.favoriteCount}</p>
-                  <svg className={css.favoriteIcon} width="16" height="16">
-                    <use href="/sprite.svg#icon-bookmark"></use>
-                  </svg>
+        {story && (
+          <div>
+            <div className={css.userWrapper}>
+              <Image
+                className={css.avatarImage}
+                src={story.ownerId.avatarUrl}
+                alt={story.ownerId.name}
+                width={48}
+                height={48}
+              />
+              <div className={css.userInfoWrapper}>
+                <p className={css.userName}>{story.ownerId.name}</p>
+                <div className={css.infoWrapper}>
+                  <p className={css.date}>{ISODateToDate(story.date)}</p>
+                  <span>•</span>
+                  <div className={css.favoriteWrapper}>
+                    <p className={css.favoriteCount}>{story.favoriteCount}</p>
+                    <svg className={css.favoriteIcon} width="16" height="16">
+                      <use href="/sprite.svg#icon-bookmark"></use>
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className={css.buttonsWrapper}>
-            <button
-              className={css.showStory}
-              onClick={() => handleClick(story._id)}
-            >
-              Переглянути статтю
-            </button>
-            <button className={css.bookmarkStory}>
-              <svg className={css.bookmarkIcon} width="24" height="24">
-                <use href="/sprite.svg#icon-bookmark"></use>
-              </svg>
-            </button>
+            <div className={css.buttonsWrapper}>
+              <button
+                className={css.showStory}
+                onClick={() => handleClick(story._id)}
+              >
+                Переглянути статтю
+              </button>
+              <button className={css.bookmarkStory}>
+                <svg className={css.bookmarkIcon} width="24" height="24">
+                  <use href="/sprite.svg#icon-bookmark"></use>
+                </svg>
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </li>
   );

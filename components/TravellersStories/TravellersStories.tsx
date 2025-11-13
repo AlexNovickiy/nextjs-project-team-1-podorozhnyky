@@ -11,13 +11,11 @@ interface TravellersStoriesProps {
 const TravellersStories = ({ stories }: TravellersStoriesProps) => {
   return (
     <>
-      {stories && (
-        <ul className={css.storiesList}>
-          {stories.map(story => (
-            <TravellersStoriesItem story={story} key={story._id} />
-          ))}
-        </ul>
-      )}
+      <ul className={css.storiesList}>
+        {stories.map(story => (
+          <TravellersStoriesItem story={story} key={story._id} />
+        ))}
+      </ul>
     </>
   );
 };
