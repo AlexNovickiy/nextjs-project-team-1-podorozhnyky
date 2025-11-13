@@ -121,7 +121,7 @@ export const removeFavorite = async (storyId: string): Promise<IUser> => {
 };
 
 // === CATEGORIES (Новий каркас) ===
-export const fetchCategories = async (): Promise<ICategory[]> => {
-  const { data } = await nextServer.get<ICategory[]>('/categories');
-  return data;
+export const fetchServerCategories = async (): Promise<ICategory[]> => {
+  const { data } = await nextServer.get('/categories');
+  return data.data;
 };

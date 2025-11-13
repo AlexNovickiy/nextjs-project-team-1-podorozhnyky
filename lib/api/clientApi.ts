@@ -75,13 +75,13 @@ export const fetchCurrentUser = async (): Promise<IApiResponse> => {
 export const fetchStories = async (
   perPage: number,
   page: number,
-  category: ICategory | null
+  category: string | null | undefined
 ): Promise<PaginatedStoriesResponse> => {
   const { data } = await nextServer.get('/stories', {
     params: {
       perPage,
       page,
-      category: category?.name,
+      category,
     },
   });
 
@@ -150,11 +150,6 @@ export const removeFavorite = async (storyId: string): Promise<IUser> => {
 
 // === CATEGORIES (Новий каркас) ===
 export const fetchCategories = async (): Promise<ICategory[]> => {
-  const { data } = await nextServer.get<ICategory[]>('/categories');
-  return data;
-};
-
-export const fetchCategoryById = async (id: string): Promise<ICategory> => {
-  const { data } = await nextServer.get(`/categories/${id}`);
+  const { data } = await nextServer.get('/categories');
   return data.data;
 };

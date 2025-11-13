@@ -1,4 +1,7 @@
-import { fetchServerStories as fetchStories } from '@/lib/api/serverApi';
+import {
+  fetchServerCategories as fetchCategories,
+  fetchServerStories as fetchStories,
+} from '@/lib/api/serverApi';
 import {
   dehydrate,
   HydrationBoundary,
@@ -24,9 +27,14 @@ const StoriesPage = async () => {
     initialPageParam: 1,
   });
 
+  await queryClient.prefetchQuery({
+    queryKey: ['categories'],
+    queryFn: () => fetchCategories(),
+  });
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <StoriesClient category={category} />
+      <StoriesClient />
     </HydrationBoundary>
   );
 };

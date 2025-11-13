@@ -32,6 +32,35 @@
   }
 }
 
+.categoryTitle {
+  margin-bottom: 8px;
+}
+
+.mobileCategories {
+  margin-bottom: 40px;
+}
+
+.categoriesList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.categoriesItem {
+}
+
+.categoriesButton {
+  border: 1px solid var(--opacity-transparent);
+  border-radius: 8px;
+  padding: 6px 12px;
+  color: var(--text);
+}
+
+.categoriesSelected {
+  background-color: var(--foreground);
+}
+
 .paginationButton {
   border: 1px solid var(--button-solid);
   border-radius: 8px;
