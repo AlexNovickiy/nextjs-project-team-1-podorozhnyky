@@ -76,7 +76,6 @@ export async function generateMetadata(
   };
 }
 
-
 export default async function TravellerPage({ params }: PageProps) {
   const { travellerId } = params;
 
