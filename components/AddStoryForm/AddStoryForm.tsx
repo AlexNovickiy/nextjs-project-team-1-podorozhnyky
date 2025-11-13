@@ -95,6 +95,7 @@ const AddStoryForm = ({}: { storyId?: string }) => {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
+        withCredentials: true,
       });
 
       if (response.status === 200) {
@@ -155,8 +156,8 @@ const AddStoryForm = ({}: { storyId?: string }) => {
                 src={preview}
                 alt="Прев'ю"
                 className="cover-preview"
-                width={400}
-                height={225}
+                width={335}
+                height={223}
                 unoptimized
               />
 
@@ -243,10 +244,18 @@ const AddStoryForm = ({}: { storyId?: string }) => {
                 id={`${fieldId}-shortDescription`}
                 className={css.shortDescription}
                 placeholder="Введіть короткий опис історії"
+                onBeforeInput={(e: React.FormEvent<HTMLInputElement>) => {
+                  const currentLength = e.currentTarget.value.length;
+
+                  // Если длина текста достигла максимума, блокируем дальнейший ввод
+                  if (currentLength >= maxDescriptionLength) {
+                    e.preventDefault(); // Блокируем дальнейший ввод
+                  }
+                }}
               />
               <div className={css.descriptionCounter}>
                 Лишилось символів:{' '}
-                {maxDescriptionLength - (values.shortDescription?.length || 0)}
+                {Math.max(0, maxDescriptionLength - (values.shortDescription?.length || 0))}
               </div>
               <ErrorMessage
                 name="shortDescription"
