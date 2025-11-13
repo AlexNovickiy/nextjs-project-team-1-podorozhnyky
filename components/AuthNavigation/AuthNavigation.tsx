@@ -23,7 +23,7 @@ export default function AuthNavigation() {
       </li>
       <li className={finalStoryButtonEl}>
         <Link
-          href="/stories-create/create"
+          href="/stories/create/"
           className={css.storyLinkElAuth}
           prefetch={false}
         >
