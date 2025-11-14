@@ -3,8 +3,15 @@ export interface IStory {
   img: string;
   title: string;
   article: string;
-  category: string;
-  ownerId: string;
+  category: {
+    _id: string;
+    name: string;
+  };
+  ownerId: {
+    _id: string;
+    name: string;
+    avatarUrl: string;
+  };
   date: string;
   favoriteCount: number;
   createdAt: string;

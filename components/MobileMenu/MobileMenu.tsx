@@ -10,7 +10,7 @@ interface MobileMenuProps {
   isHomePage: boolean;
   isAuthenticated: boolean;
   user: Partial<IUser> | null;
-  handleLogout: () => Promise<void>;
+  handleLogout: () => void;
 }
 
 export default function MobileMenu({
@@ -36,11 +36,6 @@ export default function MobileMenu({
   const finalStoryButtonEl = isHomePage
     ? `${css.storyButtonElMob} ${css.storyButtonElTransparentMob}`
     : css.storyButtonElMob;
-
-  const handleLogoutAndClose = async () => {
-    await handleLogout();
-    onClose();
-  };
 
   return (
     <div className={css.menuOverlay} onClick={onClose}>
@@ -133,7 +128,7 @@ export default function MobileMenu({
 
                   <button
                     className={css.logoutButtonSvg}
-                    onClick={handleLogoutAndClose}
+                    onClick={handleLogout}
                   >
                     <svg width="24" height="24">
                       <use href="/sprite.svg#icon-logout" />
