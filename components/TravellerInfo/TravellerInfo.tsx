@@ -25,7 +25,9 @@ const TravellerInfo: React.FC<TravellerInfoProps> = ({
   travellerId,
   traveller,
 }) => {
-  const [localTraveller, setLocalTraveller] = useState<IUser | null>(traveller ?? null);
+  const [localTraveller, setLocalTraveller] = useState<IUser | null>(
+    traveller ?? null
+  );
   // const [localTraveller, setLocalTraveller] = useState<IUser | null>(
   //   traveller ?? MOCK_TRAVELLER
   // );
@@ -41,7 +43,8 @@ const TravellerInfo: React.FC<TravellerInfoProps> = ({
         setIsLoading(true);
 
         const data = await fetchAuthorById(travellerId);
-        setLocalTraveller(data);
+        console.log('Loaded traveller data:', data.data);
+        setLocalTraveller(data.data.user);
       } catch (error) {
         console.error('Помилка завантаження мандрівника:', error);
         toast.error('Не вдалось завантажити дані про мандрівника.');
@@ -73,6 +76,7 @@ const TravellerInfo: React.FC<TravellerInfoProps> = ({
           width={199}
           height={199}
           className={css.avatar}
+          priority={true}
         />
       </div>
 

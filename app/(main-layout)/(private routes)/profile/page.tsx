@@ -9,7 +9,7 @@ const ProfilePage: React.FC = () => {
 
   return (
     <>
-      <TravellerInfo />
+      <TravellerInfo travellerId="6881563901add19ee16fcffa" />
       <div>
         <nav>
           <button type="button" onClick={() => setTab('saved')}>
