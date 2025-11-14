@@ -18,3 +18,27 @@
  padding-top: 32px;
  padding-bottom: 64px;
 }
+
+/* Styles for Tablet devices */
+@media screen and (min-width: 768px) {
+ 
+ .pageTitle {
+ font-size: 48px;
+ width: 704px;
+ height: 53px;
+}
+}
+
+/* Styles for Desktop devices */
+@media screen and (min-width: 1440px) {
+ 
+ .pageTitle {
+  text-align: left;
+  height: 56px;
+  margin: 0;
+ }
+
+ .historyWrapper {
+ align-items: flex-start;
+}
+}
