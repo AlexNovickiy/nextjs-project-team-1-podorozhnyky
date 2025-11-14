@@ -4,10 +4,13 @@ import { useMemo } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import TravellersStories from '@/components/TravellersStories/TravellersStories';
 import type { PaginatedStoriesResponse, IStory } from '@/types/story';
+import type { IUser } from '@/types/user';
+import { useStoriesPerPage } from '@/hooks/useStoriesPerPage';
 
 type Props = {
   travellerId: string;
   initialStories: PaginatedStoriesResponse;
+  traveller?: IUser | null;
 };
 
 async function fetchStoriesPage(
@@ -36,23 +39,34 @@ async function fetchStoriesPage(
 
 export default function TravellerStoriesWrapper({
   travellerId,
+  traveller,
   initialStories,
 }: Props) {
-  const perPage = initialStories.perPage;
+  const apiPerPage = initialStories.perPage;
+
+  const uiPerPage = useStoriesPerPage();
 
   const query = useInfiniteQuery<PaginatedStoriesResponse>({
-    queryKey: ['traveller-stories', travellerId, perPage],
+    queryKey: ['traveller-stories', travellerId, apiPerPage],
     initialPageParam: 1,
     queryFn: ({ pageParam }) =>
-      fetchStoriesPage(travellerId, Number(pageParam ?? 1), perPage),
+      fetchStoriesPage(travellerId, Number(pageParam ?? 1), apiPerPage),
     getNextPageParam: lastPage =>
       lastPage.hasNextPage ? lastPage.page + 1 : undefined,
   });
 
-  const stories: IStory[] = useMemo(
+  const allStories: IStory[] = useMemo(
     () => (query.data?.pages ?? [initialStories]).flatMap(page => page.data),
     [query.data?.pages, initialStories]
   );
+
+  const loadedPagesCount = query.data?.pages?.length ?? 1;
+ 
+  const visibleStories: IStory[] = useMemo(() => {
+    
+    const maxVisible = uiPerPage * loadedPagesCount;
+    return allStories.slice(0, maxVisible);
+  }, [allStories, uiPerPage, loadedPagesCount]);
 
   const hasNextPage = query.hasNextPage ?? initialStories.hasNextPage;
 
@@ -61,5 +75,13 @@ export default function TravellerStoriesWrapper({
     await query.fetchNextPage();
   };
 
-  return <TravellersStories stories={stories} />;
+  return (
+    <TravellersStories
+      stories={visibleStories}
+      hasNextPage={hasNextPage}
+      isFetchingNextPage={query.isFetchingNextPage}
+      onLoadMore={handleClick}
+      traveller={traveller}
+    />
+  );
 }

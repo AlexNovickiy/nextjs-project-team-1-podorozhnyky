@@ -118,11 +118,16 @@ export default async function TravellerPage({ params }: PageProps) {
             <HydrationBoundary state={state}>
               <TravellerStoriesWrapper
                 travellerId={travellerId}
-                initialStories={storiesPage} // только сторисы + пагинация
+                initialStories={storiesPage}
+                traveller={user ?? undefined} 
               />
             </HydrationBoundary>
           ) : (
-            <MessageNoStories />
+            <MessageNoStories 
+              text="Цей користувач ще не публікував історій"
+              buttonText="Назад до історій"
+              route="/stories"
+            />
           )}
         </div>
       </section>
