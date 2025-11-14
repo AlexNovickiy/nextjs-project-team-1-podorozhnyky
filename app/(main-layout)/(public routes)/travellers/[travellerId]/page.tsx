@@ -1,17 +1,21 @@
-import { notFound } from "next/navigation";
-import type { Metadata } from "next";
-import { HydrationBoundary, dehydrate, QueryClient } from "@tanstack/react-query";
+import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
+import {
+  HydrationBoundary,
+  dehydrate,
+  QueryClient,
+} from '@tanstack/react-query';
 
-import TravellerInfo from "@/components/TravellerInfo/TravellerInfo";
-import MessageNoStories from "@/components/MessageNoStories/MessageNoStories";
-import TravellerStoriesWrapper from "@/components/TravellersStories/TravellerStoriesWrapper";
+import TravellerInfo from '@/components/TravellerInfo/TravellerInfo';
+import MessageNoStories from '@/components/MessageNoStories/MessageNoStories';
+import TravellerStoriesWrapper from '@/components/TravellersStories/TravellerStoriesWrapper';
 
-import type { IUser, GetUserByIdResponse } from "@/types/user";
-import type { PaginatedStoriesResponse } from "@/types/story";
+import type { IUser, GetUserByIdResponse } from '@/types/user';
+import type { PaginatedStoriesResponse } from '@/types/story';
 
-type PageProps = { params: { travellerId: string } };
+type PageProps = { params: Promise<{ travellerId: string }> };
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
 
 async function fetchTravellerFirstPage(
   travellerId: string
@@ -41,20 +45,20 @@ async function fetchTravellerFirstPage(
   return { user, storiesPage };
 }
 
-export async function generateMetadata(
-  { params }: PageProps
-): Promise<Metadata> {
-  const { travellerId } = params;
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { travellerId } = await params;
   const { user } = await fetchTravellerFirstPage(travellerId);
 
-  const name = user?.name ?? "Traveller";
+  const name = user?.name ?? 'Traveller';
   const desc =
     user?.description ??
-    "Публічний профіль мандрівника та його історії подорожей.";
+    'Публічний профіль мандрівника та його історії подорожей.';
   const url = `/travellers/${encodeURIComponent(travellerId)}`;
   const image =
     user?.avatarUrl ||
-    "https://res.cloudinary.com/dqujodhbn/image/upload/v1763048903/podorozhnyky_logo_meta_f5harm.jpg";
+    'https://res.cloudinary.com/dqujodhbn/image/upload/v1763048903/podorozhnyky_logo_meta_f5harm.jpg';
 
   return {
     title: `${name} | Подорожники`,
@@ -63,7 +67,7 @@ export async function generateMetadata(
       title: `${name} | Подорожники`,
       description: desc,
       url,
-      type: "profile",
+      type: 'profile',
       images: [
         {
           url: image,
@@ -77,15 +81,17 @@ export async function generateMetadata(
 }
 
 export default async function TravellerPage({ params }: PageProps) {
-  const { travellerId } = params;
+  const { travellerId } = (await params) ?? {
+    travellerId: '6881563901add19ee16fcffa',
+  };
 
   const { user, storiesPage } = await fetchTravellerFirstPage(travellerId);
   const hasStories = storiesPage.data.length > 0;
 
   const qc = new QueryClient();
 
-  if (hasStories) {    
-    qc.setQueryData(["traveller-stories", travellerId, storiesPage.perPage], {
+  if (hasStories) {
+    qc.setQueryData(['traveller-stories', travellerId, storiesPage.perPage], {
       pages: [storiesPage],
       pageParams: [1],
     });
@@ -96,8 +102,11 @@ export default async function TravellerPage({ params }: PageProps) {
   return (
     <main>
       <section aria-label="traveller info">
-        <div data-wrapper>         
-          <TravellerInfo travellerId={travellerId} traveller={user ?? undefined} />
+        <div data-wrapper>
+          <TravellerInfo
+            travellerId={travellerId}
+            traveller={user ?? undefined}
+          />
         </div>
       </section>
 
