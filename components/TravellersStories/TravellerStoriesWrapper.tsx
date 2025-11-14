@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useMemo } from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import TravellersStories from "@/components/TravellersStories/TravellersStories";
-import type { PaginatedStoriesResponse, IStory } from "@/types/story";
+import { useMemo } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import TravellersStories from '@/components/TravellersStories/TravellersStories';
+import type { PaginatedStoriesResponse, IStory } from '@/types/story';
 
 type Props = {
   travellerId: string;
@@ -17,7 +17,7 @@ async function fetchStoriesPage(
 ): Promise<PaginatedStoriesResponse> {
   const res = await fetch(
     `/api/users/${encodeURIComponent(travellerId)}?page=${page}&perPage=${perPage}`,
-    { credentials: "same-origin" }
+    { credentials: 'same-origin' }
   );
 
   if (!res.ok) throw new Error(`Failed to load stories page=${page}`);
@@ -34,21 +34,23 @@ async function fetchStoriesPage(
   };
 }
 
-export default function TravellerStoriesWrapper({ travellerId, initialStories }: Props) {
+export default function TravellerStoriesWrapper({
+  travellerId,
+  initialStories,
+}: Props) {
   const perPage = initialStories.perPage;
 
   const query = useInfiniteQuery<PaginatedStoriesResponse>({
-    queryKey: ["traveller-stories", travellerId, perPage],
+    queryKey: ['traveller-stories', travellerId, perPage],
     initialPageParam: 1,
     queryFn: ({ pageParam }) =>
       fetchStoriesPage(travellerId, Number(pageParam ?? 1), perPage),
-    getNextPageParam: (lastPage) =>
+    getNextPageParam: lastPage =>
       lastPage.hasNextPage ? lastPage.page + 1 : undefined,
   });
 
   const stories: IStory[] = useMemo(
-    () =>
-      (query.data?.pages ?? [initialStories]).flatMap((page) => page.data),
+    () => (query.data?.pages ?? [initialStories]).flatMap(page => page.data),
     [query.data?.pages, initialStories]
   );
 
@@ -59,12 +61,5 @@ export default function TravellerStoriesWrapper({ travellerId, initialStories }:
     await query.fetchNextPage();
   };
 
-  return (
-    <TravellersStories
-      stories={stories}
-      hasNextPage={hasNextPage}
-      isFetchingNextPage={query.isFetchingNextPage}
-      onLoadMore={handleClick}
-    />
-  );
+  return <TravellersStories stories={stories} />;
 }

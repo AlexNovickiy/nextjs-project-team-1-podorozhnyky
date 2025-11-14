@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
-import type { IStory } from '@/types/story';
+'use client';
 
-export interface TravellersStoriesProps {
-  stories?: IStory[];
-  hasNextPage?: boolean;
-  isFetchingNextPage?: boolean;
-  onLoadMore?: () => Promise<void>;
+import TravellersStoriesItem from '../TravellersStoriesItem/TravellersStoriesItem';
+import css from './TravellersStories.module.css';
+import { IStory } from '@/types/story';
+
+interface TravellersStoriesProps {
+  stories: IStory[];
 }
 
-const TravellersStories = ({
-  stories,
-  hasNextPage,
-  isFetchingNextPage,
-  onLoadMore,
-}: TravellersStoriesProps) => {
+const TravellersStories = ({ stories }: TravellersStoriesProps) => {
   return (
     <>
-      <h2>Travellers Stories</h2>
+      <ul className={css.storiesList}>
+        {stories.map(story => (
+          <TravellersStoriesItem story={story} key={story._id} />
+        ))}
+      </ul>
     </>
   );
 };
