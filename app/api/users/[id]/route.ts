@@ -11,13 +11,18 @@ type Props = {
 export async function GET(request: NextRequest, { params }: Props) {
   try {
     const cookieStore = await cookies();
-    const { id } = await params;
-    const res = await api(`/users/${id}`, {
+    const { id } = await params;  
+    const search = request.nextUrl.search ?? "";
+   
+    const res = await api(`/users/${id}${search}`, {
       headers: {
-        Cookie: cookieStore.toString(),
+        Cookie: cookieStore.toString(),       
       },
+      validateStatus: () => true,
     });
+
     return NextResponse.json(res.data, { status: res.status });
+
   } catch (error) {
     if (isAxiosError(error)) {
       logErrorResponse(error.response?.data);
@@ -26,6 +31,7 @@ export async function GET(request: NextRequest, { params }: Props) {
         { status: error.status }
       );
     }
+
     logErrorResponse({ message: (error as Error).message });
     return NextResponse.json(
       { error: 'Internal Server Error' },

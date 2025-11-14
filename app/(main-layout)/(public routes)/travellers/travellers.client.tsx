@@ -2,7 +2,8 @@
 
 import { fetchAuthors } from '@/lib/api/clientApi';
 import TravellersList from '@/components/TravellersList/TravellersList';
-import css from '@/components/TravellersList/TravellersList.module.css';
+import css from './Travellers.module.css';
+import mainCss from '@/app/Home.module.css';
 import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useState, useMemo } from 'react';
 
@@ -69,7 +70,7 @@ const TravellersClient = () => {
   if (error || !data) return <p>Some error..</p>;
 
   return (
-    <>
+    <div className={mainCss.container}>
       <TravellersList users={visibleUsers} />
       {(hasNextPage || visibleCount < allUsers.length) && (
         <button
@@ -80,7 +81,7 @@ const TravellersClient = () => {
           {isFetchingNextPage ? 'Завантаження…' : 'Показати ще'}
         </button>
       )}
-    </>
+    </div>
   );
 };
 export default TravellersClient;

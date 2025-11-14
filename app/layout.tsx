@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   title: 'Podorozhnyky',
   description:
     'A platform for searching travel places and sharing your own experience',
+  icons: {
+    icon: '/favicon.ico',
+  },
   openGraph: {
     title: 'Podorozhnyky',
     description:

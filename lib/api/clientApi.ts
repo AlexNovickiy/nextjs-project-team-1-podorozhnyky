@@ -64,6 +64,12 @@ export const checkSession = async (): Promise<boolean> => {
   const { data } = await nextServer.post<AuthResponseRefresh>('/auth/session');
   return data.success;
 };
+export const getGoogleAuthUrl = async () => {
+  const res = await nextServer.get('/auth/google-url');
+  return res.data?.data ?? { url: '' };
+};
+export const loginWithGoogle = (body: { code: string }) =>
+  nextServer.post('/auth/login/google', body);
 
 // /me/current
 export const fetchCurrentUser = async (): Promise<IApiResponse> => {
@@ -73,12 +79,19 @@ export const fetchCurrentUser = async (): Promise<IApiResponse> => {
 
 // === STORIES  ===
 export const fetchStories = async (
-  params: URLSearchParams
+  perPage: number,
+  page: number,
+  category: string | null | undefined
 ): Promise<PaginatedStoriesResponse> => {
-  const { data } = await nextServer.get<PaginatedStoriesResponse>('/stories', {
-    params,
+  const { data } = await nextServer.get('/stories', {
+    params: {
+      perPage,
+      page,
+      category,
+    },
   });
-  return data;
+
+  return data.data;
 };
 
 export const fetchStoryById = async (storyId: string): Promise<IStory> => {
@@ -122,8 +135,10 @@ export const fetchAuthors = async (
   return data;
 };
 
-export const fetchAuthorById = async (userId: string): Promise<IUser> => {
-  const { data } = await nextServer.get<IUser>(`/users/${userId}`);
+export const fetchAuthorById = async (
+  userId: string
+): Promise<IApiResponse> => {
+  const { data } = await nextServer.get(`/users/${userId}`);
   return data;
 };
 
@@ -146,6 +161,6 @@ export const removeFavorite = async (storyId: string): Promise<IUser> => {
 
 // === CATEGORIES (Новий каркас) ===
 export const fetchCategories = async (): Promise<ICategory[]> => {
-  const { data } = await nextServer.get<ICategory[]>('/categories');
-  return data;
+  const { data } = await nextServer.get('/categories');
+  return data.data;
 };
