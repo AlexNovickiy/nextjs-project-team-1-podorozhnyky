@@ -32,7 +32,7 @@ const validationSchema = Yup.object<FormValues>({
   category: Yup.string().required("Категорія є обов'язковою"),
   shortDescription: Yup.string().max(
     150,
-    'Максимальна довжина опису - 61 символ'
+    'Максимальна довжина опису - 150 символ'
   ),
   description: Yup.string()
     .required("Текст історії є обов'язковим")
@@ -49,10 +49,10 @@ interface FormValues {
 
 const formValues: FormValues = {
   storyImage: null,
-  title: '',
-  category: '',
-  shortDescription: '',
-  description: '',
+  title: '111',
+  category: '68fb50c80ae91338641121f0',
+  shortDescription: 'short desc',
+  description: 'description',
 };
 
 const mockCategories = [
@@ -149,14 +149,7 @@ const AddStoryForm = ({}: { storyId?: string }) => {
       formData.append('title', values.title);
       formData.append('category', values.category);
       formData.append('shortDescription', values.shortDescription);
-      formData.append('description', values.description);
-
-      // const response = await axios.post('/api/stories', formData, {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      //   withCredentials: true,
-      // });
+      formData.append('article', values.description);
 
       const response = await createStory(formData);
 

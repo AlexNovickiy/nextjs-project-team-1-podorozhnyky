@@ -45,22 +45,15 @@ export async function POST(request: Request) {
  try {
   const cookieStore = await cookies();
 
-  const token = cookieStore.get('authToken');
-  if(!token) {
+  const accessToken = cookieStore.get('accessToken');
+  if(!accessToken) {
    return NextResponse.json(
     { message: 'Unauthorized' }, 
     { status: 401 });
   }
 
-  const { title, description, shortDescription, category, storyImage } = await request.json();
-
-  const res = await api.post('/stories', {
-   title,
-   description,
-   shortDescription,
-   category,
-   storyImage
-  }, {
+  const formData = await request.formData();
+  const res = await api.post('/stories', formData, {
    headers: {
     Cookie: cookieStore.toString(),
    }
