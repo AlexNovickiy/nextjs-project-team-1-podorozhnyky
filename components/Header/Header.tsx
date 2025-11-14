@@ -8,15 +8,22 @@ import { usePathname } from 'next/navigation';
 import MobileMenu from '../MobileMenu/MobileMenu';
 import { useState } from 'react';
 import mainCss from '@/app/Home.module.css';
+import ConfirmModal from '../ConfirmModal/ConfirmModal';
 
 export default function Header() {
   const { user, isAuthenticated, clearIsAuthenticated } = useAuthStore();
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
       const res = await logout();
       if (res?.message) {
         clearIsAuthenticated();
+      }
+      setIsOpenConfirmModal(false);
+      if (isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
       }
     } catch {
       alert('Logout error');
@@ -25,8 +32,6 @@ export default function Header() {
 
   const pathname = usePathname();
   const isHomePage = pathname === '/';
-
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const finalHeaderClass = isHomePage
     ? `${css.header} ${css.headerTransparent}`
@@ -84,7 +89,7 @@ export default function Header() {
                       <li className={css.LogoutListSvg}>
                         <button
                           className={css.logoutButtonSvg}
-                          onClick={handleLogout}
+                          onClick={() => setIsOpenConfirmModal(true)}
                         >
                           <svg width="24" height="24">
                             <use href="/sprite.svg#icon-logout" />
@@ -152,8 +157,18 @@ export default function Header() {
         isHomePage={isHomePage}
         isAuthenticated={isAuthenticated}
         user={user}
-        handleLogout={handleLogout}
+        handleLogout={() => setIsOpenConfirmModal(true)}
       />
+      {isOpenConfirmModal && (
+        <ConfirmModal
+          onConfirm={handleLogout}
+          onCancel={() => setIsOpenConfirmModal(false)}
+          title="Ви точно хочете вийти?"
+          text="Ми будемо сумувати за вами!"
+          confirmButtonText="Вийти"
+          cancelButtonText="Відмінити"
+        />
+      )}
     </>
   );
 }
