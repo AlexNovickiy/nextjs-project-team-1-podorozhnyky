@@ -82,7 +82,7 @@ export async function generateMetadata({
 
 export default async function TravellerPage({ params }: PageProps) {
   const { travellerId } = (await params) ?? {
-    travellerId: '6881563901add19ee16fcffa',
+    travellerId: '6881563901add19ee16fcffb',
   };
 
   const { user, storiesPage } = await fetchTravellerFirstPage(travellerId);
@@ -119,11 +119,11 @@ export default async function TravellerPage({ params }: PageProps) {
               <TravellerStoriesWrapper
                 travellerId={travellerId}
                 initialStories={storiesPage}
-                traveller={user ?? undefined} 
+                traveller={user ?? undefined}
               />
             </HydrationBoundary>
           ) : (
-            <MessageNoStories 
+            <MessageNoStories
               text="Цей користувач ще не публікував історій"
               buttonText="Назад до історій"
               route="/stories"
