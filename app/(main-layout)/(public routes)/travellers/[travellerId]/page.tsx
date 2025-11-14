@@ -8,7 +8,7 @@ import {
 
 import TravellerInfo from '@/components/TravellerInfo/TravellerInfo';
 import MessageNoStories from '@/components/MessageNoStories/MessageNoStories';
-import TravellerStoriesWrapper from '@/components/TravellersStories/TravellerStoriesWrapper';
+import TravellerStoriesWrapper from '@/app/(main-layout)/(public routes)/travellers/[travellerId]/travellerIdStories.client';
 
 import type { IUser, GetUserByIdResponse } from '@/types/user';
 import type { PaginatedStoriesResponse } from '@/types/story';
