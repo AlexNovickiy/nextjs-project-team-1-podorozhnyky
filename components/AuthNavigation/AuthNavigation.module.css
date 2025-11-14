@@ -1,38 +1,81 @@
-.userEmail {
-  color: white;
-  margin-right: 0.5rem;
-  font-size: 0.9rem;
+.navigationItem,
+.storyButtonElAuth,
+.headerLinkNav {
+  display: none;
 }
 
-.logoutButton {
-  background: transparent;
-  border: 1px solid white;
-  color: white;
-  padding: 0.3rem 0.6rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
+.userPhoto {
+  border-radius: 50%;
 }
-
-.logoutButton:hover {
-  background-color: white;
-  color: #333;
-}
-
-.navigationItem {
+.userDefaultPhoto {
+  background-image: url(/images/header/placeholder-image.png);
+  background-position: center;
+  background-size: cover;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
+  justify-content: center;
+}
+.line {
+  display: block;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  width: 29px;
+  height: 0px;
+  padding: 0;
+  margin: 0;
+  transform: rotate(-90deg);
+  margin-left: -8px;
+  margin-right: -8px;
+}
+.storyButtonElAuth {
+  display: block;
+  width: 100%;
+  padding: 0;
+  background-color: var(--color-royal-blue);
+  color: var(--color-white);
+  margin-left: 32px;
+  border-radius: 8px;
+}
+.storyLinkElAuth {
+  padding: 4px 10px;
+  text-align: center;
+}
+.storyButtonElTransparentAuth {
+  background-color: var(--color-white);
+  color: var(--color-neutral-darkest);
 }
 
-.navigationLink {
-  text-decoration: none;
-  color: white;
-  font-size: 1rem;
+@media (min-width: 769px) {
+  .navigationItem,
+  .storyButtonElAuth,
+  .headerLinkNav {
+    display: flex;
+  }
+  .navigationItem {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+    align-items: center;
+    margin-left: 16px;
+  }
+  .headerLinkNav {
+    padding: 4px 0;
+    flex-wrap: nowrap;
+  }
 }
+@media (min-width: 1024px) {
+  .storyButtonElAuth {
+    width: auto;
+    flex-shrink: 1;
+    white-space: nowrap;
+    margin-left: 32x;
+  }
 
-.navigationLink:hover {
-  color: #ddd;
+  .storyLinkElAuth {
+    display: block;
+    padding: 4px 10px;
+    text-align: center;
+  }
 }
