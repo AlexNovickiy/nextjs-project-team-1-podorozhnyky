@@ -15,14 +15,27 @@ export interface IApiResponse {
 }
 
 export type PaginatedUsersResponse = {
-  page: number;
-  perPage: number;
-  totalPages: number;
-  totalItems: number;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-  data: IUser[];
+  data: {
+    users: IUser[];
+    pageInfo: {
+      total: number;
+      page: number;
+      perPage: number;
+      totalPages: number;
+      hasNextPage: boolean;
+      hasPrevPage: boolean;
+    };
+  };
 };
+// export type PaginatedUsersResponse = {
+//   page: number;
+//   perPage: number;
+//   totalPages: number;
+//   totalItems: number;
+//   hasNextPage: boolean;
+//   hasPreviousPage: boolean;
+//   data: IUser[];
+// };
 
 export interface UpdateUser {
   description?: string;

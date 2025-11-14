@@ -109,8 +109,13 @@ export const updateStory = async (
 
 // === USERS (AUTHORS) ===
 export const fetchAuthors = async (
-  params: URLSearchParams
+  page = 1,
+  perPage = 12
 ): Promise<PaginatedUsersResponse> => {
+  const params = new URLSearchParams({
+    page: String(page),
+    perPage: String(perPage),
+  });
   const { data } = await nextServer.get<PaginatedUsersResponse>('/users', {
     params,
   });

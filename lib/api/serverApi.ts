@@ -17,6 +17,7 @@ import { ICategory } from '@/types/category';
 import { AuthResponseRefresh, AuthResponseLogout } from '@/types/auth';
 import { AxiosResponse } from 'axios';
 import { cookies } from 'next/headers';
+import { number } from 'yup';
 
 export const logout = async (): Promise<AuthResponseLogout> => {
   const { data } = await nextServer.post<AuthResponseLogout>('/auth/logout');
@@ -83,8 +84,13 @@ export const updateStory = async (
 
 // === USERS (AUTHORS) ===
 export const fetchAuthors = async (
-  params: URLSearchParams
+  page: number,
+  perPage: number
 ): Promise<PaginatedUsersResponse> => {
+  const params = new URLSearchParams({
+    page: String(page),
+    perPage: String(perPage),
+  });
   const { data } = await nextServer.get<PaginatedUsersResponse>('/users', {
     params,
   });
