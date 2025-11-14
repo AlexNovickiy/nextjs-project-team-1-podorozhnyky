@@ -39,9 +39,14 @@ export const checkServerSession = async (): Promise<
   return response;
 };
 
-// /me/current
+// /me
 export const fetchCurrentUser = async (): Promise<IApiResponse> => {
-  const { data } = await nextServer.get<IApiResponse>('/users/me');
+  const cookieStore = await cookies();
+  const { data } = await nextServer.get<IApiResponse>('/users/me', {
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
   return data;
 };
 
