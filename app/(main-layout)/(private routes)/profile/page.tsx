@@ -20,12 +20,12 @@ const ProfilePage: React.FC = () => {
   };
 
   const handleCreateStory = () => {
-    router.push('/stories/create');
+    router.push('/stories-create/create');
   };
 
   return (
     <>
-      <TravellerInfo />
+      <TravellerInfo travellerId="6881563901add19ee16fcffa" />
       <div>
         <nav>
           <button type="button" onClick={() => setTab('saved')}>
@@ -38,7 +38,7 @@ const ProfilePage: React.FC = () => {
 
         {tab === 'saved' ? (
           savedStories.length > 0 ? (
-            <TravellersStories data={savedStories} />
+            <TravellersStories stories={savedStories} />
           ) : (
             <MessageNoStories
               text="У вас ще немає збережених історій, мерщій збережіть вашу першу історію!"
@@ -47,12 +47,12 @@ const ProfilePage: React.FC = () => {
             />
           )
         ) : ownStories.length > 0 ? (
-          <TravellersStories data={ownStories} />
+          <TravellersStories stories={ownStories} />
         ) : (
           <MessageNoStories
             text="Ви ще нічого не публікували, поділіться своєю першою історією!"
             buttonText="Опублікувати історію"
-            route="/stories/create"
+            route="/stories-create/create"
             onClick={handleCreateStory}
           />
         )}
@@ -62,4 +62,3 @@ const ProfilePage: React.FC = () => {
 };
 
 export default ProfilePage;
-

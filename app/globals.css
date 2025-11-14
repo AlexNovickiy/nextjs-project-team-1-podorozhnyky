@@ -81,6 +81,17 @@
   --accent: var(--color-scheme-1-accent);
   --foreground: var(--color-scheme-1-foreground);
   --input-text: var(--opacity-neutral-darkest-60);
+  --card: var(--color-scheme-1-background);
+  --card-border: var(--opacity-transparent);
+  --button: var(--opacity-neutral-darkest-5);
+  --button-border: var(--color-scheme-2-border);
+  --button-hover: var(--color-royal-blue);
+  --button-hover-text: var(--color-white);
+  --button-active: var(--color-royal-blue-darker);
+  --button-solid: var(--color-royal-blue);
+  --button-solid-hover: var(--color-royal-blue-lighter);
+  --button-solid-active: var(--color-royal-blue-light);
+  --text-invert: var(--color-scheme-3-text);
   --background-footer: var(--color-scheme-3-background);
 }
 
@@ -91,6 +102,17 @@
   --accent: var(--color-scheme-2-accent);
   --foreground: var(--color-scheme-2-foreground);
   --input-text: var(--opacity-neutral-darkest-60);
+  --card: var(--color-scheme-2-foreground);
+  --card-border: var(--opacity-transparent);
+  --button: var(--opacity-neutral-darkest-5);
+  --button-border: var(--color-scheme-2-border);
+  --button-hover: var(--color-royal-blue);
+  --button-hover-text: var(--color-white);
+  --button-active: var(--color-royal-blue-darker);
+  --button-solid: var(--color-royal-blue);
+  --button-solid-hover: var(--color-royal-blue-lighter);
+  --button-solid-active: var(--color-royal-blue-light);
+  --text-invert: var(--color-scheme-3-text);
   --background-footer: var(--color-scheme-2-background-footer);
 }
 
@@ -101,7 +123,17 @@
   --accent: var(--color-scheme-3-accent);
   --foreground: var(--color-scheme-3-foreground);
   --input-text: var(--opacity-white-60);
-
+  --card: var(--color-scheme-3-background);
+  --card-border: var(--color-scheme-3-border);
+  --button: var(--opacity-white-10);
+  --button-border: var(--opacity-transparent);
+  --button-hover: var(--color-royal-blue-lighter);
+  --button-hover-text: var(--color-scheme-1-text);
+  --button-active: var(--color-royal-blue-light);
+  --button-solid: var(--color-white);
+  --button-solid-hover: var(--color-neutral);
+  --button-solid-active: var(--color-neutral-dark);
+  --text-invert: var(--color-scheme-1-text);
   --background-footer: var(--color-scheme-3-background-footer);
 }
 
