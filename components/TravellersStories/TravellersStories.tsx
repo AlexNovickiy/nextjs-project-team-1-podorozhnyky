@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import type { IStory } from '@/types/story';
 
 export interface TravellersStoriesProps {
-  data?: null;
+  data?: IStory[];
 }
 
 const TravellersStories = ({ data }: TravellersStoriesProps) => {
