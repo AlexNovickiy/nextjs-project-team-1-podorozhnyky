@@ -79,12 +79,19 @@ export const fetchCurrentUser = async (): Promise<IApiResponse> => {
 
 // === STORIES  ===
 export const fetchStories = async (
-  params: URLSearchParams
+  perPage: number,
+  page: number,
+  category: string | null | undefined
 ): Promise<PaginatedStoriesResponse> => {
-  const { data } = await nextServer.get<PaginatedStoriesResponse>('/stories', {
-    params,
+  const { data } = await nextServer.get('/stories', {
+    params: {
+      perPage,
+      page,
+      category,
+    },
   });
-  return data;
+
+  return data.data;
 };
 
 export const fetchStoryById = async (storyId: string): Promise<IStory> => {
@@ -126,7 +133,7 @@ export const fetchAuthors = async (
 export const fetchAuthorById = async (
   userId: string
 ): Promise<IApiResponse> => {
-  const { data } = await nextServer.get<IApiResponse>(`/users/${userId}`);
+  const { data } = await nextServer.get(`/users/${userId}`);
   return data;
 };
 
@@ -149,6 +156,6 @@ export const removeFavorite = async (storyId: string): Promise<IUser> => {
 
 // === CATEGORIES (Новий каркас) ===
 export const fetchCategories = async (): Promise<ICategory[]> => {
-  const { data } = await nextServer.get<ICategory[]>('/categories');
-  return data;
+  const { data } = await nextServer.get('/categories');
+  return data.data;
 };

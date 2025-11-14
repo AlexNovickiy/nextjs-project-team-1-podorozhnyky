@@ -38,7 +38,7 @@ const ProfilePage: React.FC = () => {
 
         {tab === 'saved' ? (
           savedStories.length > 0 ? (
-            <TravellersStories data={savedStories} />
+            <TravellersStories stories={savedStories} />
           ) : (
             <MessageNoStories
               text="У вас ще немає збережених історій, мерщій збережіть вашу першу історію!"
@@ -47,7 +47,7 @@ const ProfilePage: React.FC = () => {
             />
           )
         ) : ownStories.length > 0 ? (
-          <TravellersStories data={ownStories} />
+          <TravellersStories stories={ownStories} />
         ) : (
           <MessageNoStories
             text="Ви ще нічого не публікували, поділіться своєю першою історією!"
