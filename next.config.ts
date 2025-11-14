@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
         hostname: 'res.cloudinary.com',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'ftp.goit.study',
+      },
     ],
   },
 };

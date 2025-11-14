@@ -1,11 +1,11 @@
-import { IStory } from '@/types/story';
 import React, { useState } from 'react';
+import type { IStory } from '@/types/story';
 
 export interface TravellersStoriesProps {
-  stories: IStory[];
-  hasNextPage: boolean;
-  isFetchingNextPage: boolean;
-  onLoadMore: () => Promise<void>;
+  stories?: IStory[];
+  hasNextPage?: boolean;
+  isFetchingNextPage?: boolean;
+  onLoadMore?: () => Promise<void>;
 }
 
 const TravellersStories = ({

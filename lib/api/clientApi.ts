@@ -123,8 +123,10 @@ export const fetchAuthors = async (
   return data;
 };
 
-export const fetchAuthorById = async (userId: string): Promise<IUser> => {
-  const { data } = await nextServer.get<IUser>(`/users/${userId}`);
+export const fetchAuthorById = async (
+  userId: string
+): Promise<IApiResponse> => {
+  const { data } = await nextServer.get<IApiResponse>(`/users/${userId}`);
   return data;
 };
 
