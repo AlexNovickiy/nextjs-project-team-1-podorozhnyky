@@ -20,7 +20,7 @@ const ProfilePage: React.FC = () => {
   };
 
   const handleCreateStory = () => {
-    router.push('/stories/create');
+    router.push('/stories-create/create');
   };
 
   return (
@@ -52,7 +52,7 @@ const ProfilePage: React.FC = () => {
           <MessageNoStories
             text="Ви ще нічого не публікували, поділіться своєю першою історією!"
             buttonText="Опублікувати історію"
-            route="/stories/create"
+            route="/stories-create/create"
             onClick={handleCreateStory}
           />
         )}
@@ -62,4 +62,3 @@ const ProfilePage: React.FC = () => {
 };
 
 export default ProfilePage;
-
