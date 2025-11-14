@@ -15,7 +15,7 @@ const Hero: React.FC = () => {
             своїми історіями та отримувати натхнення для нових пригод. Відкрийте
             для себе нові місця та знайдіть однодумців!
           </p>
-          <Link href="/auth/register" aria-label="Зареєструватися">
+          <Link href="#join" aria-label="Зареєструватися">
             <button type="button" className={style.button}>
               Доєднатись
             </button>
