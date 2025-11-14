@@ -122,7 +122,11 @@ export default async function TravellerPage({ params }: PageProps) {
               />
             </HydrationBoundary>
           ) : (
-            <MessageNoStories />
+            <MessageNoStories
+              text="Цей користувач ще не публікував історій"
+              buttonText="Назад до історій"
+              route="/stories"
+            />
           )}
         </div>
       </section>
