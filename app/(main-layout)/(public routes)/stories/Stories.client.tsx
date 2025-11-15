@@ -110,10 +110,10 @@ const StoriesClient = () => {
       )}
       {stories && (
         <TravellersStories
-          onLoadMore={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
           stories={stories}
+          onLoadMore={fetchNextPage}
         />
       )}
       {error && <p>Щось пішло не так</p>}

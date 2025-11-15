@@ -102,38 +102,36 @@ export default async function TravellerPage({ params }: PageProps) {
   const state = dehydrate(qc);
 
   return (
-    <main>
-      <div className={mainCss.container}>
-        <section aria-label="traveller info">
-          <div data-wrapper>
-            <TravellerInfo
-              travellerId={travellerId}
-              traveller={user ?? undefined}
-            />
-          </div>
-        </section>
+    <div className={mainCss.container}>
+      <section aria-label="traveller info">
+        <div data-wrapper>
+          <TravellerInfo
+            travellerId={travellerId}
+            traveller={user ?? undefined}
+          />
+        </div>
+      </section>
 
-        <section aria-label="traveller stories">
-          <div data-wrapper>
-            <h2>Історії Мандрівника</h2>
+      <section aria-label="traveller stories">
+        <div data-wrapper>
+          <h2>Історії Мандрівника</h2>
 
-            {hasStories ? (
-              <HydrationBoundary state={state}>
-                <TravellerStoriesWrapper
-                  travellerId={travellerId}
-                  initialStories={storiesPage}
-                />
-              </HydrationBoundary>
-            ) : (
-              <MessageNoStories
-                text="Цей користувач ще не публікував історій"
-                buttonText="Назад до історій"
-                route="/stories"
+          {hasStories ? (
+            <HydrationBoundary state={state}>
+              <TravellerStoriesWrapper
+                travellerId={travellerId}
+                initialStories={storiesPage}
               />
-            )}
-          </div>
-        </section>
-      </div>
-    </main>
+            </HydrationBoundary>
+          ) : (
+            <MessageNoStories
+              text="Цей користувач ще не публікував історій"
+              buttonText="Назад до історій"
+              route="/stories"
+            />
+          )}
+        </div>
+      </section>
+    </div>
   );
 }
