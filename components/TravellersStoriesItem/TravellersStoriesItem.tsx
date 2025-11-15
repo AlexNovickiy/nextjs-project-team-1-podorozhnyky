@@ -4,6 +4,8 @@ import { IStory } from '@/types/story';
 import Image from 'next/image';
 import css from './TravellersStoriesItem.module.css';
 import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/lib/store/authStore';
+import { addFavorite, removeFavorite } from '@/lib/api/clientApi';
 
 interface TravellersStoriesItemProps {
   story: IStory | undefined;
@@ -11,6 +13,10 @@ interface TravellersStoriesItemProps {
 
 const TravellersStoriesItem = ({ story }: TravellersStoriesItemProps) => {
   const router = useRouter();
+
+  const user = useAuthStore(state => state.user);
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+  const updateFavorites = useAuthStore(state => state.updateFavorites);
 
   const ISODateToDate = (isoDate: string) => {
     const date = new Date(isoDate);
@@ -24,6 +30,29 @@ const TravellersStoriesItem = ({ story }: TravellersStoriesItemProps) => {
 
   const handleClick = (storyId: string) => {
     router.push(`/stories/${storyId}`);
+  };
+
+  const isFavorite = user?.favorites?.some(fav => fav === story?._id);
+  console.log(user?.favorites);
+
+  const handleBookmarkClick = async (storyId: string) => {
+    if (!isAuthenticated) {
+      return router.push('/auth/register');
+    }
+
+    try {
+      let updated;
+
+      if (isFavorite) {
+        updated = await removeFavorite(storyId);
+      } else {
+        updated = await addFavorite(storyId);
+      }
+
+      updateFavorites(updated);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -48,7 +77,9 @@ const TravellersStoriesItem = ({ story }: TravellersStoriesItemProps) => {
       <div className={css.contentWrapper}>
         {story && (
           <div>
-            <p className={css.category}>{story?.category.name}</p>
+            <p className={css.category}>
+              {story?.category?.name ?? 'Немає категорії'}
+            </p>
             <h2 className={css.title}>{story?.title}</h2>
             <p className={css.description}>{story?.article}</p>
           </div>
@@ -86,7 +117,10 @@ const TravellersStoriesItem = ({ story }: TravellersStoriesItemProps) => {
               >
                 Переглянути статтю
               </button>
-              <button className={css.bookmarkStory}>
+              <button
+                className={`${css.bookmarkStory} ${isFavorite ? css.bookmarkStoryActive : ''}`}
+                onClick={() => handleBookmarkClick(story._id)}
+              >
                 <svg className={css.bookmarkIcon} width="24" height="24">
                   <use href="/sprite.svg#icon-bookmark"></use>
                 </svg>

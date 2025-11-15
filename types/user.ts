@@ -1,5 +1,5 @@
-import {IStory} from './story'
-import {IPagination} from './pagination'
+import { IStory } from './story';
+import { IPagination } from './pagination';
 export interface IUser {
   _id: string;
   name: string;
@@ -16,7 +16,7 @@ export interface IApiResponse {
   data: { user: IUser };
 }
 
-export type PaginatedUsersResponse = IPagination & {  
+export type PaginatedUsersResponse = IPagination & {
   data: IUser[];
 };
 
@@ -26,11 +26,10 @@ export interface UpdateUser {
 }
 
 export type GetUserByIdResponse = {
-  status: number;            
+  status: number;
   message: string;
   data: {
-    user: IUser | null;      
+    user: IUser | null;
     articles: IStory[];
-  };  
+  };
 } & IPagination;
-

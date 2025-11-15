@@ -144,14 +144,16 @@ export const updateProfile = async (
   return data;
 };
 
-export const addFavorite = async (storyId: string): Promise<IUser> => {
-  const { data } = await nextServer.post<IUser>(`/me/favorites/${storyId}`);
-  return data;
+export const addFavorite = async (storyId: string): Promise<string[]> => {
+  const { data } = await nextServer.post(`/users/me/favorites`, {
+    storyId,
+  });
+  return data.data.user.favorites;
 };
 
-export const removeFavorite = async (storyId: string): Promise<IUser> => {
-  const { data } = await nextServer.delete<IUser>(`/me/favorites/${storyId}`);
-  return data;
+export const removeFavorite = async (storyId: string): Promise<string[]> => {
+  const { data } = await nextServer.delete(`/users/me/favorites/${storyId}`);
+  return data.data.user.favorites;
 };
 
 // === CATEGORIES (Новий каркас) ===

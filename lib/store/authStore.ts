@@ -7,6 +7,7 @@ type AuthStore = {
   isAuthenticated: boolean;
   setUser: (user: Partial<IUser>) => void;
   clearIsAuthenticated: () => void;
+  updateFavorites: (favorites: string[]) => void;
 };
 
 export const useAuthStore = create<AuthStore>()(
@@ -21,6 +22,10 @@ export const useAuthStore = create<AuthStore>()(
             isAuthenticated: true,
           })),
         clearIsAuthenticated: () => set({ user: null, isAuthenticated: false }),
+        updateFavorites: favorites =>
+          set(state => ({
+            user: state.user ? { ...state.user.favorites, favorites } : null,
+          })),
       };
     },
     {

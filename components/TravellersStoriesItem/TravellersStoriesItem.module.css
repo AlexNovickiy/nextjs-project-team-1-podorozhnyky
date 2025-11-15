@@ -136,6 +136,10 @@
   align-items: center;
 }
 
+.bookmarkStoryActive {
+  background-color: var(--button-active);
+}
+
 .bookmarkIcon {
   transition: fill 0.2s ease;
 }
