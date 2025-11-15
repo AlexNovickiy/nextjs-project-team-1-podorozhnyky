@@ -11,10 +11,10 @@ import Image from 'next/image';
 import  ConfirmModal  from '../ConfirmModal/ConfirmModal';
 import css from './AddStoryForm.module.css';
 import Loader from '../Loader/Loader';
+import type { CreateStory } from '../../types/story';
 import { fetchCategories } from '../../lib/api/clientApi';
 
-
-const validationSchema = Yup.object<FormValues>({
+const validationSchema = Yup.object<CreateStory>({
   storyImage: Yup.mixed<File>()
     .nullable()
     .required("Зображення є обов'язковим")
@@ -43,15 +43,7 @@ const validationSchema = Yup.object<FormValues>({
     .max(2500, 'Текст повинен бути не більше 2500 символів'),
 });
 
-interface FormValues {
-  storyImage: File | null;
-  title: string;
-  category: string;
-  shortDescription: string;
-  description: string;
-}
-
-const formValues: FormValues = {
+const formValues: CreateStory = {
   storyImage: null,
   title: '',
   category: '',
@@ -133,8 +125,8 @@ const AddStoryForm = ({}: { storyId?: string }) => {
   }, [isSelectOpen]);
 
   const handleSubmit = async (
-    values: FormValues,
-    { resetForm }: FormikHelpers<FormValues>
+    values: CreateStory,
+    { resetForm }: FormikHelpers<CreateStory>
   ) => {
     try {
 

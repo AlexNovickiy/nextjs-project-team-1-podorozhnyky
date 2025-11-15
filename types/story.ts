@@ -43,11 +43,11 @@ export interface UpdateStoryResponse {
 }
 
 export interface CreateStory {
-  storyImage: string;
+  storyImage: File | null;
   title: string;
-  article: string;
   category: string;
   shortDescription: string;
+  description: string;
 }
 
 export interface UpdateStory {
