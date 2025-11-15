@@ -122,7 +122,6 @@ export default async function TravellerPage({ params }: PageProps) {
                 <TravellerStoriesWrapper
                   travellerId={travellerId}
                   initialStories={storiesPage}
-                  traveller={user ?? undefined}
                 />
               </HydrationBoundary>
             ) : (
