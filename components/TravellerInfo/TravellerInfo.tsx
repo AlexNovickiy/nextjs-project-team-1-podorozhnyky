@@ -71,7 +71,7 @@ const TravellerInfo: React.FC<TravellerInfoProps> = ({
     <section className={css.travellerInfo} aria-label="traveller info">
       <div className={css.travellerImage}>
         <Image
-          src={localTraveller.avatarUrl}
+          src={localTraveller.avatarUrl || '/placeholder-image.png'}
           alt={`Фото мандрівника ${localTraveller.name}`}
           width={199}
           height={199}
