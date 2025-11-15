@@ -53,6 +53,7 @@ export async function POST(request: Request) {
   }
 
   const formData = await request.formData();
+  console.log(formData);
   const res = await api.post('/stories', formData, {
    headers: {
     Cookie: cookieStore.toString(),

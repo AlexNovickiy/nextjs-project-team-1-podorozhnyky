@@ -68,7 +68,9 @@ const mockCategories = [
 ];
 
 const AddStoryForm = ({}: { storyId?: string }) => {
+
   const fieldId = useId();
+
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [modalError, setModalError] = useState(false);
   const [preview, setPreview] = useState<string>('');
@@ -79,11 +81,11 @@ const AddStoryForm = ({}: { storyId?: string }) => {
   const [mounted, setMounted] = useState(false);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
+
   const maxDescriptionLength = 150;
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Set placeholder image based on screen size
   useEffect(() => {
     const updatePlaceholder = () => {
       const width = window.innerWidth;
@@ -104,7 +106,6 @@ const AddStoryForm = ({}: { storyId?: string }) => {
     };
   }, []);
 
-  // Update preview when placeholder changes and no custom image is selected
   useEffect(() => {
     if (!previewUrlRef.current) {
       setPreview(placeholderImage);
@@ -119,7 +120,7 @@ const AddStoryForm = ({}: { storyId?: string }) => {
     setIsSelectOpen(false);
   };
 
-  // Close select when clicking outside
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -148,13 +149,14 @@ const AddStoryForm = ({}: { storyId?: string }) => {
       formData.append('storyImage', values.storyImage as File);
       formData.append('title', values.title);
       formData.append('category', values.category);
-      formData.append('shortDescription', values.shortDescription);
+      formData.append('shortDescription', values.shortDescription ?? '');
       formData.append('article', values.description);
 
       const response = await createStory(formData);
 
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 201) {
         const storyId = response.data?._id;
+        console.log('Created story ID:', storyId);
         if (storyId) {
           router.push(`/stories/${storyId}`);
         }
