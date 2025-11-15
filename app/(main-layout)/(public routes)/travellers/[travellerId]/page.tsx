@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-query';
 
 import mainCss from '@/app/Home.module.css';
+import css from '@/app/(main-layout)/(public routes)/travellers/[travellerId]/TravellerId.module.css'
 
 import TravellerInfo from '@/components/TravellerInfo/TravellerInfo';
 import MessageNoStories from '@/components/MessageNoStories/MessageNoStories';
@@ -103,7 +104,7 @@ export default async function TravellerPage({ params }: PageProps) {
 
   return (
     <div className={mainCss.container}>
-      <section aria-label="traveller info">
+      <section className={css.section} aria-label="traveller info">
         <div data-wrapper>
           <TravellerInfo
             travellerId={travellerId}
@@ -114,7 +115,7 @@ export default async function TravellerPage({ params }: PageProps) {
 
       <section aria-label="traveller stories">
         <div data-wrapper>
-          <h2>Історії Мандрівника</h2>
+          <h2 className={css.title}>Історії Мандрівника</h2>
 
           {hasStories ? (
             <HydrationBoundary state={state}>
