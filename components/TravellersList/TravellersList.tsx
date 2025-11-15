@@ -14,7 +14,7 @@ const TravellersList = ({ users }: TravellersListProps) => {
         {users.map(user => (
           <li key={user._id} className={css.card}>
             <Image
-              src={user.avatarUrl}
+              src={user.avatarUrl || '/images/user/5907.jpg'}
               alt={user.name}
               className={css.image}
               width={112}
@@ -23,7 +23,7 @@ const TravellersList = ({ users }: TravellersListProps) => {
             <div className={css.container}>
               <h2 className={css.name}>{user.name}</h2>
               <p className={css.text}>{user.description}</p>
-              <Link href="/travellers/:travallerId" className={css.button}>
+              <Link href={`/travellers/${user._id}`} className={css.button}>
                 Переглянути профіль
               </Link>
             </div>

@@ -21,6 +21,11 @@ const nextConfig: NextConfig = {
         hostname: 'ftp.goit.study',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'ui-avatars.com',
+        port: '',
+      },
     ],
   },
 };
