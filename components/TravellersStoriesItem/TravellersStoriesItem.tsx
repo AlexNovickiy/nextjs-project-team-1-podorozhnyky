@@ -32,7 +32,7 @@ const TravellersStoriesItem = ({ story }: TravellersStoriesItemProps) => {
         <Image
           className={css.mainImage}
           src={story.img}
-          alt={story.title}
+          alt={story.title ?? 'Story Image'}
           width={335}
           height={223}
         />
@@ -59,7 +59,7 @@ const TravellersStoriesItem = ({ story }: TravellersStoriesItemProps) => {
             <div className={css.userWrapper}>
               <Image
                 className={css.avatarImage}
-                src={story.ownerId.avatarUrl}
+                src={story.ownerId.avatarUrl || '/placeholder-image.png'}
                 alt={story.ownerId.name}
                 width={48}
                 height={48}
