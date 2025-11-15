@@ -1,6 +1,6 @@
 'use client';
 
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TravellersList from '../TravellersList/TravellersList';
 import { fetchAuthors } from '@/lib/api/clientApi';
 import { useInfiniteQuery } from '@tanstack/react-query';

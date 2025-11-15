@@ -9,8 +9,8 @@
   width: 100%;
   z-index: 1000;
 
-  --header-bg: var(--color-royal-blue-lightest, #f7f9ff);
-  --header-text: var(--color-black, #000);
+  --header-bg: var(--background);
+  --header-text: var(--text);
 
   background-color: var(--header-bg);
   color: var(--header-text);
@@ -56,14 +56,15 @@
   align-items: center;
   padding: 4px;
   border-radius: 8px;
-  fill: var(--header-text);
+  fill: var(--text);
 }
 
 .mobileMenuButtonNoTransparent {
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border);
+  background: : var(--opacity-neutral-darkest-5);
 }
 .mobileMenuButtonTransparent {
+  fill:var(--color-white, #fff);
   border: 1px solid rgba(255, 255, 255, 0);
   background: rgba(255, 255, 255, 0.1);
 }
