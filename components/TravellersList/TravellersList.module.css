@@ -34,7 +34,8 @@
 
 .container {
   margin: 24 auto 0;
-  max-width: 287px;
+  /* max-width: 287px; */
+  width: 100%;
   margin-top: auto;
 }
 
@@ -114,7 +115,8 @@
   }
 
   .container {
-    max-width: 292px;
+    /* max-width: 292px; */
+    width: 100%;
   }
 }
 
@@ -129,7 +131,8 @@
   }
 
   .container {
-    max-width: 262px;
+    /* max-width: 262px; */
+    width: 100%;
   }
 
   .name {
