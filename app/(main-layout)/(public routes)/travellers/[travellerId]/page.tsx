@@ -6,9 +6,11 @@ import {
   QueryClient,
 } from '@tanstack/react-query';
 
+import mainCss from '@/app/Home.module.css';
+
 import TravellerInfo from '@/components/TravellerInfo/TravellerInfo';
 import MessageNoStories from '@/components/MessageNoStories/MessageNoStories';
-import TravellerStoriesWrapper from '@/components/TravellersStories/TravellerStoriesWrapper';
+import TravellerStoriesWrapper from '@/app/(main-layout)/(public routes)/travellers/[travellerId]/TravellerId.client';
 
 import type { IUser, GetUserByIdResponse } from '@/types/user';
 import type { PaginatedStoriesResponse } from '@/types/story';
@@ -82,7 +84,7 @@ export async function generateMetadata({
 
 export default async function TravellerPage({ params }: PageProps) {
   const { travellerId } = (await params) ?? {
-    travellerId: '6881563901add19ee16fcffa',
+    travellerId: '6881563901add19ee16fcffb',
   };
 
   const { user, storiesPage } = await fetchTravellerFirstPage(travellerId);
@@ -100,7 +102,7 @@ export default async function TravellerPage({ params }: PageProps) {
   const state = dehydrate(qc);
 
   return (
-    <main>
+    <div className={mainCss.container}>
       <section aria-label="traveller info">
         <div data-wrapper>
           <TravellerInfo
@@ -118,7 +120,7 @@ export default async function TravellerPage({ params }: PageProps) {
             <HydrationBoundary state={state}>
               <TravellerStoriesWrapper
                 travellerId={travellerId}
-                initialStories={storiesPage} // только сторисы + пагинация
+                initialStories={storiesPage}
               />
             </HydrationBoundary>
           ) : (
@@ -130,6 +132,6 @@ export default async function TravellerPage({ params }: PageProps) {
           )}
         </div>
       </section>
-    </main>
+    </div>
   );
 }
