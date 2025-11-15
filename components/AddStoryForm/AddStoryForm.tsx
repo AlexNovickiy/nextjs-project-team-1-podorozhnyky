@@ -7,8 +7,12 @@ import * as Yup from 'yup';
 import { createStory } from '../../lib/api/clientApi';
 import { useRouter } from 'next/navigation';
 import { ICategory } from '../../types/category';
-import css from './AddStoryForm.module.css';
 import Image from 'next/image';
+import  ConfirmModal  from '../ConfirmModal/ConfirmModal';
+import css from './AddStoryForm.module.css';
+import Loader from '../Loader/Loader';
+import { fetchCategories } from '../../lib/api/clientApi';
+
 
 const validationSchema = Yup.object<FormValues>({
   storyImage: Yup.mixed<File>()
@@ -49,30 +53,18 @@ interface FormValues {
 
 const formValues: FormValues = {
   storyImage: null,
-  title: '111',
-  category: '68fb50c80ae91338641121f0',
-  shortDescription: 'short desc',
-  description: 'description',
+  title: '',
+  category: '',
+  shortDescription: '',
+  description: '',
 };
-
-const mockCategories = [
-  { _id: '68fb50c80ae91338641121f0', name: 'Азія' },
-  { _id: '68fb50c80ae91338641121f1', name: 'Гори' },
-  { _id: '68fb50c80ae91338641121f2', name: 'Європа' },
-  { _id: '68fb50c80ae91338641121f3', name: 'Америка' },
-  { _id: '68fb50c80ae91338641121f4', name: 'Африка' },
-  { _id: '68fb50c80ae91338641121f6', name: 'Пустелі' },
-  { _id: '68fb50c80ae91338641121f7', name: 'Балкани' },
-  { _id: '68fb50c80ae91338641121f8', name: 'Кавказ' },
-  { _id: '68fb50c80ae91338641121f9', name: 'Океанія' },
-];
 
 const AddStoryForm = ({}: { storyId?: string }) => {
 
   const fieldId = useId();
 
   const [categories, setCategories] = useState<ICategory[]>([]);
-  const [modalError, setModalError] = useState(false);
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
   const [preview, setPreview] = useState<string>('');
   const [placeholderImage, setPlaceholderImage] = useState<string>(
     '/images/createStory/placeholder-image-mb.png'
@@ -80,6 +72,7 @@ const AddStoryForm = ({}: { storyId?: string }) => {
   const previewUrlRef = useRef<string | null>(null);
   const [mounted, setMounted] = useState(false);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
 
   const maxDescriptionLength = 150;
@@ -120,7 +113,6 @@ const AddStoryForm = ({}: { storyId?: string }) => {
     setIsSelectOpen(false);
   };
 
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -145,6 +137,9 @@ const AddStoryForm = ({}: { storyId?: string }) => {
     { resetForm }: FormikHelpers<FormValues>
   ) => {
     try {
+
+      setIsLoading(true);
+
       const formData = new FormData();
       formData.append('storyImage', values.storyImage as File);
       formData.append('title', values.title);
@@ -156,12 +151,12 @@ const AddStoryForm = ({}: { storyId?: string }) => {
 
       if (response.status === 200 || response.status === 201) {
         const storyId = response.data?._id;
-        console.log('Created story ID:', storyId);
+
         if (storyId) {
           router.push(`/stories/${storyId}`);
         }
         resetForm();
-        // Reset preview
+
         if (previewUrlRef.current) {
           URL.revokeObjectURL(previewUrlRef.current);
           previewUrlRef.current = null;
@@ -169,16 +164,25 @@ const AddStoryForm = ({}: { storyId?: string }) => {
         setPreview(placeholderImage);
       }
     } catch (error) {
-      setModalError(true);
       console.error('Помилка при збереженні історії:', error);
+      setIsOpenConfirmModal(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    setCategories(mockCategories);
+    const loadCategories = async() => {
+      try {
+        const response = await fetchCategories();
+        setCategories(response);
+      } catch (error) {
+        console.error('Помилка при завантаженні категорій:', error);
+    }
+    }
+    loadCategories();
   }, []);
 
-  // Render only on client to avoid hydration mismatches from browser extensions
   useEffect(() => {
     setMounted(true);
     return () => {
@@ -191,14 +195,27 @@ const AddStoryForm = ({}: { storyId?: string }) => {
 
   if (!mounted) return null;
 
+
   return (
     <>
-      {modalError && (
-        <div className={css.modalError}>
-          <p>Помилка при збереженні історії. Спробуйте ще раз.</p>
-          <button onClick={() => setModalError(false)}>Закрити</button>
-        </div>
+      {isOpenConfirmModal && (
+        <ConfirmModal
+          onConfirm={() => {
+            setIsOpenConfirmModal(false);
+            router.push('/auth/register');
+          }}
+          onCancel={() => {
+            setIsOpenConfirmModal(false);
+            router.push('/auth/login');
+          }}
+          title="Помилка під час збереження"
+          text="Щоб зберегти статтю вам треба увійти, якщо ще немає облікового запису — зареєструйтесь"
+          confirmButtonText="Зареєструватись"
+          cancelButtonText="Увійти"
+        />
       )}
+      
+      {isLoading && <Loader />}
 
       <Formik
         initialValues={formValues}
@@ -246,7 +263,6 @@ const AddStoryForm = ({}: { storyId?: string }) => {
                     const fileList = e.currentTarget.files?.[0] ?? null;
                     if (fileList) {
                       setFieldValue('storyImage', fileList, true);
-                      // Update preview and revoke previous blob URL to prevent memory leaks
                       if (previewUrlRef.current) {
                         URL.revokeObjectURL(previewUrlRef.current);
                       }
