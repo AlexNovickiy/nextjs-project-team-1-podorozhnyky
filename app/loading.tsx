@@ -1,11 +1,4 @@
-import css from './loading.module.css';
+import Loader from '../components/Loader/Loader';
 export default function Loading() {
-  return (
-    <div className={css.overlay}>
-      <div className={css.loaderBox}>
-        <span className={css.spinner}></span>
-        <p className={css.text}>Завантаження...</p>
-      </div>
-    </div>
-  );
+  return <Loader />;
 }
