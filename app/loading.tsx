@@ -1,3 +1,11 @@
+import css from './loading.module.css';
 export default function Loading() {
-  return <p>Loading, please wait...</p>;
+  return (
+    <div className={css.overlay}>
+      <div className={css.loaderBox}>
+        <span className={css.spinner}></span>
+        <p className={css.text}>Завантаження...</p>
+      </div>
+    </div>
+  );
 }
