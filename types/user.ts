@@ -16,8 +16,18 @@ export interface IApiResponse {
   data: { user: IUser };
 }
 
-export type PaginatedUsersResponse = IPagination & {
-  data: IUser[];
+export type PaginatedUsersResponse = {
+  data: {
+    users: IUser[];
+    pageInfo: {
+      total: number;
+      page: number;
+      perPage: number;
+      totalPages: number;
+      hasNextPage: boolean;
+      hasPrevPage: boolean;
+    };
+  };
 };
 
 export interface UpdateUser {
