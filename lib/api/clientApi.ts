@@ -100,7 +100,7 @@ export const fetchStoryById = async (storyId: string): Promise<IStory> => {
 };
 
 export const createStory = async (
-  storyData: CreateStory
+  storyData: FormData
 ): Promise<CreateStoryResponse> => {
   const { data } = await nextServer.post<CreateStoryResponse>(
     '/stories',

@@ -129,7 +129,7 @@ export default function Header() {
               {isAuthenticated && (
                 <button className={`${css.storyTablet} ${finalStoryTabButton}`}>
                   <Link
-                    href="/stories-create/create"
+                    href="/stories/create/"
                     className={css.storyTabletLink}
                     prefetch={false}
                   >

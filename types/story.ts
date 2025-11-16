@@ -7,6 +7,7 @@ export interface IStory {
     _id: string;
     name: string;
   };
+  shortDescription: string;
   ownerId: {
     _id: string;
     name: string;
@@ -42,10 +43,11 @@ export interface UpdateStoryResponse {
 }
 
 export interface CreateStory {
-  storyImage: string;
+  storyImage: File | null;
   title: string;
-  article: string;
   category: string;
+  shortDescription: string;
+  description: string;
 }
 
 export interface UpdateStory {
@@ -53,4 +55,5 @@ export interface UpdateStory {
   title?: string;
   article?: string;
   category?: string;
+  shortDescription: string;
 }
