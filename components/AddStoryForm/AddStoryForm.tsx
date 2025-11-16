@@ -38,7 +38,7 @@ const validationSchema = Yup.object<CreateStory>({
     150,
     'Максимальна довжина опису - 150 символ'
   ),
-  description: Yup.string()
+  article: Yup.string()
     .required("Текст історії є обов'язковим")
     .max(2500, 'Текст повинен бути не більше 2500 символів'),
 });
@@ -48,7 +48,7 @@ const formValues: CreateStory = {
   title: '',
   category: '',
   shortDescription: '',
-  description: '',
+  article: '',
 };
 
 const AddStoryForm = ({}: { storyId?: string }) => {
@@ -137,7 +137,7 @@ const AddStoryForm = ({}: { storyId?: string }) => {
       formData.append('title', values.title);
       formData.append('category', values.category);
       formData.append('shortDescription', values.shortDescription ?? '');
-      formData.append('article', values.description);
+      formData.append('article', values.article);
 
       const response = await createStory(formData);
 
@@ -429,8 +429,8 @@ const AddStoryForm = ({}: { storyId?: string }) => {
                 </label>
                 <Field
                   as="textarea"
-                  name="description"
-                  id={`${fieldId}-description`}
+                  name="article"
+                  id={`${fieldId}-article`}
                   className={css.description}
                   placeholder="Ваша історія тут"
                 />
