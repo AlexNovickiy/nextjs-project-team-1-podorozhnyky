@@ -108,16 +108,13 @@ const StoriesClient = () => {
           </ul>
         </div>
       )}
-      {stories && <TravellersStories stories={stories} />}
-      {hasNextPage && data?.pages.at(-1)?.hasNextPage && (
-        <button
-          className={css.paginationButton}
-          type="button"
-          onClick={() => fetchNextPage()}
-          disabled={isFetchingNextPage}
-        >
-          {isFetchingNextPage ? 'Завантаження…' : 'Показати ще'}
-        </button>
+      {stories && (
+        <TravellersStories
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          stories={stories}
+          onLoadMore={fetchNextPage}
+        />
       )}
       {error && <p>Щось пішло не так</p>}
       {isLoading && <p>Завантаження</p>}
