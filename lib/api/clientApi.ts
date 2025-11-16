@@ -164,3 +164,40 @@ export const fetchCategories = async (): Promise<ICategory[]> => {
   const { data } = await nextServer.get('/categories');
   return data.data;
 };
+
+// === PROFILE / ME STORIES ===
+// Повертає пагінований список історій, створених поточним користувачем
+export const fetchMyStories = async (
+  perPage: number,
+  page: number
+): Promise<PaginatedStoriesResponse> => {
+  const { data } = await nextServer.get('/users/me', {
+    params: { perPage, page },
+  });
+
+  return data;
+};
+
+// Повертає пагінований список збережених історій поточного користувача
+export const fetchSavedStories = async (
+  perPage: number,
+  page: number
+): Promise<PaginatedStoriesResponse> => {
+  try {
+    const { data } = await nextServer.get('/me/favorites/stories', {
+      params: { perPage, page },
+    });
+    return data;
+  } catch {
+    // Якщо маршрут не реалізовано на бекенді, повернути порожний результат
+    return {
+      page,
+      perPage,
+      totalPages: 0,
+      totalItems: 0,
+      hasNextPage: false,
+      hasPreviousPage: false,
+      data: [],
+    };
+  }
+};
