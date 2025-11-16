@@ -4,44 +4,19 @@ import { Form, Formik, Field, ErrorMessage, FormikHelpers } from 'formik';
 import { useId, useEffect, useState, useRef } from 'react';
 import React from 'react';
 import * as Yup from 'yup';
-import { createStory } from '../../lib/api/clientApi';
+import {
+  createStory,
+  updateStory,
+  fetchCategories,
+  fetchStoryById,
+} from '../../lib/api/clientApi';
 import { useRouter } from 'next/navigation';
 import { ICategory } from '../../types/category';
 import Image from 'next/image';
-import  ConfirmModal  from '../ConfirmModal/ConfirmModal';
+import ConfirmModal from '../ConfirmModal/ConfirmModal';
 import css from './AddStoryForm.module.css';
 import Loader from '../Loader/Loader';
 import type { CreateStory } from '../../types/story';
-import { fetchCategories } from '../../lib/api/clientApi';
-
-const validationSchema = Yup.object<CreateStory>({
-  storyImage: Yup.mixed<File>()
-    .nullable()
-    .required("Зображення є обов'язковим")
-    .test('fileSize', 'Розмір файлу не повинен перевищувати 2 МБ.', value => {
-      return value ? value.size <= 2 * 1024 * 1024 : true;
-    })
-    .test(
-      'fileType',
-      'Невірний формат файлу',
-      value =>
-        !value ||
-        ['image/webp', 'image/jpeg', 'image/png', 'image/gif'].includes(
-          value.type
-        )
-    ),
-  title: Yup.string()
-    .required("Заголовок є обов'язковим")
-    .max(80, 'Максимальна довжина заголовка - 80 символів'),
-  category: Yup.string().required("Категорія є обов'язковою"),
-  shortDescription: Yup.string().max(
-    150,
-    'Максимальна довжина опису - 150 символ'
-  ),
-  article: Yup.string()
-    .required("Текст історії є обов'язковим")
-    .max(2500, 'Текст повинен бути не більше 2500 символів'),
-});
 
 const formValues: CreateStory = {
   storyImage: null,
@@ -51,9 +26,61 @@ const formValues: CreateStory = {
   article: '',
 };
 
-const AddStoryForm = ({}: { storyId?: string }) => {
-
+const AddStoryForm = ({ storyId }: { storyId?: string }) => {
   const fieldId = useId();
+
+  // Create validation schema based on whether we're editing or creating
+  const validationSchema = Yup.object<CreateStory>({
+    storyImage: storyId
+      ? Yup.mixed<File>()
+          .nullable()
+          .test(
+            'fileSize',
+            'Розмір файлу не повинен перевищувати 2 МБ.',
+            value => {
+              return value ? value.size <= 2 * 1024 * 1024 : true;
+            }
+          )
+          .test(
+            'fileType',
+            'Невірний формат файлу',
+            value =>
+              !value ||
+              ['image/webp', 'image/jpeg', 'image/png', 'image/gif'].includes(
+                value.type
+              )
+          )
+      : Yup.mixed<File>()
+          .nullable()
+          .required("Зображення є обов'язковим")
+          .test(
+            'fileSize',
+            'Розмір файлу не повинен перевищувати 2 МБ.',
+            value => {
+              return value ? value.size <= 2 * 1024 * 1024 : true;
+            }
+          )
+          .test(
+            'fileType',
+            'Невірний формат файлу',
+            value =>
+              !value ||
+              ['image/webp', 'image/jpeg', 'image/png', 'image/gif'].includes(
+                value.type
+              )
+          ),
+    title: Yup.string()
+      .required("Заголовок є обов'язковим")
+      .max(80, 'Максимальна довжина заголовка - 80 символів'),
+    category: Yup.string().required("Категорія є обов'язковою"),
+    shortDescription: Yup.string().max(
+      150,
+      'Максимальна довжина опису - 150 символ'
+    ),
+    article: Yup.string()
+      .required("Текст історії є обов'язковим")
+      .max(2500, 'Текст повинен бути не більше 2500 символів'),
+  });
 
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
@@ -65,6 +92,7 @@ const AddStoryForm = ({}: { storyId?: string }) => {
   const [mounted, setMounted] = useState(false);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [initialValues, setInitialValues] = useState<CreateStory>(formValues);
   const selectRef = useRef<HTMLDivElement>(null);
 
   const maxDescriptionLength = 150;
@@ -129,23 +157,26 @@ const AddStoryForm = ({}: { storyId?: string }) => {
     { resetForm }: FormikHelpers<CreateStory>
   ) => {
     try {
-
       setIsLoading(true);
 
       const formData = new FormData();
-      formData.append('storyImage', values.storyImage as File);
+      if (values.storyImage) {
+        formData.append('storyImage', values.storyImage as File);
+      }
       formData.append('title', values.title);
       formData.append('category', values.category);
       formData.append('shortDescription', values.shortDescription ?? '');
       formData.append('article', values.article);
 
-      const response = await createStory(formData);
+      const response = storyId
+        ? await updateStory(storyId, formData)
+        : await createStory(formData);
 
       if (response.status === 200 || response.status === 201) {
-        const storyId = response.data?._id;
+        const responseStoryId = response.data?._id;
 
-        if (storyId) {
-          router.push(`/stories/${storyId}`);
+        if (responseStoryId) {
+          router.push(`/stories/${responseStoryId}`);
         }
         resetForm();
 
@@ -164,16 +195,40 @@ const AddStoryForm = ({}: { storyId?: string }) => {
   };
 
   useEffect(() => {
-    const loadCategories = async() => {
+    const loadCategories = async () => {
       try {
         const response = await fetchCategories();
         setCategories(response);
       } catch (error) {
         console.error('Помилка при завантаженні категорій:', error);
-    }
-    }
+      }
+    };
     loadCategories();
   }, []);
+
+  useEffect(() => {
+    const loadStory = async () => {
+      if (storyId) {
+        try {
+          console.log('Завантаження історії з ID:', storyId);
+          const story = await fetchStoryById(storyId);
+          setInitialValues({
+            storyImage: null,
+            title: story.title || '',
+            category: story.category?._id || '',
+            shortDescription: story.shortDescription || '',
+            article: story.article || '',
+          });
+          if (story.img) {
+            setPreview(story.img);
+          }
+        } catch (error) {
+          console.error('Помилка при завантаженні історії:', error);
+        }
+      }
+    };
+    loadStory();
+  }, [storyId]);
 
   useEffect(() => {
     setMounted(true);
@@ -186,7 +241,6 @@ const AddStoryForm = ({}: { storyId?: string }) => {
   }, []);
 
   if (!mounted) return null;
-
 
   return (
     <>
@@ -206,17 +260,17 @@ const AddStoryForm = ({}: { storyId?: string }) => {
           cancelButtonText="Увійти"
         />
       )}
-      
+
       {isLoading && <Loader />}
 
       <Formik
-        initialValues={formValues}
+        initialValues={initialValues}
         onSubmit={handleSubmit}
         enableReinitialize
         validationSchema={validationSchema}
         validateOnMount={true}
       >
-        {({ isValid, values, setFieldValue, isSubmitting }) => (
+        {({ isValid, values, setFieldValue, isSubmitting, dirty }) => (
           <Form noValidate className={css.form}>
             <div className={css.leftColumn}>
               <div className={css.imageSection}>
@@ -446,7 +500,9 @@ const AddStoryForm = ({}: { storyId?: string }) => {
               <button
                 type="submit"
                 className={css.submitBtn}
-                disabled={!isValid || isSubmitting}
+                disabled={
+                  !isValid || isSubmitting || (storyId ? !dirty : false)
+                }
               >
                 {isSubmitting ? 'Зберігається...' : 'Зберегти'}
               </button>

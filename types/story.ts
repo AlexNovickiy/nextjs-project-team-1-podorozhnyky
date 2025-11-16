@@ -51,7 +51,7 @@ export interface CreateStory {
 }
 
 export interface UpdateStory {
-  storyImage?: string;
+  storyImage?: File | null;
   title?: string;
   article?: string;
   category?: string;
