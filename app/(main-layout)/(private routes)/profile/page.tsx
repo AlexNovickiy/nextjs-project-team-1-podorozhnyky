@@ -9,7 +9,6 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import type { UseQueryResult } from '@tanstack/react-query';
-
 import TravellersStories from '../../../../components/TravellersStories/TravellersStories';
 import MessageNoStories from '../../../../components/MessageNoStories/MessageNoStories';
 import Pagination from '../../../../components/Pagination/Pagination';
@@ -17,6 +16,7 @@ import Loader from '../../../../components/Loader/Loader';
 import ErrorMessage from '../../../../components/ErrorMessage/ErrorMessage';
 import { useStoriesPerPage } from '../../../../hooks/useStoriesPerPage';
 import styles from './Profile.module.css';
+import mainCss from '@/app/Home.module.css';
 import {
   fetchMyStories,
   fetchSavedStories,
@@ -46,7 +46,6 @@ const ProfilePage: React.FC = () => {
 
   const { data, isLoading, isError } = query;
 
-  // Fetch current user to show avatar and profile info
   const { data: meData } = useQuery({
     queryKey: ['currentUser'],
     queryFn: () => fetchCurrentUser(),
@@ -55,7 +54,6 @@ const ProfilePage: React.FC = () => {
 
   const currentUser = meData?.data?.user as IUser | undefined;
 
-  // Адаптуємо відповідь від бекенду до очікуваного формату (мемоізовано для стабільності deps)
   const normalizedData = React.useMemo(() => {
     if (!data) return null;
 
@@ -87,12 +85,10 @@ const ProfilePage: React.FC = () => {
   const handleExploreStories = () => router.push('/stories');
   const handleCreateStory = () => router.push('/stories-create/create');
 
-  // Якщо змінився `perPage` (наприклад при ресайзі), скинути номер сторінки
   useEffect(() => {
     setPage(1);
   }, [perPage]);
 
-  // Префетч наступної сторінки для швидшої навігації
   useEffect(() => {
     if (!normalizedData) return;
 
@@ -110,94 +106,91 @@ const ProfilePage: React.FC = () => {
 
   return (
     <>
-      <div className={styles.container}>
-        <div className={styles.tabsSection}>
-        <div className={styles.travellerInfoWrapper}>
-          {currentUser && (
-            <section
-              className={styles.travellerInfo}
-              aria-label="traveller info"
-            >
-              <div className={styles.travellerImage}>
-                <Image
-                  src={currentUser.avatarUrl || '/placeholder-image.png'}
-                  alt={`Фото мандрівника ${currentUser.name}`}
-                  width={199}
-                  height={199}
-                  className={styles.avatar}
-                  priority={true}
-                />
-              </div>
+      <div className={mainCss.container}>
+        <div className={styles.profilePage} aria-label="profile page">
+          <div className={styles.travellerInfoWrapper}>
+            {currentUser && (
+              <div className={styles.travellerInfo} aria-label="traveller info">
+                <div className={styles.travellerImage}>
+                  <Image
+                    src={currentUser.avatarUrl || '/placeholder-image.png'}
+                    alt={`Фото мандрівника ${currentUser.name}`}
+                    width={199}
+                    height={199}
+                    className={styles.avatar}
+                    priority={true}
+                  />
+                </div>
 
-              <div className={styles.travellerDetails}>
-                <h3 className={styles.travellerName}>{currentUser.name}</h3>
-                <p className={styles.travellerDescription}>
-                  {currentUser.description}
-                </p>
-              </div>
-            </section>
-          )}
-        </div>
-        <nav className={styles.tabs} aria-label="profile-tabs">
-          <button
-            type="button"
-            className={
-              tab === 'saved' ? `${styles.tab} ${styles.active}` : styles.tab
-            }
-            onClick={() => {
-              setTab('saved');
-              setPage(1);
-            }}
-            aria-pressed={tab === 'saved'}
-          >
-            Збережені історії
-          </button>
-          <button
-            type="button"
-            className={
-              tab === 'own' ? `${styles.tab} ${styles.active}` : styles.tab
-            }
-            onClick={() => {
-              setTab('own');
-              setPage(1);
-            }}
-            aria-pressed={tab === 'own'}
-          >
-            Мої історії
-          </button>
-        </nav>
-
-        {isLoading ? (
-          <Loader />
-        ) : isError ? (
-          <ErrorMessage />
-        ) : items.length > 0 ? (
-          <>
-            <TravellersStories stories={items} />
-            {normalizedData && (normalizedData?.totalPages || 0) > 1 && (
-              <div className={styles.paginationWrapper}>
-                <Pagination
-                  totalPages={normalizedData?.totalPages || 0}
-                  currentPage={page}
-                  onPageChange={setPage}
-                />
+                <div className={styles.travellerDetails}>
+                  <h3 className={styles.travellerName}>{currentUser.name}</h3>
+                  <p className={styles.travellerDescription}>
+                    {currentUser.description}
+                  </p>
+                </div>
               </div>
             )}
-          </>
-        ) : tab === 'saved' ? (
-          <MessageNoStories
-            text="У вас ще немає збережених історій, мерщій збережіть вашу першу історію!"
-            buttonText="До історій"
-            onClick={handleExploreStories}
-          />
-        ) : (
-          <MessageNoStories
-            text="Ви ще нічого не публікували, поділіться своєю першою історією!"
-            buttonText="Опублікувати історію"
-            route="/stories-create/create"
-            onClick={handleCreateStory}
-          />
-        )}
+          </div>
+          <nav className={styles.tabs} aria-label="profile-tabs">
+            <button
+              type="button"
+              className={
+                tab === 'saved' ? `${styles.tab} ${styles.active}` : styles.tab
+              }
+              onClick={() => {
+                setTab('saved');
+                setPage(1);
+              }}
+              aria-pressed={tab === 'saved'}
+            >
+              Збережені історії
+            </button>
+            <button
+              type="button"
+              className={
+                tab === 'own' ? `${styles.tab} ${styles.active}` : styles.tab
+              }
+              onClick={() => {
+                setTab('own');
+                setPage(1);
+              }}
+              aria-pressed={tab === 'own'}
+            >
+              Мої історії
+            </button>
+          </nav>
+
+          {isLoading ? (
+            <Loader />
+          ) : isError ? (
+            <ErrorMessage />
+          ) : items.length > 0 ? (
+            <>
+              <TravellersStories stories={items} />
+              {normalizedData && (normalizedData?.totalPages || 0) > 1 && (
+                <div className={styles.paginationWrapper}>
+                  <Pagination
+                    totalPages={normalizedData?.totalPages || 0}
+                    currentPage={page}
+                    onPageChange={setPage}
+                  />
+                </div>
+              )}
+            </>
+          ) : tab === 'saved' ? (
+            <MessageNoStories
+              text="У вас ще немає збережених історій, мерщій збережіть вашу першу історію!"
+              buttonText="До історій"
+              onClick={handleExploreStories}
+            />
+          ) : (
+            <MessageNoStories
+              text="Ви ще нічого не публікували, поділіться своєю першою історією!"
+              buttonText="Опублікувати історію"
+              route="/stories-create/create"
+              onClick={handleCreateStory}
+            />
+          )}
         </div>
       </div>
     </>

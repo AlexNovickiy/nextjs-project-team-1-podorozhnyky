@@ -1,22 +1,13 @@
-.profileContainer {
-  padding: 32px 16px 48px;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding-left: 16px;
-  padding-right: 16px;
-  box-sizing: border-box;
+.profilePage {
+  margin: 32px 0;
 }
 
 .travellerInfo {
   display: flex;
-  align-items: center;
   flex-direction: column;
-  padding: 32px 32px 0px;
-  height: auto;
+  align-items: center;
   gap: 24px;
+  margin-bottom: 32px;
 }
 
 .avatar {
@@ -34,7 +25,7 @@
   font-family: var(--second-family);
   font-weight: 700;
   font-size: 20px;
-  line-height: 130%;
+  line-height: 1.3;
   letter-spacing: -0.01em;
   color: var(--text);
   text-align: center;
@@ -45,38 +36,9 @@
   font-family: var(--font-family);
   font-weight: 400;
   font-size: 16px;
-  line-height: 150%;
+  line-height: 1.5;
   color: var(--text);
   text-align: center;
-}
-
-@media screen and (min-width: 768px) {
-  .travellerInfo {
-    flex-direction: row;
-  }
-
-  .travellerDetails {
-    width: 481px;
-  }
-
-  .travellerName,
-  .travellerDescription {
-    text-align: left;
-  }
-}
-
-@media screen and (min-width: 1440px) {
-  .travellerDetails {
-    width: 367px;
-  }
-
-  .travellerName {
-    font-size: 32px;
-  }
-
-  .travellerDescription {
-    font-size: 18px;
-  }
 }
 
 .tabs {
@@ -85,10 +47,10 @@
   border: 1px solid var(--opacity-transparent);
   border-radius: 10px;
   padding: 4px;
-  width: 422px;
+  width: 335px;
   height: 48px;
   background: var(--color-scheme-2-foreground);
-  margin: 20px 0 28px;
+  margin-bottom: 40px;
   box-shadow: none;
 }
 
@@ -98,7 +60,8 @@
   border: none;
   padding: 4px 12px;
   border-radius: 8px;
-  font-weight: 600;
+  font-weight: 500;
+  font-size: 16px;
   cursor: pointer;
   width: 207px;
   height: 40px;
@@ -120,45 +83,51 @@
   border-radius: 8px;
   box-shadow: none;
 }
+.boxTab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
-.paginationWrapper {
+* .paginationWrapper {
   display: flex;
   justify-content: center;
   margin-top: 24px;
 }
 
-.tabsSection {
-  margin-top: 32px;
-  margin-bottom: 40px;
-}
-
-.tabsSection .travellerInfoWrapper {
-  margin-bottom: 32px;
-}
-
-.editButton {
-  height: 48px;
-  margin-bottom: 40px;
-}
-
 @media screen and (min-width: 768px) {
-  .profileContainer {
-    padding: 40px 0 64px;
+  .travellerInfo {
+    flex-direction: row;
+    gap: 24px;
   }
-
+  .travellerImage {
+    flex-shrink: 0;
+  }
+  .travellerName {
+    text-align: left;
+  }
+  .travellerDescription {
+    text-align: left;
+  }
   .tabs {
-    margin: 28px 0;
+    width: 422px;
   }
-  .boxTab {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+}
+
+@media screen and (min-width: 1440px) {
+  .travellerName {
+    font-size: 32px;
   }
-  .travellerInfoWrapper {
+  .travellerDescription {
+    font-size: 18px;
+  }
+  .tab {
+    font-size: 18px;
+  }
+  .travellerInfo {
     margin-bottom: 48px;
   }
-
-  .editButton {
-    margin-top: 32px;
+  .profilePage {
+    margin: 48px 0;
   }
 }
