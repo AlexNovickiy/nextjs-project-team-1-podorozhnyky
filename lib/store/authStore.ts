@@ -1,5 +1,5 @@
 import { IStory } from '@/types/story';
-import { IFavoritesResponse, IUser } from '@/types/user';
+import { IUser } from '@/types/user';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
