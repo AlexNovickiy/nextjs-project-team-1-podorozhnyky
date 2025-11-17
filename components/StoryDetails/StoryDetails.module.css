@@ -1,3 +1,4 @@
+/* === BASIC INFO BLOCK === */
 .info {
   display: flex;
   flex-direction: column;
@@ -16,49 +17,53 @@
   gap: 8px;
 }
 
+.label,
 .value {
   font-family: var(--font-family);
-  font-weight: 400;
   line-height: 1.5;
-  font-size: 16px;
   color: var(--text);
+  font-size: 16px;
 }
 
 .label {
-  font-family: var(--font-family);
   font-weight: 700;
-  line-height: 1.5;
-  color: var(--text);
-  font-size: 16px;
 }
 
-.category {
+.value {
+  font-weight: 400;
+}
+
+/* === CATEGORY BADGE === */
+.infoCategory {
   display: inline-block;
+  width: fit-content;
+  padding: 4px 10px;
   border: 1px solid var(--opacity-transparent);
   border-radius: 6px;
-  background: var(--color-neutral-lighter);
+  background: var(--background-footer);
+
   font-family: var(--font-family);
   font-size: 12px;
   font-weight: 400;
-  padding: 4px 10px;
   line-height: 1.5;
-  color: var(--color-neutral-darkest);
-  height: 26px;
-  text-align: center;
+  color: var(--text);
 }
 
+/* === IMAGE === */
 .image {
   margin-top: 16px;
+  margin-bottom: 32px;
   width: 100%;
+  height: 223px;
   object-fit: cover;
   border-radius: 24px;
-  height: 223px;
-  margin-bottom: 32px;
 }
 
+/* === ARTICLE TEXT === */
 .article {
   margin-top: 32px;
   margin-bottom: 24px;
+
   font-family: var(--font-family);
   font-size: 16px;
   font-weight: 400;
@@ -66,44 +71,7 @@
   color: var(--text);
 }
 
-.saveSection {
-  padding: 32px 20px;
-  background: var(--color-neutral-lightest);
-  border-radius: 24px;
-  width: 100%;
-}
-
-.saveTitle {
-  font-family: var(--second-family);
-  font-size: 18px;
-  text-align: left;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--color-neutral-darkest);
-  margin-bottom: 16px;
-}
-
-.saveText {
-  font-family: var(--font-family);
-  font-size: 16px;
-  line-height: 1.5;
-  text-align: left;
-  font-weight: 400;
-  color: var(--color-neutral-darkest);
-  margin-bottom: 16px;
-}
-
-.saveButton {
-  border-radius: 8px;
-  padding: 6px 12px;
-  background: var(--color-royal-blue);
-  width: 100%;
-  height: 48px;
-  font-family: var(--font-family);
-  font-size: 16px;
-  color: var(--color-white);
-}
-
+/* === TABLET 768px === */
 @media screen and (min-width: 768px) {
   .info {
     flex-direction: row;
@@ -131,16 +99,14 @@
   }
 }
 
+/* === DESKTOP 1440px === */
 @media screen and (min-width: 1440px) {
+  .label,
   .value {
     font-size: 18px;
   }
 
-  .label {
-    font-size: 18px;
-  }
-
-  .category {
+  .infoCategory {
     font-size: 16px;
     font-weight: 600;
     width: auto;
@@ -158,15 +124,15 @@
   }
 
   .article {
-    margin-top: 48px;
     max-width: 865px;
+    margin-top: 48px;
     margin-right: 24px;
   }
 
   .saveSection {
-    margin-top: 48px;
     max-width: 418px;
     flex-shrink: 0;
+    margin-top: 48px;
   }
 
   .saveTitle {

@@ -1,5 +1,5 @@
-import { IStory } from './story';
 import { IPagination } from './pagination';
+import { IStory } from './story';
 export interface IUser {
   _id: string;
   name: string;
@@ -12,6 +12,13 @@ export interface IUser {
   updatedAt: string;
 }
 
+export interface IFavoritesResponse {
+  status: number;
+  message: string;
+  data: {
+    favorites: IStory[];
+  };
+}
 export interface IApiResponse {
   data: { user: IUser };
 }

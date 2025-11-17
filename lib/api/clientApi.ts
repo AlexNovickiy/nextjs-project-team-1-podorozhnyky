@@ -20,6 +20,7 @@ import {
 } from '@/types/story';
 import {
   IApiResponse,
+  IFavoritesResponse,
   IUser,
   PaginatedUsersResponse,
   UpdateUser,
@@ -149,13 +150,21 @@ export const updateProfile = async (
   return data;
 };
 
-export const addFavorite = async (storyId: string): Promise<IUser> => {
-  const { data } = await nextServer.post<IUser>(`/me/favorites/${storyId}`);
+export const addFavorite = async (
+  storyId: string
+): Promise<IFavoritesResponse> => {
+  const { data } = await nextServer.post<IFavoritesResponse>(
+    `/users/me/favorites`,
+    { storyId }
+  );
   return data;
 };
-
-export const removeFavorite = async (storyId: string): Promise<IUser> => {
-  const { data } = await nextServer.delete<IUser>(`/me/favorites/${storyId}`);
+export const removeFavorite = async (
+  storyId: string
+): Promise<IFavoritesResponse> => {
+  const { data } = await nextServer.delete<IFavoritesResponse>(
+    `/users/me/favorites/${storyId}`
+  );
   return data;
 };
 
