@@ -6,6 +6,8 @@ import css from './Travellers.module.css';
 import mainCss from '@/app/Home.module.css';
 import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useState, useMemo } from 'react';
+import Loader from '@/components/Loader/Loader';
+import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 
 const TravellersClient = () => {
   const [width, setWidth] = useState<number | null>(null);
@@ -66,8 +68,8 @@ const TravellersClient = () => {
     }
   };
 
-  if (isLoading) return <p>Loading, please wait...</p>;
-  if (error || !data) return <p>Some error..</p>;
+  if (isLoading) return <Loader />;
+  if (error || !data) return <ErrorMessage />;
 
   return (
     <div className={mainCss.container}>
