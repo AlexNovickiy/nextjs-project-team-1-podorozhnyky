@@ -29,6 +29,7 @@ const StoryDetails = ({ storyId }: { storyId: string }) => {
     const loadStory = async () => {
       try {
         const data = await fetchStoryById(storyId);
+
         setStory(data);
       } catch {
         toast.error('Помилка завантаження історії');

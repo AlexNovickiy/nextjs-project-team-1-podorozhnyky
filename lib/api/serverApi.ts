@@ -69,8 +69,9 @@ export const fetchServerStories = async (
 };
 
 export const fetchStoryById = async (storyId: string): Promise<IStory> => {
-  const { data } = await nextServer.get<IStory>(`/stories/${storyId}`);
-  return data;
+  const { data } = await nextServer.get(`/stories/${storyId}`);
+
+  return data.data;
 };
 
 export const createStory = async (
