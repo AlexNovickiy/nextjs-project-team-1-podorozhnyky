@@ -7,7 +7,7 @@ import {
 } from '@tanstack/react-query';
 
 import mainCss from '@/app/Home.module.css';
-import css from '@/app/(main-layout)/(public routes)/travellers/[travellerId]/TravellerId.module.css'
+import css from '@/app/(main-layout)/(public routes)/travellers/[travellerId]/TravellerId.module.css';
 
 import TravellerInfo from '@/components/TravellerInfo/TravellerInfo';
 import MessageNoStories from '@/components/MessageNoStories/MessageNoStories';
@@ -18,7 +18,7 @@ import type { PaginatedStoriesResponse } from '@/types/story';
 
 type PageProps = { params: Promise<{ travellerId: string }> };
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+const APP_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
 
 async function fetchTravellerFirstPage(
   travellerId: string
