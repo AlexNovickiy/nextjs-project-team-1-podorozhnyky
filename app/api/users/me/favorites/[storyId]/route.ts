@@ -12,7 +12,7 @@ export async function DELETE(
 ) {
   try {
     const cookieStore = await cookies();
-    const { storyId } = params;
+    const { storyId } = await params;
 
     const res = await api.delete(`/users/me/favorites/${storyId}`, {
       headers: {

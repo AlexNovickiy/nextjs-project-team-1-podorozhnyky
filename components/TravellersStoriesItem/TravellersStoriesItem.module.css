@@ -147,6 +147,10 @@
   background-color: var(--button-active);
 }
 
+.bookmarkStoryActive .bookmarkIcon {
+  fill: var(--button-hover-text);
+}
+
 .bookmarkIcon {
   transition: fill 0.2s ease;
 }

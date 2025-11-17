@@ -6,7 +6,7 @@ export interface IUser {
   email: string;
   avatarUrl: string;
   description: string;
-  favorites: string[];
+  favorites: IStory[];
   articlesAmount?: number;
   createdAt: string;
   updatedAt: string;

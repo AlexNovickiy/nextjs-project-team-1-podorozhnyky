@@ -1,3 +1,4 @@
+import { IStory } from '@/types/story';
 import { IUser } from '@/types/user';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
@@ -7,7 +8,7 @@ type AuthStore = {
   isAuthenticated: boolean;
   setUser: (user: Partial<IUser>) => void;
   clearIsAuthenticated: () => void;
-  updateFavorites: (favorites: string[]) => void;
+  updateFavorites: (favorites: IStory[]) => void;
 };
 
 export const useAuthStore = create<AuthStore>()(
@@ -24,7 +25,7 @@ export const useAuthStore = create<AuthStore>()(
         clearIsAuthenticated: () => set({ user: null, isAuthenticated: false }),
         updateFavorites: favorites =>
           set(state => ({
-            user: state.user ? { ...state.user.favorites, favorites } : null,
+            user: state.user ? { ...state.user, favorites } : null,
           })),
       };
     },

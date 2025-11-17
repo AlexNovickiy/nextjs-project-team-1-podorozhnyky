@@ -32,8 +32,7 @@ const TravellersStoriesItem = ({ story }: TravellersStoriesItemProps) => {
     router.push(`/stories/${storyId}`);
   };
 
-  const isFavorite = user?.favorites?.some(fav => fav === story?._id);
-  console.log(user?.favorites);
+  const isFavorite = user?.favorites?.some(fav => fav._id === story?._id);
 
   const handleBookmarkClick = async (storyId: string) => {
     if (!isAuthenticated) {
