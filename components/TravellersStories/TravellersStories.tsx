@@ -10,6 +10,7 @@ interface TravellersStoriesProps {
   onLoadMore?: () => void;
   hasNextPage?: boolean;
   isFetchingNextPage?: boolean;
+  isHiddenOnMobileButton?: boolean;
 }
 
 const TravellersStories = ({
@@ -17,6 +18,7 @@ const TravellersStories = ({
   onLoadMore,
   hasNextPage,
   isFetchingNextPage,
+  isHiddenOnMobileButton,
 }: TravellersStoriesProps) => {
   return (
     <>
@@ -25,16 +27,19 @@ const TravellersStories = ({
           <TravellersStoriesItem story={story} key={story._id} />
         ))}
       </ul>
-      {onLoadMore && hasNextPage && !isFetchingNextPage && (
-        <button
-          className={css.paginationButton}
-          type="button"
-          onClick={onLoadMore}
-          disabled={isFetchingNextPage}
-        >
-          {isFetchingNextPage ? 'Завантаження…' : 'Показати ще'}
-        </button>
-      )}
+      {onLoadMore &&
+        hasNextPage &&
+        !isFetchingNextPage &&
+        !isHiddenOnMobileButton && (
+          <button
+            className={css.paginationButton}
+            type="button"
+            onClick={onLoadMore}
+            disabled={isFetchingNextPage}
+          >
+            {isFetchingNextPage ? 'Завантаження…' : 'Показати ще'}
+          </button>
+        )}
     </>
   );
 };
