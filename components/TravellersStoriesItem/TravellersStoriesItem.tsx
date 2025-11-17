@@ -6,6 +6,8 @@ import css from './TravellersStoriesItem.module.css';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/store/authStore';
 import { addFavorite, removeFavorite } from '@/lib/api/clientApi';
+import { IFavoritesResponse } from '@/types/user';
+import { useState } from 'react';
 
 interface TravellersStoriesItemProps {
   story: IStory | undefined;
@@ -13,6 +15,8 @@ interface TravellersStoriesItemProps {
 
 const TravellersStoriesItem = ({ story }: TravellersStoriesItemProps) => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [bookmarkCounter, setBookmarkCounter] = useState(story?.favoriteCount);
 
   const user = useAuthStore(state => state.user);
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
@@ -40,17 +44,27 @@ const TravellersStoriesItem = ({ story }: TravellersStoriesItemProps) => {
     }
 
     try {
-      let updated;
+      let updated: IFavoritesResponse;
+
+      setIsLoading(true);
 
       if (isFavorite) {
         updated = await removeFavorite(storyId);
+        if (bookmarkCounter) {
+          setBookmarkCounter(bookmarkCounter - 1);
+        }
       } else {
         updated = await addFavorite(storyId);
+        if (bookmarkCounter) {
+          setBookmarkCounter(bookmarkCounter + 1);
+        }
       }
 
-      updateFavorites(updated);
+      updateFavorites(updated.favorites);
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -100,7 +114,7 @@ const TravellersStoriesItem = ({ story }: TravellersStoriesItemProps) => {
                   <p className={css.date}>{ISODateToDate(story.date)}</p>
                   <span>•</span>
                   <div className={css.favoriteWrapper}>
-                    <p className={css.favoriteCount}>{story.favoriteCount}</p>
+                    <p className={css.favoriteCount}>{bookmarkCounter}</p>
                     <svg className={css.favoriteIcon} width="16" height="16">
                       <use href="/sprite.svg#icon-bookmark"></use>
                     </svg>
@@ -120,9 +134,13 @@ const TravellersStoriesItem = ({ story }: TravellersStoriesItemProps) => {
                 className={`${css.bookmarkStory} ${isFavorite ? css.bookmarkStoryActive : ''}`}
                 onClick={() => handleBookmarkClick(story._id)}
               >
-                <svg className={css.bookmarkIcon} width="24" height="24">
-                  <use href="/sprite.svg#icon-bookmark"></use>
-                </svg>
+                {isLoading ? (
+                  <span className={css.loader}></span>
+                ) : (
+                  <svg className={css.bookmarkIcon} width="24" height="24">
+                    <use href="/sprite.svg#icon-bookmark"></use>
+                  </svg>
+                )}
               </button>
             </div>
           </div>
