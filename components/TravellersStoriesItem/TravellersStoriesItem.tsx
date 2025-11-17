@@ -11,9 +11,13 @@ import { useState } from 'react';
 
 interface TravellersStoriesItemProps {
   story: IStory | undefined;
+  isOwn: boolean;
 }
 
-const TravellersStoriesItem = ({ story }: TravellersStoriesItemProps) => {
+const TravellersStoriesItem = ({
+  story,
+  isOwn,
+}: TravellersStoriesItemProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [bookmarkCounter, setBookmarkCounter] = useState(story?.favoriteCount);
@@ -34,6 +38,10 @@ const TravellersStoriesItem = ({ story }: TravellersStoriesItemProps) => {
 
   const handleClick = (storyId: string) => {
     router.push(`/stories/${storyId}`);
+  };
+
+  const handlePencilClick = (storyId: string) => {
+    router.push(`/stories/${storyId}/edit`);
   };
 
   const isFavorite = user?.favorites?.some(fav => fav._id === story?._id);
@@ -130,18 +138,29 @@ const TravellersStoriesItem = ({ story }: TravellersStoriesItemProps) => {
               >
                 Переглянути статтю
               </button>
-              <button
-                className={`${css.bookmarkStory} ${isFavorite ? css.bookmarkStoryActive : ''}`}
-                onClick={() => handleBookmarkClick(story._id)}
-              >
-                {isLoading ? (
-                  <span className={css.loader}></span>
-                ) : (
+              {isOwn ? (
+                <button
+                  className={css.bookmarkStory}
+                  onClick={() => handlePencilClick(story._id)}
+                >
                   <svg className={css.bookmarkIcon} width="24" height="24">
-                    <use href="/sprite.svg#icon-bookmark"></use>
+                    <use href="/sprite.svg#icon-edit"></use>
                   </svg>
-                )}
-              </button>
+                </button>
+              ) : (
+                <button
+                  className={`${css.bookmarkStory} ${isFavorite ? css.bookmarkStoryActive : ''}`}
+                  onClick={() => handleBookmarkClick(story._id)}
+                >
+                  {isLoading ? (
+                    <span className={css.loader}></span>
+                  ) : (
+                    <svg className={css.bookmarkIcon} width="24" height="24">
+                      <use href="/sprite.svg#icon-bookmark"></use>
+                    </svg>
+                  )}
+                </button>
+              )}
             </div>
           </div>
         )}

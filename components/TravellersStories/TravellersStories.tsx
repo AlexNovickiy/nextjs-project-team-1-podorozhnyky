@@ -10,6 +10,7 @@ interface TravellersStoriesProps {
   onLoadMore?: () => void;
   hasNextPage?: boolean;
   isFetchingNextPage?: boolean;
+  isOwn: boolean;
 }
 
 const TravellersStories = ({
@@ -17,12 +18,13 @@ const TravellersStories = ({
   onLoadMore,
   hasNextPage,
   isFetchingNextPage,
+  isOwn,
 }: TravellersStoriesProps) => {
   return (
     <>
       <ul className={css.storiesList}>
         {stories.map(story => (
-          <TravellersStoriesItem story={story} key={story._id} />
+          <TravellersStoriesItem story={story} isOwn={isOwn} key={story._id} />
         ))}
       </ul>
       {onLoadMore && hasNextPage && !isFetchingNextPage && (
