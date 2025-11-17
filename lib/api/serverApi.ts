@@ -1,23 +1,23 @@
-import { nextServer } from './api';
+import { AuthResponseLogout, AuthResponseRefresh } from '@/types/auth';
+import { ICategory } from '@/types/category';
+import {
+  CreateStory,
+  CreateStoryResponse,
+  IStory,
+  PaginatedStoriesResponse,
+  UpdateStory,
+  UpdateStoryResponse,
+} from '@/types/story';
 import {
   IApiResponse,
+  IFavoritesResponse,
   IUser,
   PaginatedUsersResponse,
   UpdateUser,
 } from '@/types/user';
-import {
-  PaginatedStoriesResponse,
-  IStory,
-  CreateStoryResponse,
-  UpdateStoryResponse,
-  UpdateStory,
-  CreateStory,
-} from '@/types/story';
-import { ICategory } from '@/types/category';
-import { AuthResponseRefresh, AuthResponseLogout } from '@/types/auth';
 import { AxiosResponse } from 'axios';
 import { cookies } from 'next/headers';
-import { number } from 'yup';
+import { nextServer } from './api';
 
 export const logout = async (): Promise<AuthResponseLogout> => {
   const { data } = await nextServer.post<AuthResponseLogout>('/auth/logout');
@@ -69,8 +69,9 @@ export const fetchServerStories = async (
 };
 
 export const fetchStoryById = async (storyId: string): Promise<IStory> => {
-  const { data } = await nextServer.get<IStory>(`/stories/${storyId}`);
-  return data;
+  const { data } = await nextServer.get(`/stories/${storyId}`);
+
+  return data.data;
 };
 
 export const createStory = async (
@@ -87,7 +88,7 @@ export const updateStory = async (
   storyId: string,
   storyData: UpdateStory
 ): Promise<UpdateStoryResponse> => {
-  const { data } = await nextServer.put<UpdateStoryResponse>(
+  const { data } = await nextServer.patch<UpdateStoryResponse>(
     `/stories/${storyId}`,
     storyData
   );
@@ -121,13 +122,22 @@ export const updateProfile = async (
   return data;
 };
 
-export const addFavorite = async (storyId: string): Promise<IUser> => {
-  const { data } = await nextServer.post<IUser>(`/me/favorites/${storyId}`);
+export const addFavorite = async (
+  storyId: string
+): Promise<IFavoritesResponse> => {
+  const { data } = await nextServer.post<IFavoritesResponse>(
+    `/users/me/favorites`,
+    { storyId }
+  );
   return data;
 };
 
-export const removeFavorite = async (storyId: string): Promise<IUser> => {
-  const { data } = await nextServer.delete<IUser>(`/me/favorites/${storyId}`);
+export const removeFavorite = async (
+  storyId: string
+): Promise<IFavoritesResponse> => {
+  const { data } = await nextServer.delete<IFavoritesResponse>(
+    `/users/me/favorites/${storyId}`
+  );
   return data;
 };
 

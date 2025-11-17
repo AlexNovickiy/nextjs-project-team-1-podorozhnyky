@@ -90,7 +90,7 @@ export default function MobileMenu({
               <div className={css.authContent}>
                 <div className={finalStoryButtonEl}>
                   <Link
-                    href="/stories-create/create"
+                    href="/stories/create/"
                     className={css.storyLinkElMob}
                     prefetch={false}
                     onClick={onClose}
