@@ -23,7 +23,7 @@ const StoryDetails = ({ storyId }: { storyId: string }) => {
   const { user, isAuthenticated, setUser } = useAuthStore();
   const router = useRouter();
 
-  const isFavorite = user?.favorites?.includes(storyId) ?? false;
+  const isFavorite = user?.favorites?.some(fav => fav._id === storyId) ?? false;
 
   useEffect(() => {
     const loadStory = async () => {
@@ -48,22 +48,24 @@ const StoryDetails = ({ storyId }: { storyId: string }) => {
     setSaving(true);
 
     try {
-      const current = user?.favorites ?? [];
-      let updated: string[];
+      let updatedFavorites;
 
       if (isFavorite) {
-        await removeFavorite(storyId);
-        updated = current.filter(id => id !== storyId);
+        const res = await removeFavorite(storyId);
+
+        updatedFavorites = res.favorites;
         toast.success('Історію видалено із збережених');
       } else {
-        await addFavorite(storyId);
-        updated = [...current, storyId];
+        const res = await addFavorite(storyId);
+
+        updatedFavorites = res.favorites;
         toast.success('Історію збережено!');
       }
 
+      // просто замінюємо популяцію
       setUser({
         ...user!,
-        favorites: updated,
+        favorites: updatedFavorites,
       });
     } catch {
       toast.error('Сталася помилка');

@@ -157,6 +157,7 @@ export const addFavorite = async (
     `/users/me/favorites`,
     { storyId }
   );
+
   return data;
 };
 export const removeFavorite = async (
@@ -165,6 +166,7 @@ export const removeFavorite = async (
   const { data } = await nextServer.delete<IFavoritesResponse>(
     `/users/me/favorites/${storyId}`
   );
+
   return data;
 };
 
