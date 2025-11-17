@@ -4,10 +4,15 @@ import { fetchStoryById } from '@/lib/api/serverApi';
 import style from '../../../../Home.module.css';
 import css from './StoryPage.module.css';
 import { Popular } from '@/components/Popular/Popular';
-export default async function StoryPage(props: {
-  params: { storyId: string };
-}) {
-  const { storyId } = await props.params;
+
+type StoryPageProps = {
+  params: Promise<{
+    storyId: string;
+  }>;
+};
+
+export default async function StoryPage({ params }: StoryPageProps) {
+  const { storyId } = await params;
 
   const story = await fetchStoryById(storyId);
 
