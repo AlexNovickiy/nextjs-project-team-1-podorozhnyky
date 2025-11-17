@@ -83,7 +83,7 @@ const ProfilePage: React.FC = () => {
   const items = (normalizedData?.data ?? []) as IStory[];
 
   const handleExploreStories = () => router.push('/stories');
-  const handleCreateStory = () => router.push('/stories-create/create');
+  const handleCreateStory = () => router.push('/stories/create');
 
   useEffect(() => {
     setPage(1);
@@ -187,7 +187,7 @@ const ProfilePage: React.FC = () => {
             <MessageNoStories
               text="Ви ще нічого не публікували, поділіться своєю першою історією!"
               buttonText="Опублікувати історію"
-              route="/stories-create/create"
+              route="/stories/create"
               onClick={handleCreateStory}
             />
           )}
