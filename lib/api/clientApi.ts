@@ -178,7 +178,7 @@ export const fetchSavedStories = async (
   page: number
 ): Promise<PaginatedStoriesResponse> => {
   try {
-    const { data } = await nextServer.get('/me/favorites/stories', {
+    const { data } = await nextServer.get('/users/me/stories', {
       params: { perPage, page },
     });
     return data;

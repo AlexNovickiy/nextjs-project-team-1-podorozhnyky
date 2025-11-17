@@ -1,29 +1,29 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import mainCss from '@/app/Home.module.css';
+import type { IStory, PaginatedStoriesResponse } from '@/types/story';
+import type { IApiResponse, IUser } from '@/types/user';
+import type { UseQueryResult } from '@tanstack/react-query';
 import {
-  useQuery,
   keepPreviousData,
+  useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import type { UseQueryResult } from '@tanstack/react-query';
-import TravellersStories from '../../../../components/TravellersStories/TravellersStories';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import ErrorMessage from '../../../../components/ErrorMessage/ErrorMessage';
+import Loader from '../../../../components/Loader/Loader';
 import MessageNoStories from '../../../../components/MessageNoStories/MessageNoStories';
 import Pagination from '../../../../components/Pagination/Pagination';
-import Loader from '../../../../components/Loader/Loader';
-import ErrorMessage from '../../../../components/ErrorMessage/ErrorMessage';
+import TravellersStories from '../../../../components/TravellersStories/TravellersStories';
 import { useStoriesPerPage } from '../../../../hooks/useStoriesPerPage';
-import styles from './Profile.module.css';
-import mainCss from '@/app/Home.module.css';
 import {
+  fetchCurrentUser,
   fetchMyStories,
   fetchSavedStories,
-  fetchCurrentUser,
 } from '../../../../lib/api/clientApi';
-import type { PaginatedStoriesResponse, IStory } from '@/types/story';
-import type { IApiResponse, IUser } from '@/types/user';
+import styles from './Profile.module.css';
 
 const ProfilePage: React.FC = () => {
   const router = useRouter();
@@ -39,8 +39,8 @@ const ProfilePage: React.FC = () => {
     queryKey,
     queryFn: () =>
       tab === 'saved'
-        ? fetchSavedStories(perPage, page)
-        : fetchMyStories(perPage, page),
+        ? fetchMyStories(perPage, page)
+        : fetchSavedStories(perPage, page),
     placeholderData: keepPreviousData,
   }) as unknown as UseQueryResult<PaginatedStoriesResponse, Error>;
 
