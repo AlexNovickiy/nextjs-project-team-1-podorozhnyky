@@ -68,10 +68,15 @@ export const fetchServerStories = async (
   return data.data;
 };
 
-// export const fetchStoryById = async (storyId: string): Promise<IStory> => {
-//   const { data } = await nextServer.get<IStory>(`/stories/${storyId}`);
-//   return data;
-// };
+export const fetchStoryById = async (storyId: string): Promise<IStory> => {
+  const cookieStore = await cookies();
+  const { data } = await nextServer.get(`/stories/${storyId}`, {
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
+  return data.data;
+};
 
 export const createStory = async (
   storyData: CreateStory

@@ -8,7 +8,6 @@ import {
   createStory,
   updateStory,
   fetchCategories,
-  fetchStoryById,
 } from '../../lib/api/clientApi';
 import { useRouter } from 'next/navigation';
 import { ICategory } from '../../types/category';
@@ -16,7 +15,7 @@ import Image from 'next/image';
 import ConfirmModal from '../ConfirmModal/ConfirmModal';
 import css from './AddStoryForm.module.css';
 import Loader from '../Loader/Loader';
-import type { CreateStory } from '../../types/story';
+import type { CreateStory, IStory } from '../../types/story';
 
 const formValues: CreateStory = {
   storyImage: null,
@@ -26,7 +25,13 @@ const formValues: CreateStory = {
   article: '',
 };
 
-const AddStoryForm = ({ storyId }: { storyId?: string }) => {
+const AddStoryForm = ({
+  storyId,
+  story,
+}: {
+  storyId?: string;
+  story?: IStory;
+}) => {
   const fieldId = useId();
 
   // Create validation schema based on whether we're editing or creating
@@ -84,7 +89,7 @@ const AddStoryForm = ({ storyId }: { storyId?: string }) => {
 
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
-  const [preview, setPreview] = useState<string>('');
+  const [preview, setPreview] = useState<string>(story?.img ? story.img : '');
   const [placeholderImage, setPlaceholderImage] = useState<string>(
     '/images/createStory/placeholder-image-mb.png'
   );
@@ -92,7 +97,29 @@ const AddStoryForm = ({ storyId }: { storyId?: string }) => {
   const [mounted, setMounted] = useState(false);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [initialValues, setInitialValues] = useState<CreateStory>(formValues);
+  const [initialValues, setInitialValues] = useState<CreateStory>(
+    story
+      ? {
+          storyImage: null,
+          title: story.title,
+          category:
+            typeof story.category === 'string'
+              ? story.category
+              : story.category._id,
+          shortDescription: story.shortDescription,
+          article: story.article,
+        }
+      : formValues
+  );
+
+  useEffect(() => {
+    if (story?.img) {
+      setPreview(story.img);
+    }
+  }, [story?.img]);
+
+  console.log('Initial Values:', story?.img);
+
   const selectRef = useRef<HTMLDivElement>(null);
 
   const maxDescriptionLength = 150;
@@ -118,12 +145,6 @@ const AddStoryForm = ({ storyId }: { storyId?: string }) => {
       window.removeEventListener('resize', updatePlaceholder);
     };
   }, []);
-
-  useEffect(() => {
-    if (!previewUrlRef.current) {
-      setPreview(placeholderImage);
-    }
-  }, [placeholderImage]);
 
   const handleSelectToggle = () => {
     setIsSelectOpen(!isSelectOpen);
@@ -165,7 +186,8 @@ const AddStoryForm = ({ storyId }: { storyId?: string }) => {
       }
       formData.append('title', values.title);
       formData.append('category', values.category);
-      formData.append('shortDescription', values.shortDescription ?? '');
+      if (values.shortDescription)
+        formData.append('shortDescription', values.shortDescription ?? '');
       formData.append('article', values.article);
 
       const response = storyId
@@ -207,28 +229,10 @@ const AddStoryForm = ({ storyId }: { storyId?: string }) => {
   }, []);
 
   useEffect(() => {
-    const loadStory = async () => {
-      if (storyId) {
-        try {
-          console.log('Завантаження історії з ID:', storyId);
-          const story = await fetchStoryById(storyId);
-          setInitialValues({
-            storyImage: null,
-            title: story.title || '',
-            category: story.category?._id || '',
-            shortDescription: story.shortDescription || '',
-            article: story.article || '',
-          });
-          if (story.img) {
-            setPreview(story.img);
-          }
-        } catch (error) {
-          console.error('Помилка при завантаженні історії:', error);
-        }
-      }
-    };
-    loadStory();
-  }, [storyId]);
+    if (!story?.img) {
+      setPreview(placeholderImage);
+    }
+  }, [story?.img, placeholderImage]);
 
   useEffect(() => {
     setMounted(true);
@@ -281,7 +285,7 @@ const AddStoryForm = ({ storyId }: { storyId?: string }) => {
                   style={{ cursor: 'pointer' }}
                 >
                   <Image
-                    src={preview || placeholderImage}
+                    src={preview || story?.img || placeholderImage}
                     alt="Прев'ю"
                     className={css.coverPreview}
                     width={865}
@@ -506,7 +510,11 @@ const AddStoryForm = ({ storyId }: { storyId?: string }) => {
               >
                 {isSubmitting ? 'Зберігається...' : 'Зберегти'}
               </button>
-              <button type="button" className={css.cancelBtn}>
+              <button
+                onClick={() => router.back()}
+                type="button"
+                className={css.cancelBtn}
+              >
                 Відмінити
               </button>
             </div>
