@@ -32,6 +32,10 @@
   }
 }
 
+.popularSection {
+  padding: 0;
+}
+
 .title {
   font-family: var(--second-family);
   font-size: 28px;
