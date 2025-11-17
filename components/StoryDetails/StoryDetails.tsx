@@ -85,7 +85,7 @@ const StoryDetails = ({ storyId }: { storyId: string }) => {
   });
 
   return (
-    <section className={css.page}>
+    <div className={css.storyDetails}>
       <div className={css.info}>
         <div className={css.infoDetails}>
           <p className={css.value}>
@@ -120,7 +120,7 @@ const StoryDetails = ({ storyId }: { storyId: string }) => {
           />
         )}
       </div>
-    </section>
+    </div>
   );
 };
 

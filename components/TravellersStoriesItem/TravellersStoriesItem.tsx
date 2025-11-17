@@ -11,7 +11,7 @@ import { useState } from 'react';
 
 interface TravellersStoriesItemProps {
   story: IStory | undefined;
-  isOwn: boolean;
+  isOwn?: boolean;
 }
 
 const TravellersStoriesItem = ({

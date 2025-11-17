@@ -1,6 +1,5 @@
 'use client';
 
-import { useIsFetching } from '@tanstack/react-query';
 import TravellersStoriesItem from '../TravellersStoriesItem/TravellersStoriesItem';
 import css from './TravellersStories.module.css';
 import { IStory } from '@/types/story';
@@ -10,7 +9,8 @@ interface TravellersStoriesProps {
   onLoadMore?: () => void;
   hasNextPage?: boolean;
   isFetchingNextPage?: boolean;
-  isOwn: boolean;
+  isOwn?: boolean;
+  isHiddenOnMobileButton?: boolean;
 }
 
 const TravellersStories = ({
@@ -19,6 +19,7 @@ const TravellersStories = ({
   hasNextPage,
   isFetchingNextPage,
   isOwn,
+  isHiddenOnMobileButton,
 }: TravellersStoriesProps) => {
   return (
     <>
@@ -27,16 +28,19 @@ const TravellersStories = ({
           <TravellersStoriesItem story={story} isOwn={isOwn} key={story._id} />
         ))}
       </ul>
-      {onLoadMore && hasNextPage && !isFetchingNextPage && (
-        <button
-          className={css.paginationButton}
-          type="button"
-          onClick={onLoadMore}
-          disabled={isFetchingNextPage}
-        >
-          {isFetchingNextPage ? 'Завантаження…' : 'Показати ще'}
-        </button>
-      )}
+      {onLoadMore &&
+        hasNextPage &&
+        !isFetchingNextPage &&
+        !isHiddenOnMobileButton && (
+          <button
+            className={css.paginationButton}
+            type="button"
+            onClick={onLoadMore}
+            disabled={isFetchingNextPage}
+          >
+            {isFetchingNextPage ? 'Завантаження…' : 'Показати ще'}
+          </button>
+        )}
     </>
   );
 };
