@@ -15,7 +15,6 @@ import {
   CreateStoryResponse,
   IStory,
   PaginatedStoriesResponse,
-  UpdateStory,
   UpdateStoryResponse,
 } from '@/types/story';
 import {
@@ -96,12 +95,12 @@ export const fetchStories = async (
 };
 
 export const fetchStoryById = async (storyId: string): Promise<IStory> => {
-  const { data } = await nextServer.get<IStory>(`/stories/${storyId}`);
-  return data;
+  const { data } = await nextServer.get(`/stories/${storyId}`);
+  return data.data;
 };
 
 export const createStory = async (
-  storyData: CreateStory
+  storyData: FormData
 ): Promise<CreateStoryResponse> => {
   const { data } = await nextServer.post<CreateStoryResponse>(
     '/stories',
@@ -112,9 +111,9 @@ export const createStory = async (
 
 export const updateStory = async (
   storyId: string,
-  storyData: UpdateStory
+  storyData: FormData
 ): Promise<UpdateStoryResponse> => {
-  const { data } = await nextServer.put<UpdateStoryResponse>(
+  const { data } = await nextServer.patch<UpdateStoryResponse>(
     `/stories/${storyId}`,
     storyData
   );
