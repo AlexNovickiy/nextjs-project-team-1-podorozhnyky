@@ -17,7 +17,6 @@ import { ICategory } from '@/types/category';
 import { AuthResponseRefresh, AuthResponseLogout } from '@/types/auth';
 import { AxiosResponse } from 'axios';
 import { cookies } from 'next/headers';
-import { number } from 'yup';
 
 export const logout = async (): Promise<AuthResponseLogout> => {
   const { data } = await nextServer.post<AuthResponseLogout>('/auth/logout');

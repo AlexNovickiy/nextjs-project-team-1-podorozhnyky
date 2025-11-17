@@ -97,7 +97,7 @@ const AddStoryForm = ({
   const [mounted, setMounted] = useState(false);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [initialValues, setInitialValues] = useState<CreateStory>(
+  const [initialValues] = useState<CreateStory>(
     story
       ? {
           storyImage: null,
