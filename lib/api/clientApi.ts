@@ -32,6 +32,7 @@ export const login = async (credentials: LoginCredentials) => {
   );
   return data;
 };
+
 export const register = async (credentials: RegisterCredentials) => {
   const { data } = await nextServer.post<AuthResponseRegister>(
     '/auth/register',
@@ -39,35 +40,43 @@ export const register = async (credentials: RegisterCredentials) => {
   );
   return data;
 };
+
 export const sendResetEmail = async (
   credentials: SendResetEmailCredentials
 ): Promise<void> => {
   await nextServer.post('/auth/send-reset-email', credentials);
 };
+
 export const resetPwd = async (
   credentials: AuthResetPwdCredentials
 ): Promise<void> => {
   await nextServer.post('/auth/reset-pwd', credentials);
 };
+
 export const logout = async (): Promise<AuthResponseLogout> => {
   const { data } = await nextServer.post<AuthResponseLogout>('/auth/logout');
   return data;
 };
+
 export const checkSession = async (): Promise<boolean> => {
   const { data } = await nextServer.post<AuthResponseRefresh>('/auth/session');
   return data.success;
 };
+
 export const getGoogleAuthUrl = async () => {
   const res = await nextServer.get('/auth/google-url');
   return res.data?.data ?? { url: '' };
 };
+
 export const loginWithGoogle = (body: { code: string }) =>
   nextServer.post('/auth/login/google', body);
+
 // /me/current
 export const fetchCurrentUser = async (): Promise<IApiResponse> => {
   const { data } = await nextServer.get<IApiResponse>('/users/me');
   return data;
 };
+
 // === STORIES  ===
 export const fetchStories = async (
   perPage: number,
@@ -83,6 +92,7 @@ export const fetchStories = async (
   });
   return data.data;
 };
+
 export const fetchStoryById = async (storyId: string): Promise<IStory> => {
   const { data } = await nextServer.get(`/stories/${storyId}`);
   return data.data;
@@ -108,6 +118,7 @@ export const updateStory = async (
   );
   return data;
 };
+
 // === USERS (AUTHORS) ===
 export const fetchAuthors = async (
   page = 1,
@@ -122,18 +133,21 @@ export const fetchAuthors = async (
   });
   return data;
 };
+
 export const fetchAuthorById = async (
   userId: string
 ): Promise<IApiResponse> => {
   const { data } = await nextServer.get(`/users/${userId}`);
   return data;
 };
+
 export const updateProfile = async (
   profileData: UpdateUser
 ): Promise<IUser> => {
   const { data } = await nextServer.put<IUser>('/me/profile', profileData);
   return data;
 };
+
 export const addFavorite = async (
   storyId: string
 ): Promise<IFavoritesResponse> => {
@@ -141,18 +155,18 @@ export const addFavorite = async (
     `/users/me/favorites`,
     { storyId }
   );
-
   return data;
 };
+
 export const removeFavorite = async (
   storyId: string
 ): Promise<IFavoritesResponse> => {
   const { data } = await nextServer.delete<IFavoritesResponse>(
     `/users/me/favorites/${storyId}`
   );
-
   return data;
 };
+
 // === CATEGORIES (Новий каркас) ===
 export const fetchCategories = async (): Promise<ICategory[]> => {
   const { data } = await nextServer.get('/categories');

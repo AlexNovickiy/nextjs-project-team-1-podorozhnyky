@@ -1,6 +1,5 @@
 'use client';
 
-import { useIsFetching } from '@tanstack/react-query';
 import TravellersStoriesItem from '../TravellersStoriesItem/TravellersStoriesItem';
 import css from './TravellersStories.module.css';
 import { IStory } from '@/types/story';
@@ -10,6 +9,7 @@ interface TravellersStoriesProps {
   onLoadMore?: () => void;
   hasNextPage?: boolean;
   isFetchingNextPage?: boolean;
+  isOwn?: boolean;
   isHiddenOnMobileButton?: boolean;
 }
 
@@ -18,13 +18,14 @@ const TravellersStories = ({
   onLoadMore,
   hasNextPage,
   isFetchingNextPage,
+  isOwn,
   isHiddenOnMobileButton,
 }: TravellersStoriesProps) => {
   return (
     <>
       <ul className={css.storiesList}>
         {stories.map(story => (
-          <TravellersStoriesItem story={story} key={story._id} />
+          <TravellersStoriesItem story={story} isOwn={isOwn} key={story._id} />
         ))}
       </ul>
       {onLoadMore &&

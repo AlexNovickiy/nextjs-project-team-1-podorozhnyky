@@ -117,8 +117,6 @@ const AddStoryForm = ({
     }
   }, [story?.img]);
 
-  console.log('Initial Values:', story?.img);
-
   const selectRef = useRef<HTMLDivElement>(null);
 
   const maxDescriptionLength = 150;
