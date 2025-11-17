@@ -111,12 +111,14 @@ const StoryDetails = ({ storyId }: { storyId: string }) => {
       <div className={css.content}>
         <p className={css.article}>{story.article}</p>
 
-        <FavoriteActions
-          isAuthenticated={isAuthenticated}
-          isFavorite={isFavorite}
-          saving={saving}
-          onToggle={toggleFavorite}
-        />
+        {!(user?._id === story.ownerId._id) && (
+          <FavoriteActions
+            isAuthenticated={isAuthenticated}
+            isFavorite={isFavorite}
+            saving={saving}
+            onToggle={toggleFavorite}
+          />
+        )}
       </div>
     </section>
   );

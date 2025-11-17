@@ -1,21 +1,20 @@
 'use client';
 
-import { Form, Formik, Field, ErrorMessage, FormikHelpers } from 'formik';
-import { useId, useEffect, useState, useRef } from 'react';
-import React from 'react';
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useId, useRef, useState } from 'react';
 import * as Yup from 'yup';
 import {
   createStory,
-  updateStory,
   fetchCategories,
+  updateStory,
 } from '../../lib/api/clientApi';
-import { useRouter } from 'next/navigation';
 import { ICategory } from '../../types/category';
-import Image from 'next/image';
-import ConfirmModal from '../ConfirmModal/ConfirmModal';
-import css from './AddStoryForm.module.css';
-import Loader from '../Loader/Loader';
 import type { CreateStory, IStory } from '../../types/story';
+import ConfirmModal from '../ConfirmModal/ConfirmModal';
+import Loader from '../Loader/Loader';
+import css from './AddStoryForm.module.css';
 
 const formValues: CreateStory = {
   storyImage: null,

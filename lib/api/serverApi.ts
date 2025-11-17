@@ -88,7 +88,7 @@ export const updateStory = async (
   storyId: string,
   storyData: UpdateStory
 ): Promise<UpdateStoryResponse> => {
-  const { data } = await nextServer.put<UpdateStoryResponse>(
+  const { data } = await nextServer.patch<UpdateStoryResponse>(
     `/stories/${storyId}`,
     storyData
   );
