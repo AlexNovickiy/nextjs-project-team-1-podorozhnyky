@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { api } from '../../api';
-import { cookies } from 'next/headers';
-import { parse } from 'cookie';
 import { isAxiosError } from 'axios';
+import { parse } from 'cookie';
+import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
 import { logErrorResponse } from '../../_utils/utils';
+import { api } from '../../api';
 
 export async function POST(req: NextRequest) {
   try {
@@ -37,14 +37,21 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     if (isAxiosError(error)) {
       logErrorResponse(error.response?.data);
+
+      const backendMessage =
+        error.response?.data?.data?.message ||
+        error.response?.data?.message ||
+        'Unauthorized';
+
       return NextResponse.json(
-        { error: error.message, response: error.response?.data },
-        { status: error.status }
+        { message: backendMessage },
+        { status: error.response?.status || 500 }
       );
     }
+
     logErrorResponse({ message: (error as Error).message });
     return NextResponse.json(
-      { error: 'Internal Server Error' },
+      { message: 'Internal Server Error' },
       { status: 500 }
     );
   }

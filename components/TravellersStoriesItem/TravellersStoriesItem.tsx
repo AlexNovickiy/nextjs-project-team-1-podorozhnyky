@@ -101,7 +101,7 @@ export const TravellersStoriesItem = ({
       }
 
       toast.error('Не вдалося видалити історію');
-    } catch (error) {
+    } catch {
       toast.error('Помилка при видаленні');
     } finally {
       setShowDeleteModal(false);
