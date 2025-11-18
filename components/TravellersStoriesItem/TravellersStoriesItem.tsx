@@ -12,9 +12,10 @@ import { useState } from 'react';
 interface TravellersStoriesItemProps {
   story: IStory | undefined;
   isOwn?: boolean;
+  storyId?: string;
 }
 
-const TravellersStoriesItem = ({
+export const TravellersStoriesItem = ({
   story,
   isOwn,
 }: TravellersStoriesItemProps) => {
@@ -85,6 +86,7 @@ const TravellersStoriesItem = ({
           alt={story.title ?? 'Story Image'}
           width={335}
           height={223}
+          priority={true}
         />
       ) : (
         <Image
@@ -93,6 +95,7 @@ const TravellersStoriesItem = ({
           alt={story?.title ?? 'Placeholder Image'}
           width={335}
           height={223}
+          priority={true}
         />
       )}
       <div className={css.contentWrapper}>

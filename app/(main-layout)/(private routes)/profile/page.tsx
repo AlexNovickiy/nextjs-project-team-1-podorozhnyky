@@ -1,25 +1,11 @@
 'use client';
 
 import mainCss from '@/app/Home.module.css';
-import type { IStory, PaginatedStoriesResponse } from '@/types/story';
-import type {
-  IApiResponse,
-  IOwnFavoritesResponse,
-  IOwnStoriesResponse,
-  IUser,
-  IUserWithOwnFavorites,
-  IUserWithOwnStories,
-} from '@/types/user';
-import type { UseQueryResult } from '@tanstack/react-query';
-import {
-  keepPreviousData,
-  useInfiniteQuery,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
+import type { IUserWithOwnFavorites, IUserWithOwnStories } from '@/types/user';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import ErrorMessage from '../../../../components/ErrorMessage/ErrorMessage';
 import Loader from '../../../../components/Loader/Loader';
 import MessageNoStories from '../../../../components/MessageNoStories/MessageNoStories';
@@ -33,8 +19,8 @@ import styles from './Profile.module.css';
 
 export const ProfilePage = () => {
   const router = useRouter();
+  const [tab, setTab] = useState<'saved' | 'own'>('saved');
   const perPage = useStoriesPerPage();
-  const [tab, setTab] = useState<'saved' | 'own'>('own');
 
   const {
     data,
@@ -48,9 +34,8 @@ export const ProfilePage = () => {
     initialPageParam: 1,
     queryFn: ({ pageParam = 1 }: { pageParam?: number }) =>
       tab === 'saved'
-        ? fetchUserWithOwnFavorites(perPage, pageParam)
-        : fetchUserWithOwnStories(perPage, pageParam),
-    placeholderData: keepPreviousData,
+        ? fetchUserWithOwnFavorites(String(perPage), String(pageParam))
+        : fetchUserWithOwnStories(String(perPage), String(pageParam)),
     getNextPageParam: lastPage => {
       if (lastPage.data.pagination.hasNextPage) {
         return lastPage.data.pagination.page + 1;
@@ -136,6 +121,7 @@ export const ProfilePage = () => {
               hasNextPage={hasNextPage}
               isFetchingNextPage={isFetchingNextPage}
               stories={items}
+              isOwn={tab === 'own'}
             />
           ) : tab === 'saved' ? (
             <MessageNoStories

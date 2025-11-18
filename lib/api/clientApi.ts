@@ -178,8 +178,8 @@ export const fetchCategories = async (): Promise<ICategory[]> => {
 // === PROFILE / ME STORIES ===
 // Повертає пагінований список історій, створених поточним користувачем
 export const fetchUserWithOwnFavorites = async (
-  perPage: number,
-  page: number
+  perPage: string,
+  page: string
 ): Promise<IOwnFavoritesResponse> => {
   const { data } = await nextServer.get('/users/me', {
     params: { perPage, page },
@@ -190,8 +190,8 @@ export const fetchUserWithOwnFavorites = async (
 
 // Повертає пагінований список збережених історій поточного користувача
 export const fetchUserWithOwnStories = async (
-  perPage: number,
-  page: number
+  perPage: string,
+  page: string
 ): Promise<IOwnStoriesResponse> => {
   const { data } = await nextServer.get('/users/me/stories', {
     params: { perPage, page },

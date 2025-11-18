@@ -49,7 +49,7 @@
   padding: 4px;
   width: 335px;
   height: 48px;
-  background: var(--color-scheme-2-foreground);
+  background: var(--tabs-background);
   margin-bottom: 40px;
   box-shadow: none;
 }
@@ -77,7 +77,7 @@
 }
 
 .active {
-  background: var(--color-scheme-2-background);
+  background: var(--tabs-active-background);
   color: var(--text);
   border: 1px solid var(--color-scheme-2-border);
   border-radius: 8px;
