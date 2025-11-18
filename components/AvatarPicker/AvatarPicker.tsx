@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import css from './AvatarPicker.module.css';
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 
 const AvatarPicker = ({ profilePhotoUrl, onChangePhoto }: Props) => {
   const [error, setError] = useState('');
-  const [previewUrl, setPreviewUrl] = useState('');
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (profilePhotoUrl) {
@@ -23,26 +23,25 @@ const AvatarPicker = ({ profilePhotoUrl, onChangePhoto }: Props) => {
     const file = e.target.files?.[0];
     setError('');
 
-    if (file) {
-      // Перевіряємо тип файлу
-      if (!file.type.startsWith('image/')) {
-        setError('Only images');
-        return;
-      }
+    if (!file) return;
 
-      // Перевіряємо розмір файлу (максимум 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        setError('Max file size 5MB');
-        return;
-      }
-      onChangePhoto(file);
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewUrl(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+    if (!file.type.startsWith('image/')) {
+      setError('Only images');
+      return;
     }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Max file size 5MB');
+      return;
+    }
+
+    onChangePhoto(file);
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewUrl(reader.result as string);
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -50,14 +49,18 @@ const AvatarPicker = ({ profilePhotoUrl, onChangePhoto }: Props) => {
       <label className={css.label}>Аватар</label>
 
       <div className={css.avatarContainer}>
-        <Image
-          src={previewUrl}
-          alt="Preview"
-          className={css.avatar}
-          width={117}
-          height={117}
-          unoptimized
-        />
+        {previewUrl ? (
+          <Image
+            src={previewUrl}
+            alt="Preview"
+            className={css.avatar}
+            width={117}
+            height={117}
+            unoptimized
+          />
+        ) : (
+          <div className={css.placeholder}>No image</div>
+        )}
 
         <button
           type="button"
@@ -75,6 +78,7 @@ const AvatarPicker = ({ profilePhotoUrl, onChangePhoto }: Props) => {
           onChange={handleFileChange}
         />
       </div>
+
       {error && <p>{error}</p>}
     </div>
   );

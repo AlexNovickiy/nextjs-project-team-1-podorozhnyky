@@ -38,13 +38,16 @@ export async function GET(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     const cookieStore = await cookies();
-    const body = await request.json();
 
-    const res = await api.patch('/users/me', body, {
+    const formData = await request.formData();
+
+    const res = await api.patch('/users/me', formData, {
       headers: {
         Cookie: cookieStore.toString(),
+        'Content-Type': 'multipart/form-data',
       },
     });
+
     return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
     if (isAxiosError(error)) {

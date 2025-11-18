@@ -146,13 +146,13 @@ export const fetchAuthorById = async (
 };
 
 export const updateProfile = async (formData: FormData): Promise<IUser> => {
-  const { data } = await nextServer.patch<IUser>('/users/me', formData, {
+  const { data } = await nextServer.patch('/users/me', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
 
-  return data;
+  return data.data;
 };
 
 export const addFavorite = async (

@@ -14,16 +14,16 @@
   line-height: 120%;
   letter-spacing: -0.01em;
   text-align: center;
-  color: var(--color-scheme-1-text);
+  color: var(--text);
   padding: 0px 0px 24px;
   max-width: 100%;
   height: 100%;
   margin-bottom: 24px;
-  background: var(--color-scheme-1-background);
+  background: var(--background);
 }
 
 .form {
-  background: var(--color-scheme-1-background);
+  background: var(--background);
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -34,7 +34,7 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 150%;
-  color: var(--color-scheme-1-text);
+  color: var(--text);
 }
 
 .avatarBlock {
@@ -62,27 +62,24 @@
   font-weight: 500;
   font-size: 16px;
   line-height: 150%;
-  color: var(--color-neutral-darkest);
-  border: 1px solid var(--color-scheme-2-border);
+  color: var(--text);
+  border: 1px solid var(--button-border);
   border-radius: 8px;
   padding: 4px 4px;
   max-width: 163px;
 
   height: 32px;
-  background: var(--opacity-neutral-darkest-5);
+  background-color: var(--button);
 }
 
 .uploadFotoBtn:hover,
 .uploadFotoBtn:focus {
   background-color: var(--button-hover);
-  border-color: var(--opacity-transparent);
   color: var(--button-hover-text);
 }
 
 .uploadFotoBtn:active {
   background-color: var(--button-active);
-  border-color: var(--opacity-transparent);
-  color: var(--button-hover-text);
 }
 
 .fileInput {
@@ -100,9 +97,9 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 150%;
-  color: var(--opacity-neutral-darkest-60);
+  color: var(--text);
   width: 100%;
-  border: 1px solid var(--opacity-neutral-darkest-15);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 12px;
   height: 120px;
@@ -112,14 +109,14 @@
 
 .textarea:focus {
   outline: none;
-  border-color: var(--color-scheme-1-accent);
+  border-color: var(--accent);
 }
 .charCount {
   font-family: var(--font-family);
   font-weight: 400;
   font-size: 12px;
   line-height: 150%;
-  color: var(--color-scheme-2-text);
+  color: var(--text);
 }
 
 .saveBtn {
@@ -144,9 +141,9 @@
   color: #000;
 }
 
-.submitBtn:disabled {
+.saveBtn:disabled {
   cursor: not-allowed;
-  opacity: 0.3;
+  opacity: 0.7;
 }
 
 /* Styles for Tablet devices */

@@ -1,28 +1,36 @@
 'use client';
 
-import { useState } from 'react';
-
-import css from './EditProfile.module.css';
 import { updateProfile } from '@/lib/api/clientApi';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { useAuthStore } from '../../lib/store/authStore';
 import AvatarPicker from '../AvatarPicker/AvatarPicker';
+import css from './EditProfile.module.css';
 
-interface EditProfileProps {
-  user: {
-    _id: string;
-    name: string;
-    email: string;
-    avatarUrl: string;
-    description: string;
-    favorites: string[];
-  };
-}
-const EditProfile = ({ user }: EditProfileProps) => {
-  const [description, setDescription] = useState(user.description || '');
+const EditProfile = () => {
+  const { user } = useAuthStore();
+  const setUser = useAuthStore(state => state.setUser);
+  const router = useRouter();
+
+  const [description, setDescription] = useState('');
+  const [initialDescription, setInitialDescription] = useState('');
+  const [initialAvatar, setInitialAvatar] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
+
+  useEffect(() => {
+    if (user) {
+      setDescription(user.description || '');
+      setInitialDescription(user.description || '');
+      setInitialAvatar(user.avatarUrl || '');
+    }
+  }, [user]);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDescription(event.target.value);
   };
+
+  const isChanged = description !== initialDescription || imageFile !== null;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -31,16 +39,26 @@ const EditProfile = ({ user }: EditProfileProps) => {
     formData.append('description', description);
 
     if (imageFile) {
-      formData.append('userPhoto', imageFile);
+      formData.append('avatar', imageFile);
     }
 
-    await updateProfile(formData);
+    try {
+      const updatedUser = await updateProfile(formData);
+
+      setUser(updatedUser);
+      toast.success('Профіль оновлено!');
+      router.push('/profile');
+    } catch {
+      toast.error('Не вдалося оновити профіль');
+    }
   };
+
   return (
     <div className={css.wrapper}>
       <h1 className={css.title}>Давайте познайомимось ближче</h1>
+
       <AvatarPicker
-        profilePhotoUrl={user.avatarUrl}
+        profilePhotoUrl={user?.avatarUrl}
         onChangePhoto={setImageFile}
       />
 
@@ -66,7 +84,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
         </div>
 
         <div className={css.actions}>
-          <button type="submit" className={css.saveBtn}>
+          <button type="submit" className={css.saveBtn} disabled={!isChanged}>
             Зберегти
           </button>
         </div>
