@@ -88,7 +88,6 @@
 .shortDescription:focus,
 .description:focus {
   border-color: var(--color-scheme-1-accent);
-  background-color: var(--color-scheme-1-background);
   outline: none;
 }
 
@@ -122,12 +121,12 @@
 
 .customSelectWrapper.open .customSelectTrigger {
   border-color: var(--color-scheme-1-accent);
-  background-color: var(--color-scheme-1-background);
+  background-color: var(--background);
 }
 
 .selectedValue {
   flex: 1;
-  color: var(--color-neutral-darkest);
+  color: var(--text);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

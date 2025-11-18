@@ -351,7 +351,7 @@ const AddStoryForm = ({
                     className={css.customSelectTrigger}
                     onClick={handleSelectToggle}
                   >
-                    <Field name="category">
+                    <Field id={`${fieldId}-category`} name="category">
                       {({ field }: { field: { value: string } }) => {
                         const selectedCategory = categories.find(
                           cat => cat._id === field.value
