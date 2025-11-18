@@ -23,7 +23,6 @@ import {
   IOwnStoriesResponse,
   IUser,
   PaginatedUsersResponse,
-  UpdateUser,
 } from '@/types/user';
 import { nextServer } from './api';
 // === AUTH ===
@@ -146,11 +145,14 @@ export const fetchAuthorById = async (
   return data;
 };
 
-export const updateProfile = async (
-  profileData: UpdateUser
-): Promise<IUser> => {
-  const { data } = await nextServer.put<IUser>('/me/profile', profileData);
-  return data;
+export const updateProfile = async (formData: FormData): Promise<IUser> => {
+  const { data } = await nextServer.patch('/users/me', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return data.data;
 };
 
 export const addFavorite = async (
