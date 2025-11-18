@@ -112,6 +112,14 @@
   font-weight: 400;
   font-size: 12px;
 }
+
+.userPhoto {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 .userDefaultPhoto {
   background-image: url(/placeholder-image.png);
   background-position: center;
