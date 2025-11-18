@@ -17,7 +17,7 @@ import {
 } from '../../../../lib/api/clientApi';
 import styles from './Profile.module.css';
 
-export const ProfilePage = () => {
+const ProfilePage = () => {
   const router = useRouter();
   const [tab, setTab] = useState<'saved' | 'own'>('saved');
   const perPage = useStoriesPerPage();
