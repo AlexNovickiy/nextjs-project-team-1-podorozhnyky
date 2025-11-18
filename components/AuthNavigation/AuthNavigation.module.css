@@ -41,6 +41,8 @@
 .storyLinkElAuth {
   padding: 4px 10px;
   text-align: center;
+  font-weight: 500;
+  line-height: 1.5;
 }
 .storyButtonElTransparentAuth {
   background-color: var(--color-white);
@@ -75,7 +77,5 @@
 
   .storyLinkElAuth {
     display: block;
-    padding: 4px 10px;
-    text-align: center;
   }
 }
