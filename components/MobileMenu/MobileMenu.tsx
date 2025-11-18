@@ -101,7 +101,7 @@ export default function MobileMenu({
 
                 <div className={css.navUserWrapper}>
                   <Link
-                    href="/profile"
+                    href="/user-edit"
                     prefetch={false}
                     className={css.profileLinkMobile}
                     onClick={onClose}
