@@ -19,6 +19,12 @@ export interface IStory {
   updatedAt: string;
 }
 
+export interface IStoryByIdResponse {
+  status: number;
+  message: string;
+  data: IStory;
+}
+
 // Тип для відповіді з пагінацією
 export type PaginatedStoriesResponse = {
   page: number;

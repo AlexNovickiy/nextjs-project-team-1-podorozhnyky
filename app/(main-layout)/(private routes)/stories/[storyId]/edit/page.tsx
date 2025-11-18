@@ -11,6 +11,7 @@ interface EditStoryFormProps {
 
 const EditStoryPage = async ({ params }: EditStoryFormProps) => {
   const { storyId } = await params;
+  console.log('storyId', storyId);
   const story = await fetchStoryById(storyId);
 
   return (

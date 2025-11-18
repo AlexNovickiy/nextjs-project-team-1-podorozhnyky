@@ -50,6 +50,10 @@ export const TravellersStoriesItem = ({
   };
 
   const handlePencilClick = (storyId: string) => {
+    if (!isAuthenticated) {
+      setShowConfirmModal(true);
+      return;
+    }
     router.push(`/stories/${storyId}/edit`);
   };
 
@@ -192,7 +196,7 @@ export const TravellersStoriesItem = ({
                     <button
                       className={css.bookmarkStory}
                       onClick={() => handlePencilClick(story._id)}
-                      aria-label='Edit story'
+                      aria-label="Edit story"
                     >
                       <svg className={css.bookmarkIcon} width="24" height="24">
                         <use href="/sprite.svg#icon-edit"></use>
@@ -203,7 +207,7 @@ export const TravellersStoriesItem = ({
                     <button
                       className={css.bookmarkStory}
                       onClick={() => setShowDeleteModal(true)}
-                      aria-label='Delete story'
+                      aria-label="Delete story"
                     >
                       <svg className={css.bookmarkIcon} width="24" height="24">
                         <use href="/sprite.svg#icon-delete"></use>
@@ -216,7 +220,9 @@ export const TravellersStoriesItem = ({
                       isFavorite ? css.bookmarkStoryActive : ''
                     }`}
                     onClick={() => handleBookmarkClick(story._id)}
-                    aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+                    aria-label={
+                      isFavorite ? 'Remove from favorites' : 'Add to favorites'
+                    }
                   >
                     {isLoading ? (
                       <span className={css.loader}></span>

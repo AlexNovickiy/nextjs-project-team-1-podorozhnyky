@@ -12,6 +12,7 @@ import {
   UpdateStoryResponse,
   UpdateStory,
   CreateStory,
+  IStoryByIdResponse,
 } from '@/types/story';
 import { ICategory } from '@/types/category';
 import { AuthResponseRefresh, AuthResponseLogout } from '@/types/auth';
@@ -69,8 +70,10 @@ export const fetchServerStories = async (
 };
 
 export const fetchStoryById = async (storyId: string): Promise<IStory> => {
-  const { data } = await nextServer.get<IStory>(`/stories/${storyId}`);
-  return data;
+  const { data } = await nextServer.get<IStoryByIdResponse>(
+    `/stories/${storyId}`
+  );
+  return data.data;
 };
 
 export const createStory = async (
