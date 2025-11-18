@@ -4,7 +4,7 @@
   font-size: 28px;
   line-height: 1.2;
   letter-spacing: -0.01em;
-  color: var(--color-scheme-1-text);
+  color: var(--text);
   margin-bottom: 40px;
 }
 .section {
@@ -14,20 +14,19 @@
   margin-bottom: 64px;
 }
 
-
 @media screen and (min-width: 768px) {
-  .title {  
+  .title {
     font-size: 44px;
-  }    
+  }
 }
 
 @media screen and (min-width: 1440px) {
-  .title {  
+  .title {
     font-size: 52px;
   }
   .section {
     margin: 48px 0;
-  }  
+  }
   .no_message {
     margin-bottom: 72px;
   }

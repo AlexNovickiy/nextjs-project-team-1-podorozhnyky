@@ -120,7 +120,10 @@ export const updateStory = async (
   );
   return data;
 };
-
+export const deleteStory = async (storyId: string) => {
+  const res = await nextServer.delete(`/stories/${storyId}`);
+  return res.data;
+};
 // === USERS (AUTHORS) ===
 export const fetchAuthors = async (
   page = 1,

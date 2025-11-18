@@ -1,24 +1,74 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import ConfirmDeleteContent from '../../ConfirmDeleteContent/ConfirmDeleteContent';
+import Modal from '../../Modal/Modal';
 import css from './FavoriteActions.module.css';
 
 type Props = {
+  storyId: string;
   isAuthenticated: boolean;
   isFavorite: boolean;
   saving: boolean;
+  isOwner: boolean;
   onToggle: () => void;
+  onDelete: () => void;
 };
 
 export default function FavoriteActions({
+  storyId,
   isAuthenticated,
   isFavorite,
   saving,
+  isOwner,
   onToggle,
+  onDelete,
 }: Props) {
   const router = useRouter();
+  const [showConfirm, setShowConfirm] = useState(false);
 
-  // ---- 1) НЕ АВТОРИЗОВАНИЙ -------------------------------------
+  if (isOwner) {
+    return (
+      <>
+        {showConfirm && (
+          <Modal onClose={() => setShowConfirm(false)}>
+            <ConfirmDeleteContent
+              onConfirm={() => {
+                setShowConfirm(false);
+                onDelete();
+              }}
+              onCancel={() => setShowConfirm(false)}
+            />
+          </Modal>
+        )}
+
+        <div className={css.saveSection}>
+          <h3 className={css.saveTitle}>Це ваша історія</h3>
+          <p className={css.saveText}>
+            Ви можете відредагувати або видалити її.
+          </p>
+
+          <div className={css.buttonsRow}>
+            <button
+              className={css.saveButton}
+              onClick={() => router.push(`/stories/${storyId}/edit`)}
+            >
+              Редагувати
+            </button>
+
+            <button
+              className={css.deleteButton}
+              onClick={() => setShowConfirm(true)}
+            >
+              Видалити
+            </button>
+          </div>
+        </div>
+      </>
+    );
+  }
+  // ---- 2) НЕ АВТОРИЗОВАНИЙ -------------------------------------
   if (!isAuthenticated) {
     return (
       <div className={css.saveSection}>
@@ -37,7 +87,7 @@ export default function FavoriteActions({
     );
   }
 
-  // ---- 2) АВТОРИЗОВАНИЙ — НЕ в обраних --------------------------
+  // ---- 3) АВТОРИЗОВАНИЙ — НЕ в обраних --------------------------
   if (!isFavorite) {
     return (
       <div className={css.saveSection}>
@@ -53,7 +103,7 @@ export default function FavoriteActions({
     );
   }
 
-  // ---- 3) АВТОРИЗОВАНИЙ — В ОБРАНИХ ------------------------------
+  // ---- 4) АВТОРИЗОВАНИЙ — В ОБРАНИХ ------------------------------
   return (
     <div className={css.saveSection}>
       <h3 className={css.saveTitle}>Історія у ваших збережених</h3>

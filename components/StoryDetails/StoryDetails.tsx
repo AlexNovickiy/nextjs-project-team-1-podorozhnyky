@@ -2,6 +2,7 @@
 
 import {
   addFavorite,
+  deleteStory,
   fetchStoryById,
   removeFavorite,
 } from '@/lib/api/clientApi';
@@ -83,7 +84,22 @@ const StoryDetails = ({ storyId }: { storyId: string }) => {
     month: 'numeric',
     day: 'numeric',
   });
+  const deleteHandler = async () => {
+    try {
+      const res = await deleteStory(storyId);
 
+      if (res?.message || res?.success) {
+        toast.success('Історію видалено');
+        router.push('/stories');
+        router.refresh();
+        return;
+      }
+
+      toast.error('Не вдалося видалити історію');
+    } catch {
+      toast.error('Помилка під час видалення');
+    }
+  };
   return (
     <div className={css.storyDetails}>
       <div className={css.info}>
@@ -111,14 +127,15 @@ const StoryDetails = ({ storyId }: { storyId: string }) => {
       <div className={css.content}>
         <p className={css.article}>{story.article}</p>
 
-        {!(user?._id === story.ownerId._id) && (
-          <FavoriteActions
-            isAuthenticated={isAuthenticated}
-            isFavorite={isFavorite}
-            saving={saving}
-            onToggle={toggleFavorite}
-          />
-        )}
+        <FavoriteActions
+          storyId={storyId}
+          isAuthenticated={isAuthenticated}
+          isFavorite={isFavorite}
+          saving={saving}
+          onToggle={toggleFavorite}
+          isOwner={user?._id === story.ownerId._id}
+          onDelete={deleteHandler}
+        />
       </div>
     </div>
   );
