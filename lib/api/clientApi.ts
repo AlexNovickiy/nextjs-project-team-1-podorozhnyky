@@ -19,6 +19,8 @@ import {
 import {
   IApiResponse,
   IFavoritesResponse,
+  IOwnFavoritesResponse,
+  IOwnStoriesResponse,
   IUser,
   PaginatedUsersResponse,
   UpdateUser,
@@ -161,10 +163,10 @@ export const fetchCategories = async (): Promise<ICategory[]> => {
 
 // === PROFILE / ME STORIES ===
 // Повертає пагінований список історій, створених поточним користувачем
-export const fetchMyStories = async (
+export const fetchUserWithOwnFavorites = async (
   perPage: number,
   page: number
-): Promise<PaginatedStoriesResponse> => {
+): Promise<IOwnFavoritesResponse> => {
   const { data } = await nextServer.get('/users/me', {
     params: { perPage, page },
   });
@@ -173,25 +175,13 @@ export const fetchMyStories = async (
 };
 
 // Повертає пагінований список збережених історій поточного користувача
-export const fetchSavedStories = async (
+export const fetchUserWithOwnStories = async (
   perPage: number,
   page: number
-): Promise<PaginatedStoriesResponse> => {
-  try {
-    const { data } = await nextServer.get('/users/me/stories', {
-      params: { perPage, page },
-    });
-    return data;
-  } catch {
-    // Якщо маршрут не реалізовано на бекенді, повернути порожний результат
-    return {
-      page,
-      perPage,
-      totalPages: 0,
-      totalItems: 0,
-      hasNextPage: false,
-      hasPreviousPage: false,
-      data: [],
-    };
-  }
+): Promise<IOwnStoriesResponse> => {
+  const { data } = await nextServer.get('/users/me/stories', {
+    params: { perPage, page },
+  });
+
+  return data;
 };

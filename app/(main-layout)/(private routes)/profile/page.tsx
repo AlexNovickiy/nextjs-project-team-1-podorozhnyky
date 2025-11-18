@@ -2,10 +2,18 @@
 
 import mainCss from '@/app/Home.module.css';
 import type { IStory, PaginatedStoriesResponse } from '@/types/story';
-import type { IApiResponse, IUser } from '@/types/user';
+import type {
+  IApiResponse,
+  IOwnFavoritesResponse,
+  IOwnStoriesResponse,
+  IUser,
+  IUserWithOwnFavorites,
+  IUserWithOwnStories,
+} from '@/types/user';
 import type { UseQueryResult } from '@tanstack/react-query';
 import {
   keepPreviousData,
+  useInfiniteQuery,
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
@@ -15,94 +23,54 @@ import React, { useEffect, useState } from 'react';
 import ErrorMessage from '../../../../components/ErrorMessage/ErrorMessage';
 import Loader from '../../../../components/Loader/Loader';
 import MessageNoStories from '../../../../components/MessageNoStories/MessageNoStories';
-import Pagination from '../../../../components/Pagination/Pagination';
 import TravellersStories from '../../../../components/TravellersStories/TravellersStories';
 import { useStoriesPerPage } from '../../../../hooks/useStoriesPerPage';
 import {
-  fetchCurrentUser,
-  fetchMyStories,
-  fetchSavedStories,
+  fetchUserWithOwnFavorites,
+  fetchUserWithOwnStories,
 } from '../../../../lib/api/clientApi';
 import styles from './Profile.module.css';
 
-const ProfilePage: React.FC = () => {
+export const ProfilePage = () => {
   const router = useRouter();
   const perPage = useStoriesPerPage();
   const [tab, setTab] = useState<'saved' | 'own'>('own');
-  const [page, setPage] = useState(1);
 
-  const queryClient = useQueryClient();
-
-  const queryKey = ['profile', tab, page, perPage] as const;
-
-  const query = useQuery({
-    queryKey,
-    queryFn: () =>
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+  } = useInfiniteQuery({
+    queryKey: ['profile', tab, perPage],
+    initialPageParam: 1,
+    queryFn: ({ pageParam = 1 }: { pageParam?: number }) =>
       tab === 'saved'
-        ? fetchMyStories(perPage, page)
-        : fetchSavedStories(perPage, page),
+        ? fetchUserWithOwnFavorites(perPage, pageParam)
+        : fetchUserWithOwnStories(perPage, pageParam),
     placeholderData: keepPreviousData,
-  }) as unknown as UseQueryResult<PaginatedStoriesResponse, Error>;
+    getNextPageParam: lastPage => {
+      if (lastPage.data.pagination.hasNextPage) {
+        return lastPage.data.pagination.page + 1;
+      }
+    },
+  });
 
-  const { data, isLoading, isError } = query;
+  const items =
+    tab === 'saved'
+      ? (data?.pages.flatMap(
+          page => (page.data.user as IUserWithOwnFavorites).favorites
+        ) ?? [])
+      : (data?.pages.flatMap(
+          page => (page.data.user as IUserWithOwnStories).stories
+        ) ?? []);
 
-  const { data: meData } = useQuery({
-    queryKey: ['currentUser'],
-    queryFn: () => fetchCurrentUser(),
-    staleTime: 1000 * 60 * 5,
-  }) as unknown as UseQueryResult<IApiResponse, Error>;
-
-  const currentUser = meData?.data?.user as IUser | undefined;
-
-  const normalizedData = React.useMemo(() => {
-    if (!data) return null;
-
-    return {
-      page: data?.page || page,
-      perPage: data?.perPage || perPage,
-      totalPages: data?.totalPages || 0,
-      totalItems: data?.totalItems || 0,
-      hasNextPage: data?.hasNextPage || false,
-      hasPreviousPage: data?.hasPreviousPage || false,
-      data:
-        ((data as Record<string, unknown>)?.data as Record<string, unknown>)
-          ?.articles ||
-        data?.data ||
-        [],
-    } as {
-      page: number;
-      perPage: number;
-      totalPages: number;
-      totalItems: number;
-      hasNextPage: boolean;
-      hasPreviousPage: boolean;
-      data: unknown[];
-    };
-  }, [data, page, perPage]);
-
-  const items = (normalizedData?.data ?? []) as IStory[];
+  const currentUser = data?.pages[0]?.data.user;
 
   const handleExploreStories = () => router.push('/stories');
   const handleCreateStory = () => router.push('/stories/create');
-
-  useEffect(() => {
-    setPage(1);
-  }, [perPage]);
-
-  useEffect(() => {
-    if (!normalizedData) return;
-
-    const nextPage = (normalizedData.page || page) + 1;
-    if (normalizedData.hasNextPage) {
-      queryClient.prefetchQuery({
-        queryKey: ['profile', tab, nextPage, perPage],
-        queryFn: async () =>
-          tab === 'saved'
-            ? await fetchSavedStories(perPage, nextPage)
-            : await fetchMyStories(perPage, nextPage),
-      });
-    }
-  }, [normalizedData, page, perPage, tab, queryClient]);
 
   return (
     <>
@@ -139,7 +107,6 @@ const ProfilePage: React.FC = () => {
               }
               onClick={() => {
                 setTab('saved');
-                setPage(1);
               }}
               aria-pressed={tab === 'saved'}
             >
@@ -152,7 +119,6 @@ const ProfilePage: React.FC = () => {
               }
               onClick={() => {
                 setTab('own');
-                setPage(1);
               }}
               aria-pressed={tab === 'own'}
             >
@@ -165,18 +131,12 @@ const ProfilePage: React.FC = () => {
           ) : isError ? (
             <ErrorMessage />
           ) : items.length > 0 ? (
-            <>
-              <TravellersStories stories={items} />
-              {normalizedData && (normalizedData?.totalPages || 0) > 1 && (
-                <div className={styles.paginationWrapper}>
-                  <Pagination
-                    totalPages={normalizedData?.totalPages || 0}
-                    currentPage={page}
-                    onPageChange={setPage}
-                  />
-                </div>
-              )}
-            </>
+            <TravellersStories
+              onLoadMore={fetchNextPage}
+              hasNextPage={hasNextPage}
+              isFetchingNextPage={isFetchingNextPage}
+              stories={items}
+            />
           ) : tab === 'saved' ? (
             <MessageNoStories
               text="У вас ще немає збережених історій, мерщій збережіть вашу першу історію!"
