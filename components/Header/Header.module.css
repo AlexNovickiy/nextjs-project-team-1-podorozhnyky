@@ -61,10 +61,10 @@
 
 .mobileMenuButtonNoTransparent {
   border: 1px solid var(--border);
-  background: : var(--opacity-neutral-darkest-5);
+  background: var(--opacity-neutral-darkest-5);
 }
 .mobileMenuButtonTransparent {
-  fill:var(--color-white, #fff);
+  fill: var(--color-white, #fff);
   border: 1px solid rgba(255, 255, 255, 0);
   background: rgba(255, 255, 255, 0.1);
 }
@@ -95,7 +95,7 @@
     align-items: center;
   }
 }
-@media screen and (min-width: 1440) {
+@media screen and (min-width: 1440px) {
   .mobileMenuButton,
   .mobileMenuButtonBase,
   .mobileMenuButtonNoTransparent,

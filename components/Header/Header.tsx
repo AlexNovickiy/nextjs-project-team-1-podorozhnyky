@@ -31,7 +31,7 @@ export default function Header() {
   };
 
   const pathname = usePathname();
-  const isHomePage = pathname === '/';
+  const isHomePage = pathname === '/' || pathname === '';
 
   const finalHeaderClass = isHomePage
     ? `${css.header} ${css.headerTransparent}`

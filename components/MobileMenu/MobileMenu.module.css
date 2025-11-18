@@ -113,7 +113,7 @@
   font-size: 12px;
 }
 .userDefaultPhoto {
-  background-image: url(/header/placeholder-image.png);
+  background-image: url(/placeholder-image.png);
   background-position: center;
   background-size: cover;
   border-radius: 50%;
