@@ -13,6 +13,7 @@ import css from './TravellersStoriesItem.module.css';
 import ConfirmDeleteContent from '@/components/ConfirmDeleteContent/ConfirmDeleteContent';
 import Modal from '@/components/Modal/Modal';
 import { useQueryClient } from '@tanstack/react-query';
+import ConfirmModal from '../ConfirmModal/ConfirmModal';
 
 interface TravellersStoriesItemProps {
   story: IStory | undefined;
@@ -28,6 +29,7 @@ export const TravellersStoriesItem = ({
   const [isLoading, setIsLoading] = useState(false);
   const [bookmarkCounter, setBookmarkCounter] = useState(story?.favoriteCount);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const user = useAuthStore(state => state.user);
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
@@ -55,7 +57,8 @@ export const TravellersStoriesItem = ({
 
   const handleBookmarkClick = async (storyId: string) => {
     if (!isAuthenticated) {
-      return router.push('/auth/register');
+      setShowConfirmModal(true);
+      return;
     }
 
     try {
@@ -226,6 +229,20 @@ export const TravellersStoriesItem = ({
           )}
         </div>
       </li>
+      {showConfirmModal && (
+        <ConfirmModal
+          onConfirm={() => {
+            router.push('/auth/login');
+          }}
+          onCancel={() => {
+            router.push('/auth/register');
+          }}
+          title="Помилка під час збереження"
+          text="Щоб зберегти статтю вам треба увійти, якщо ще немає облікового запису зареєструйтесь"
+          confirmButtonText="Увійти"
+          cancelButtonText="Зареєструватись"
+        />
+      )}
     </>
   );
 };

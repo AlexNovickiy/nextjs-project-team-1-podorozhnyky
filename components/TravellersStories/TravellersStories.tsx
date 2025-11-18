@@ -28,19 +28,16 @@ const TravellersStories = ({
           <TravellersStoriesItem story={story} isOwn={isOwn} key={story._id} />
         ))}
       </ul>
-      {onLoadMore &&
-        hasNextPage &&
-        !isFetchingNextPage &&
-        !isHiddenOnMobileButton && (
-          <button
-            className={css.paginationButton}
-            type="button"
-            onClick={onLoadMore}
-            disabled={isFetchingNextPage}
-          >
-            {isFetchingNextPage ? 'Завантаження…' : 'Показати ще'}
-          </button>
-        )}
+      {onLoadMore && hasNextPage && !isHiddenOnMobileButton && (
+        <button
+          className={css.paginationButton}
+          type="button"
+          onClick={onLoadMore}
+          disabled={isFetchingNextPage}
+        >
+          {isFetchingNextPage ? 'Завантаження…' : 'Показати ще'}
+        </button>
+      )}
     </>
   );
 };

@@ -9,15 +9,17 @@ interface OptionType {
 interface SelectInputProps {
   options: OptionType[];
   onChange: (option: SingleValue<OptionType>) => void;
+  value: OptionType;
 }
 
-const SelectInput = ({ options, onChange }: SelectInputProps) => {
+const SelectInput = ({ options, onChange, value }: SelectInputProps) => {
   return (
     <Select<OptionType>
       options={options}
       components={{ IndicatorSeparator: () => null }}
       isSearchable={false}
       defaultValue={options[0]}
+      value={value}
       onChange={(option: SingleValue<OptionType>) => {
         onChange(option);
       }}
