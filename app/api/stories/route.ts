@@ -4,6 +4,7 @@ import { isAxiosError } from 'axios';
 import { NextResponse, NextRequest } from 'next/server';
 import { logErrorResponse } from '../_utils/utils';
 import { api } from '../api';
+import { cookies } from 'next/headers';
 
 export async function GET(req: NextRequest) {
   try {
@@ -36,5 +37,41 @@ export async function GET(req: NextRequest) {
       { error: 'Internal Server Error' },
       { status: 500 }
     );
+  }
+}
+
+
+export async function POST(request: Request) {
+ try {
+  const cookieStore = await cookies();
+
+  const accessToken = cookieStore.get('accessToken');
+  if(!accessToken) {
+   return NextResponse.json(
+    { message: 'Unauthorized' }, 
+    { status: 401 });
+  }
+
+  const formData = await request.formData();
+  console.log(formData);
+  const res = await api.post('/stories', formData, {
+   headers: {
+    Cookie: cookieStore.toString(),
+   }
+  });
+
+  return NextResponse.json(res.data, { status: res.status });
+ } catch (error) {
+    if (isAxiosError(error)) {
+      logErrorResponse(error.response?.data);
+      return NextResponse.json(
+        { error: error.message, response: error.response?.data },
+        { status: error.status }
+      );
+    }
+    logErrorResponse({ message: (error as Error).message });
+    return NextResponse.json(
+     { error: 'Internal Server Error' }, 
+     { status: 500 })
   }
 }

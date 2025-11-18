@@ -11,23 +11,20 @@ import {
 } from '@/types/auth';
 import { ICategory } from '@/types/category';
 import {
-  CreateStory,
   CreateStoryResponse,
   IStory,
   PaginatedStoriesResponse,
-  UpdateStory,
   UpdateStoryResponse,
 } from '@/types/story';
 import {
   IApiResponse,
+  IFavoritesResponse,
   IUser,
   PaginatedUsersResponse,
   UpdateUser,
 } from '@/types/user';
 import { nextServer } from './api';
-
 // === AUTH ===
-
 export const login = async (credentials: LoginCredentials) => {
   const { data } = await nextServer.post<AuthResponseLogin>(
     '/auth/login',
@@ -49,6 +46,7 @@ export const sendResetEmail = async (
 ): Promise<void> => {
   await nextServer.post('/auth/send-reset-email', credentials);
 };
+
 export const resetPwd = async (
   credentials: AuthResetPwdCredentials
 ): Promise<void> => {
@@ -64,10 +62,12 @@ export const checkSession = async (): Promise<boolean> => {
   const { data } = await nextServer.post<AuthResponseRefresh>('/auth/session');
   return data.success;
 };
+
 export const getGoogleAuthUrl = async () => {
   const res = await nextServer.get('/auth/google-url');
   return res.data?.data ?? { url: '' };
 };
+
 export const loginWithGoogle = (body: { code: string }) =>
   nextServer.post('/auth/login/google', body);
 
@@ -90,17 +90,16 @@ export const fetchStories = async (
       category,
     },
   });
-
   return data.data;
 };
 
 export const fetchStoryById = async (storyId: string): Promise<IStory> => {
-  const { data } = await nextServer.get<IStory>(`/stories/${storyId}`);
-  return data;
+  const { data } = await nextServer.get(`/stories/${storyId}`);
+  return data.data;
 };
 
 export const createStory = async (
-  storyData: CreateStory
+  storyData: FormData
 ): Promise<CreateStoryResponse> => {
   const { data } = await nextServer.post<CreateStoryResponse>(
     '/stories',
@@ -111,9 +110,9 @@ export const createStory = async (
 
 export const updateStory = async (
   storyId: string,
-  storyData: UpdateStory
+  storyData: FormData
 ): Promise<UpdateStoryResponse> => {
-  const { data } = await nextServer.put<UpdateStoryResponse>(
+  const { data } = await nextServer.patch<UpdateStoryResponse>(
     `/stories/${storyId}`,
     storyData
   );
@@ -149,13 +148,22 @@ export const updateProfile = async (
   return data;
 };
 
-export const addFavorite = async (storyId: string): Promise<IUser> => {
-  const { data } = await nextServer.post<IUser>(`/me/favorites/${storyId}`);
+export const addFavorite = async (
+  storyId: string
+): Promise<IFavoritesResponse> => {
+  const { data } = await nextServer.post<IFavoritesResponse>(
+    `/users/me/favorites`,
+    { storyId }
+  );
   return data;
 };
 
-export const removeFavorite = async (storyId: string): Promise<IUser> => {
-  const { data } = await nextServer.delete<IUser>(`/me/favorites/${storyId}`);
+export const removeFavorite = async (
+  storyId: string
+): Promise<IFavoritesResponse> => {
+  const { data } = await nextServer.delete<IFavoritesResponse>(
+    `/users/me/favorites/${storyId}`
+  );
   return data;
 };
 

@@ -1,5 +1,28 @@
-export type StoryPageProps = { params: { storyId: string } };
+// import Popular from '@/components/Popular/Popular';
+import StoryDetails from '@/components/StoryDetails/StoryDetails';
+import { fetchStoryById } from '@/lib/api/serverApi';
+import style from '../../../../Home.module.css';
+import css from './StoryPage.module.css';
+import { Popular } from '@/components/Popular/Popular';
 
-export default function StoryPage({ params }: StoryPageProps) {
-  return <div>StoryPage</div>;
+type StoryPageProps = {
+  params: Promise<{
+    storyId: string;
+  }>;
+};
+
+export default async function StoryPage({ params }: StoryPageProps) {
+  const { storyId } = await params;
+
+  const story = await fetchStoryById(storyId);
+
+  return (
+    <section className={css.page} aria-label="story page">
+      <div className={style.container}>
+        <h1 className={css.title}>{story.title}</h1>
+        <StoryDetails storyId={storyId} />
+        <Popular mobile={2} tablet={4} desktop={3} showLoadMore={false} />
+      </div>
+    </section>
+  );
 }
