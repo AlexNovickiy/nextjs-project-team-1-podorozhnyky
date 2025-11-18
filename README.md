@@ -16,7 +16,7 @@
 - [API Documentation](##📄-api-documentation)
 - [Demo](##🎬-demo)
 - [Environment Variables](#env-environment-variables)
-- [Deploy](##☁️-deploy-backend-nodejs--mongodb-to-render)
+- [Deploy](##☁️-deploy-backend-nodejs--mongodb-to-versel)
 - [MongoDB Atlas](##🍃-mongodb-atlas)
 - [Contributing](##🤝-contributing)
 
@@ -176,20 +176,19 @@ The platform allows users to:
     NEXT_PUBLIC_API_URL=http://localhost:3000
     NODE_BACKEND_URL=https://node-js-project-team-1.onrender.com
 
-## ☁️ Deploy Backend (Node.js + MongoDB) to Render
+## ☁️ Deploy Backend (Node.js + MongoDB) to Vercel
 
-Go to https://render.com 
-Create → Web Service
-Deploy from GitHub repo
-
-Build Command: npm install
-Start Command: npm start
-
-
-Add: ENV variables
-Autoscaling OFF
-
-Deploy
+1. Go to https://vercel.com  
+2. Click **Add New → Project**  
+3. Import your backend GitHub repository  
+4. Set:
+   - **Framework Preset:** Other  
+   - **Root Directory:** /server (or project root)  
+   - **Install Command:** npm install  
+   - **Build Command:** —  
+   - **Start Command:** npm start  
+5. Add your environment variables (DATABASE_URL, JWT_SECRET, Cloudinary, etc.)  
+6. Deploy  
 
 ## 🍃 MongoDB Atlas
 
