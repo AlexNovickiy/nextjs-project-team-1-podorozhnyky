@@ -12,9 +12,36 @@ export interface IUser {
   updatedAt: string;
 }
 
+export interface IUserWithOwnFavorites extends IUser {
+  favorites: IStory[];
+}
+
+export interface IUserWithOwnStories extends IUser {
+  stories: IStory[];
+}
+
+export interface IOwnStoriesResponse {
+  status: number;
+  message: string;
+  data: {
+    user: IUserWithOwnStories;
+    pagination: IPagination;
+  };
+}
+
+export interface IOwnFavoritesResponse {
+  status: number;
+  message: string;
+  data: {
+    user: IUserWithOwnFavorites;
+    pagination: IPagination;
+  };
+}
+
 export interface IFavoritesResponse {
   favorites: IStory[];
 }
+
 export interface IApiResponse {
   data: { user: IUser };
 }

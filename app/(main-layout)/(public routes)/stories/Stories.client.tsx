@@ -37,9 +37,6 @@ const StoriesClient = () => {
   ];
 
   const [category, setCategory] = useState<OptionType | null>(options[0]);
-  const [selectedId, setSelectedId] = useState<string | null>(
-    options[0]?._id ?? null
-  );
 
   const [width, setWidth] = useState<number | null>(null);
 
@@ -79,7 +76,6 @@ const StoriesClient = () => {
 
   const handleClick = (option: OptionType | null) => {
     setCategory(option);
-    setSelectedId(option?._id ?? null);
   };
 
   return (
@@ -88,7 +84,11 @@ const StoriesClient = () => {
       {isMobile ? (
         <div className={css.mobileCategories}>
           <p className={css.categoryTitle}>Категорії</p>
-          <SelectInput options={options} onChange={setCategory} />
+          <SelectInput
+            options={options}
+            onChange={setCategory}
+            value={category ?? options[0]}
+          />
         </div>
       ) : (
         <div className={css.categories}>
@@ -97,7 +97,7 @@ const StoriesClient = () => {
               <li key={option._id} className={css.categoriesItem}>
                 <button
                   className={`${css.categoriesButton} ${
-                    selectedId === option._id ? css.categoriesSelected : ''
+                    category?._id === option._id ? css.categoriesSelected : ''
                   }`}
                   onClick={() => handleClick(option)}
                 >

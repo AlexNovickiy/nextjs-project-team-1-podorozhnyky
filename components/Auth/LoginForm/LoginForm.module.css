@@ -6,10 +6,10 @@
   color: var(--text);
   transition: all 0.3s ease;
 }
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 1000px var(--background) inset !important;
   -webkit-text-fill-color: var(--text) !important;
   transition: background-color 9999s ease-in-out 0s;
@@ -119,16 +119,8 @@ input:-webkit-autofill:active {
   scale: 1.05;
 }
 
-.status {
-  position: absolute;
-  width: 100%;
-  bottom: 145px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 14px;
-  color: var(--color-red);
-  text-align: center;
-  margin-top: 8px;
+.icon_error {
+  color: red;
 }
 
 .submitBtn {

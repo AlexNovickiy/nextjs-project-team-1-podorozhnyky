@@ -6,14 +6,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import { logErrorResponse } from '../../_utils/utils';
 import { api } from '../../api';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const cookieStore = await cookies();
+    const page = request.nextUrl.searchParams.get('page') || '1';
+    const perPage = request.nextUrl.searchParams.get('perPage') || '10';
 
     const res = await api.get('/users/me', {
       headers: {
         Cookie: cookieStore.toString(),
       },
+      params: { perPage, page },
     });
     return NextResponse.json(res.data, { status: res.status });
   } catch (error) {

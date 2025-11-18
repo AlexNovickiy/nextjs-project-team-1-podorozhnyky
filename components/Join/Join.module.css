@@ -67,6 +67,13 @@
   border-radius: 8px;
 }
 
+.button:hover,
+.button:focus {
+  background-color: var(--color-white);
+  border: 1px solid #365fce;
+  color: var(--color-neutral-darkest);
+}
+
 @media (min-width: 768px) {
   .texts {
     padding: 32px;
