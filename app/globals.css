@@ -62,6 +62,8 @@
   --color-scheme-2-input-text: var(--opacity-neutral-darkest-60);
   --color-scheme-2-background-footer: var(--color-royal-blue-lighter);
   --color-scheme-2-button-cancel-color: var(--color-neutral-dark);
+  --color-scheme-2-tabs-background: var(--color-royal-blue-lighter);
+  --color-scheme-3-background: var(--color-white);
   /* === Color Scheme 3 (Dark) === */
   --color-scheme-3-background: var(--color-neutral-darker);
   --color-scheme-3-text: var(--color-white);
@@ -71,6 +73,7 @@
   --color-scheme-3-input-text: var(--opacity-white-60);
   --color-scheme-3-background-footer: var(--color-neutral-dark);
   --color-scheme-3-button-cancel-color: var(--color-white);
+  --color-scheme-3-tabs-background: var(--color-neutral-dark);
 }
 
 /* =========================================
@@ -120,6 +123,8 @@
   --background-footer: var(--color-scheme-2-background-footer);
   --button-cancel-color: var(--color-scheme-2-button-cancel-color);
   --input-text-color: var(--color-scheme-2-input-text);
+  --tabs-background: var(--color-scheme-2-tabs-background);
+  --tabs-active-background: var(--color-scheme-2-background);
 }
 
 :root[data-theme='color-scheme-3'] {
@@ -143,6 +148,8 @@
   --background-footer: var(--color-scheme-3-background-footer);
   --button-cancel-color: var(--color-scheme-3-button-cancel-color);
   --input-text-color: var(--color-scheme-3-input-text);
+  --tabs-background: var(--color-scheme-3-tabs-background);
+  --tabs-active-background: var(--color-scheme-3-background);
 }
 
 html,

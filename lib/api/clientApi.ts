@@ -19,6 +19,8 @@ import {
 import {
   IApiResponse,
   IFavoritesResponse,
+  IOwnFavoritesResponse,
+  IOwnStoriesResponse,
   IUser,
   PaginatedUsersResponse,
   UpdateUser,
@@ -171,4 +173,29 @@ export const removeFavorite = async (
 export const fetchCategories = async (): Promise<ICategory[]> => {
   const { data } = await nextServer.get('/categories');
   return data.data;
+};
+
+// === PROFILE / ME STORIES ===
+// Повертає пагінований список історій, створених поточним користувачем
+export const fetchUserWithOwnFavorites = async (
+  perPage: string,
+  page: string
+): Promise<IOwnFavoritesResponse> => {
+  const { data } = await nextServer.get('/users/me', {
+    params: { perPage, page },
+  });
+
+  return data;
+};
+
+// Повертає пагінований список збережених історій поточного користувача
+export const fetchUserWithOwnStories = async (
+  perPage: string,
+  page: string
+): Promise<IOwnStoriesResponse> => {
+  const { data } = await nextServer.get('/users/me/stories', {
+    params: { perPage, page },
+  });
+
+  return data;
 };

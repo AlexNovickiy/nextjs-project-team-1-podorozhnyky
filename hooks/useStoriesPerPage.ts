@@ -3,9 +3,9 @@
 import { useEffect, useState } from 'react';
 
 type PerPageConfig = {
-  desktop?: number;  // >=1440
-  tablet?: number;   // 768–1439
-  mobile?: number;   // <768
+  desktop?: number; // >=1440
+  tablet?: number; // 768–1439
+  mobile?: number; // <768
 };
 
 const DEFAULT_CONFIG: Required<PerPageConfig> = {
@@ -20,7 +20,14 @@ export function useStoriesPerPage(config?: PerPageConfig) {
     ...config,
   };
 
-  const [perPage, setPerPage] = useState(settings.desktop);
+  const [perPage, setPerPage] = useState(() => {
+    if (typeof window === 'undefined') return settings.desktop;
+
+    const width = window.innerWidth;
+    if (width >= 1440) return settings.desktop;
+    if (width >= 768) return settings.tablet;
+    return settings.mobile;
+  });
 
   useEffect(() => {
     const calc = () => {
@@ -31,7 +38,6 @@ export function useStoriesPerPage(config?: PerPageConfig) {
       else setPerPage(settings.mobile);
     };
 
-    calc();
     window.addEventListener('resize', calc);
     return () => window.removeEventListener('resize', calc);
   }, [settings.desktop, settings.tablet, settings.mobile]);
