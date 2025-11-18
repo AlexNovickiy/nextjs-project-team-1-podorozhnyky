@@ -5,6 +5,7 @@ import axios from 'axios';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import * as Yup from 'yup';
 import { register } from '../../../lib/api/clientApi';
@@ -44,32 +45,40 @@ export default function RegistrationForm() {
       setStatus,
     }: {
       setSubmitting: (s: boolean) => void;
-      setStatus: (s: string | null) => void;
+      setStatus: (s: boolean) => void;
     }
   ) => {
     try {
-      setStatus(null);
+      setStatus(false);
+
       const { data } = await register(values);
       setUser(data.user);
+
+      toast.success('Реєстрація успішна!');
       router.push('/');
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         const status = err.response?.status;
 
         if (status === 400) {
-          setStatus('Некоректні дані для реєстрації.');
-          return;
-        }
-        if (status === 409) {
-          setStatus('Користувач з такою поштою вже існує.');
+          toast.error('Некоректні дані для реєстрації.');
+          setStatus(true);
           return;
         }
 
-        setStatus('Реєстрація не виконана. Спробуйте ще раз.');
+        if (status === 409) {
+          toast.error('Користувач з такою поштою вже існує.');
+          setStatus(true);
+          return;
+        }
+
+        toast.error('Реєстрація не виконана. Спробуйте ще раз.');
+        setStatus(true);
         return;
       }
 
-      setStatus('Невідома помилка. Спробуйте ще раз.');
+      toast.error('Невідома помилка. Спробуйте ще раз.');
+      setStatus(true);
     } finally {
       setSubmitting(false);
     }
@@ -98,6 +107,7 @@ export default function RegistrationForm() {
               Раді вас бачити у спільноті мандрівників!
             </p>
 
+            {/* NAME FIELD */}
             <div className={css.field}>
               <label htmlFor="name" className={css.label}>
                 Імʼя та Прізвище*
@@ -112,12 +122,13 @@ export default function RegistrationForm() {
                 }`}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   handleChange(e);
-                  if (status) setStatus(null);
+                  if (status) setStatus(false);
                 }}
               />
               <ErrorMessage name="name" component="div" className={css.error} />
             </div>
 
+            {/* EMAIL FIELD */}
             <div className={css.field}>
               <label htmlFor="email" className={css.label}>
                 Пошта*
@@ -134,7 +145,7 @@ export default function RegistrationForm() {
                 }`}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   handleChange(e);
-                  if (status) setStatus(null);
+                  if (status) setStatus(false);
                 }}
               />
               <ErrorMessage
@@ -144,6 +155,7 @@ export default function RegistrationForm() {
               />
             </div>
 
+            {/* PASSWORD FIELD */}
             <div className={css.field}>
               <label htmlFor="password" className={css.label}>
                 Пароль*
@@ -161,9 +173,10 @@ export default function RegistrationForm() {
                   }`}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     handleChange(e);
-                    if (status) setStatus(null);
+                    if (status) setStatus(false);
                   }}
                 />
+
                 <button
                   type="button"
                   className={css.togglePassword}
@@ -172,6 +185,7 @@ export default function RegistrationForm() {
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
+
               <ErrorMessage
                 name="password"
                 component="div"
@@ -179,8 +193,7 @@ export default function RegistrationForm() {
               />
             </div>
 
-            {status && <div className={css.status}>{status}</div>}
-
+            {/* SUBMIT BUTTON */}
             <button
               type="submit"
               disabled={!isValid || isSubmitting}
@@ -188,6 +201,7 @@ export default function RegistrationForm() {
             >
               {isSubmitting ? 'Реєстрація...' : 'Зареєструватись'}
             </button>
+
             <LoginGoogleBtn />
           </Form>
         )}

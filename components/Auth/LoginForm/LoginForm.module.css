@@ -119,16 +119,8 @@
   scale: 1.05;
 }
 
-.status {
-  position: absolute;
-  width: 100%;
-  bottom: 145px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 14px;
-  color: var(--color-red);
-  text-align: center;
-  margin-top: 8px;
+.icon_error {
+  color: red;
 }
 
 .submitBtn {

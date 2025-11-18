@@ -8,14 +8,27 @@ export const nextServer = axios.create({
 let isRefreshing = false;
 let refreshPromise: Promise<boolean> | null = null;
 
+const authPaths = [
+  '/auth/login',
+  '/auth/register',
+  '/auth/send-reset-email',
+  '/auth/reset-password',
+];
+
 nextServer.interceptors.response.use(
   response => response,
 
   async error => {
     const originalRequest = error.config;
+
     if (error.response?.status !== 401) {
       return Promise.reject(error);
     }
+
+    if (authPaths.some(path => originalRequest.url?.includes(path))) {
+      return Promise.reject(error);
+    }
+
     if (originalRequest._retry) {
       return Promise.reject(error);
     }
