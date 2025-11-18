@@ -4,24 +4,14 @@ import { fetchAuthors } from '@/lib/api/clientApi';
 import TravellersList from '@/components/TravellersList/TravellersList';
 import css from './Travellers.module.css';
 import mainCss from '@/app/Home.module.css';
-import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useState, useMemo } from 'react';
 import Loader from '@/components/Loader/Loader';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
+import { useStoriesPerPage } from '@/hooks/useStoriesPerPage';
 
 const TravellersClient = () => {
-  const [width, setWidth] = useState<number | null>(null);
-  const [visibleCount, setVisibleCount] = useState(0);
-
-  useEffect(() => {
-    const handleResize = () => setWidth(window.innerWidth);
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const isDesctop = width !== null && width >= 1440;
-  const perPage = isDesctop ? 12 : 8;
+  const perPage = useStoriesPerPage({ desktop: 12, tablet: 8, mobile: 8 });
 
   const {
     data,
@@ -41,7 +31,6 @@ const TravellersClient = () => {
       lastPageParam.data.pageInfo.hasNextPage
         ? lastPageParam.data.pageInfo.page + 1
         : undefined,
-    placeholderData: keepPreviousData,
     refetchOnMount: false,
   });
 
@@ -49,21 +38,25 @@ const TravellersClient = () => {
     return data?.pages.flatMap(p => p.data.users) ?? [];
   }, [data?.pages]);
 
+  const [visibleCount, setVisibleCount] = useState(perPage);
+
   useEffect(() => {
-    if (allUsers.length > 0) {
-      setVisibleCount(perPage);
-    }
-  }, [allUsers, perPage]);
+    setVisibleCount(perPage);
+  }, [perPage]);
 
   const visibleUsers = allUsers.slice(0, visibleCount);
+
   const handleLoadMore = () => {
-    if (visibleCount < allUsers.length) {
-      setVisibleCount(prev => prev + 4);
+    const newVisibleCount = visibleCount + 4;
+
+    if (newVisibleCount <= allUsers.length) {
+      setVisibleCount(newVisibleCount);
       return;
     }
-    if (hasNextPage) {
+
+    if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage().then(() => {
-        setVisibleCount(prev => prev + 4);
+        setVisibleCount(newVisibleCount);
       });
     }
   };
