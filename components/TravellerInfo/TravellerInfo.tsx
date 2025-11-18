@@ -9,18 +9,6 @@ import Image from 'next/image';
 
 type TravellerInfoProps = { travellerId?: string; traveller?: IUser | null };
 
-// const MOCK_TRAVELLER: IUser = {
-//   _id: 'mock-1',
-//   name: 'Дмитро Романенко',
-//   description:
-//     'Привіт! Я Дмитро. Люблю знаходити приховані перлини у кожній поїздці та ділитися ними. Світ повний дивовижних відкриттів!',
-//   avatarUrl: '/images/avatar.jpg',
-//   email: 'alex@example.com',
-//   favorites: [],
-//   createdAt: new Date().toISOString(),
-//   updatedAt: new Date().toISOString(),
-// };
-
 const TravellerInfo: React.FC<TravellerInfoProps> = ({
   travellerId,
   traveller,
@@ -28,9 +16,7 @@ const TravellerInfo: React.FC<TravellerInfoProps> = ({
   const [localTraveller, setLocalTraveller] = useState<IUser | null>(
     traveller ?? null
   );
-  // const [localTraveller, setLocalTraveller] = useState<IUser | null>(
-  //   traveller ?? MOCK_TRAVELLER
-  // );
+ 
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
