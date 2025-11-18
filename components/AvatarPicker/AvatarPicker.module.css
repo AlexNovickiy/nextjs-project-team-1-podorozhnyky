@@ -1,0 +1,59 @@
+.label {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: var(--color-scheme-1-text);
+}
+
+.avatarBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.avatarContainer {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.avatar {
+  width: 117px;
+  height: 117px;
+  border-radius: 100%;
+  background: #f2f2f2;
+  object-fit: cover;
+}
+
+.uploadFotoBtn {
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  color: var(--color-neutral-darkest);
+  border: 1px solid var(--color-scheme-2-border);
+  border-radius: 8px;
+  padding: 4px 4px;
+  max-width: 163px;
+
+  height: 32px;
+  background: var(--opacity-neutral-darkest-5);
+}
+
+.uploadFotoBtn:hover,
+.uploadFotoBtn:focus {
+  background-color: var(--button-hover);
+  border-color: var(--opacity-transparent);
+  color: var(--button-hover-text);
+}
+
+.uploadFotoBtn:active {
+  background-color: var(--button-active);
+  border-color: var(--opacity-transparent);
+  color: var(--button-hover-text);
+}
+
+.fileInput {
+  display: none;
+}

@@ -128,12 +128,17 @@ export const fetchAuthorById = async (
   const { data } = await nextServer.get(`/users/${userId}`);
   return data;
 };
-export const updateProfile = async (
-  profileData: UpdateUser
-): Promise<IUser> => {
-  const { data } = await nextServer.put<IUser>('/me/profile', profileData);
+
+export const updateProfile = async (formData: FormData): Promise<IUser> => {
+  const { data } = await nextServer.patch<IUser>('/users/me', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
   return data;
 };
+
 export const addFavorite = async (
   storyId: string
 ): Promise<IFavoritesResponse> => {
