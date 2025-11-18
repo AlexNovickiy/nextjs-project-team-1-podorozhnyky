@@ -127,7 +127,7 @@ export default function Header() {
               </nav>
 
               {isAuthenticated && (
-                <button className={`${css.storyTablet} ${finalStoryTabButton}`}>
+                <div className={`${css.storyTablet} ${finalStoryTabButton}`}>
                   <Link
                     href="/stories/create/"
                     className={css.storyTabletLink}
@@ -135,7 +135,7 @@ export default function Header() {
                   >
                     Опублікувати Історію
                   </Link>
-                </button>
+                </div>
               )}
 
               <button
