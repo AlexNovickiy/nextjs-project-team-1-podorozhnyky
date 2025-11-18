@@ -129,6 +129,7 @@ export default async function TravellerPage({ params }: PageProps) {
               text="Цей користувач ще не публікував історій"
               buttonText="Назад до історій"
               route="/stories"
+              className={css.no_message}
             />
           )}
         </div>
