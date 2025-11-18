@@ -234,13 +234,11 @@ export const TravellersStoriesItem = ({
           onConfirm={() => {
             router.push('/auth/login');
           }}
-          onCancel={() => {
-            router.push('/auth/register');
-          }}
+          onCancel={() => setShowConfirmModal(false)}
           title="Помилка під час збереження"
           text="Щоб зберегти статтю вам треба увійти, якщо ще немає облікового запису зареєструйтесь"
           confirmButtonText="Увійти"
-          cancelButtonText="Зареєструватись"
+          cancelButtonText="Скасувати"
         />
       )}
     </>
