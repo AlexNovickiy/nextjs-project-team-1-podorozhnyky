@@ -90,6 +90,7 @@ export default function Header() {
                         <button
                           className={css.logoutButtonSvg}
                           onClick={() => setIsOpenConfirmModal(true)}
+                          aria-label='Log out of the account'
                         >
                           <svg width="24" height="24">
                             <use href="/sprite.svg#icon-logout" />

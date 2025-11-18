@@ -24,6 +24,7 @@ export default function Footer() {
                     className={css.links_icon}
                     target="_blank"
                     href="https://www.facebook.com/"
+                    aria-label='Go to Facebook'
                   >
                     <svg className={css.footer_icon} width="32" height="32">
                       <use href="/sprite.svg#icon-Facebook" />
@@ -35,6 +36,7 @@ export default function Footer() {
                     className={css.links_icon}
                     target="_blank"
                     href="https://www.instagram.com/"
+                    aria-label='Go to Instagram'
                   >
                     <svg className={css.footer_icon} width="32" height="32">
                       <use href="/sprite.svg#icon-Instagram" />
@@ -46,6 +48,7 @@ export default function Footer() {
                     className={css.links_icon}
                     target="_blank"
                     href="https://x.com/"
+                    aria-label='Go to Twitter'
                   >
                     <svg className={css.footer_icon} width="32" height="32">
                       <use href="/sprite.svg#icon-X" />
@@ -57,6 +60,7 @@ export default function Footer() {
                     className={css.links_icon}
                     target="_blank"
                     href="https://www.youtube.com/"
+                    aria-label='Go to YouTube'
                   >
                     <svg className={css.footer_icon} width="32" height="32">
                       <use href="/sprite.svg#icon-Youtube" />
