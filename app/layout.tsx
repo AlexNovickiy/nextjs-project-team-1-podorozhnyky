@@ -76,7 +76,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           }}
         />
       </head>
-      <body className={`${nunitoSans.variable}`}>
+      <body aria-hidden="true" className={`${nunitoSans.variable}`}>
         <ThemeSync />
         <ThemeToggle />
         <TanStackProvider>
