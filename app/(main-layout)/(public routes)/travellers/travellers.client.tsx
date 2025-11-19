@@ -47,16 +47,13 @@ const TravellersClient = () => {
   const visibleUsers = allUsers.slice(0, visibleCount);
 
   const handleLoadMore = () => {
-    // ✅ Показуємо або +4, або скільки залишилось
     const newVisibleCount = Math.min(visibleCount + 4, allUsers.length);
 
-    // Якщо є ще користувачі в allUsers - просто показуємо їх
     if (newVisibleCount > visibleCount && newVisibleCount <= allUsers.length) {
       setVisibleCount(newVisibleCount);
       return;
     }
 
-    // Якщо показали всіх і є наступна сторінка - завантажуємо
     if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage().then(() => {
         setVisibleCount(prev => prev + 4);
