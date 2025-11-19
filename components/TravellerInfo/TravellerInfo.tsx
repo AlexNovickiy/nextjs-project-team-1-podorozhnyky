@@ -16,7 +16,7 @@ const TravellerInfo: React.FC<TravellerInfoProps> = ({
   const [localTraveller, setLocalTraveller] = useState<IUser | null>(
     traveller ?? null
   );
- 
+
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -29,7 +29,6 @@ const TravellerInfo: React.FC<TravellerInfoProps> = ({
         setIsLoading(true);
 
         const data = await fetchAuthorById(travellerId);
-        console.log('Loaded traveller data:', data.data);
         setLocalTraveller(data.data.user);
       } catch (error) {
         console.error('Помилка завантаження мандрівника:', error);
