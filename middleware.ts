@@ -1,10 +1,10 @@
+import { parse } from 'cookie';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { checkServerSession } from './lib/api/serverApi';
-import { parse } from 'cookie';
 
 const publicPaths = ['/auth/login', '/auth/register'];
-const privatePaths = ['/profile', '/stories-create', '/user-edit'];
+const privatePaths = ['/profile', '/stories/create', '/user-edit'];
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;

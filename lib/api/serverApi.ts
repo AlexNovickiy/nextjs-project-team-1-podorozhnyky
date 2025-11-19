@@ -1,44 +1,43 @@
-import { nextServer } from './api';
+import { AuthResponseLogout } from '@/types/auth';
+import { ICategory } from '@/types/category';
+import {
+  CreateStory,
+  CreateStoryResponse,
+  IStory,
+  IStoryByIdResponse,
+  PaginatedStoriesResponse,
+  UpdateStory,
+  UpdateStoryResponse,
+} from '@/types/story';
 import {
   IApiResponse,
   IUser,
   PaginatedUsersResponse,
   UpdateUser,
 } from '@/types/user';
-import {
-  PaginatedStoriesResponse,
-  IStory,
-  CreateStoryResponse,
-  UpdateStoryResponse,
-  UpdateStory,
-  CreateStory,
-  IStoryByIdResponse,
-} from '@/types/story';
-import { ICategory } from '@/types/category';
-import { AuthResponseRefresh, AuthResponseLogout } from '@/types/auth';
-import { AxiosResponse } from 'axios';
 import { cookies } from 'next/headers';
-import { number } from 'yup';
+import { nextServer } from './api';
 
 export const logout = async (): Promise<AuthResponseLogout> => {
   const { data } = await nextServer.post<AuthResponseLogout>('/auth/logout');
   return data;
 };
 
-export const checkServerSession = async (): Promise<
-  AxiosResponse<AuthResponseRefresh>
-> => {
+export const checkServerSession = async () => {
   const cookieStore = await cookies();
-  const response = await nextServer.post<AuthResponseRefresh>(
+
+  const res = await nextServer.post(
     '/auth/session',
     {},
     {
       headers: {
         Cookie: cookieStore.toString(),
       },
+      validateStatus: () => true,
     }
   );
-  return response;
+
+  return res;
 };
 
 // /me
