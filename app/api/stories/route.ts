@@ -40,28 +40,24 @@ export async function GET(req: NextRequest) {
   }
 }
 
-
 export async function POST(request: Request) {
- try {
-  const cookieStore = await cookies();
+  try {
+    const cookieStore = await cookies();
 
-  const accessToken = cookieStore.get('accessToken');
-  if(!accessToken) {
-   return NextResponse.json(
-    { message: 'Unauthorized' }, 
-    { status: 401 });
-  }
+    const accessToken = cookieStore.get('accessToken');
+    if (!accessToken) {
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
 
-  const formData = await request.formData();
-  console.log(formData);
-  const res = await api.post('/stories', formData, {
-   headers: {
-    Cookie: cookieStore.toString(),
-   }
-  });
+    const formData = await request.formData();
+    const res = await api.post('/stories', formData, {
+      headers: {
+        Cookie: cookieStore.toString(),
+      },
+    });
 
-  return NextResponse.json(res.data, { status: res.status });
- } catch (error) {
+    return NextResponse.json(res.data, { status: res.status });
+  } catch (error) {
     if (isAxiosError(error)) {
       logErrorResponse(error.response?.data);
       return NextResponse.json(
@@ -71,7 +67,8 @@ export async function POST(request: Request) {
     }
     logErrorResponse({ message: (error as Error).message });
     return NextResponse.json(
-     { error: 'Internal Server Error' }, 
-     { status: 500 })
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    );
   }
 }
