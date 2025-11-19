@@ -72,6 +72,18 @@ export const getGoogleAuthUrl = async () => {
 export const loginWithGoogle = (body: { code: string }) =>
   nextServer.post('/auth/login/google', body);
 
+export async function updateEmail(newEmail: string) {
+  const res = await nextServer.post('/auth/send-change-email', { newEmail });
+  return res.data;
+}
+export async function confirmEmail(token: string, newEmail: string) {
+  const { data } = await nextServer.post('/auth/confirm-email', {
+    token,
+    newEmail,
+  });
+  console.log(data);
+  return data.data;
+}
 // /me/current
 export const fetchCurrentUser = async (): Promise<IApiResponse> => {
   const { data } = await nextServer.get<IApiResponse>('/users/me');
