@@ -14,10 +14,8 @@ const authPaths = [
   '/auth/send-reset-email',
   '/auth/reset-password',
 ];
-
 nextServer.interceptors.response.use(
-  response => response,
-
+  res => res,
   async error => {
     const originalRequest = error.config;
 
@@ -25,7 +23,12 @@ nextServer.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    if (authPaths.some(path => originalRequest.url?.includes(path))) {
+    const isSessionCall = originalRequest.url?.endsWith('/auth/session');
+    if (isSessionCall) {
+      return Promise.reject(error);
+    }
+
+    if (authPaths.some(p => originalRequest.url?.includes(p))) {
       return Promise.reject(error);
     }
 
