@@ -10,6 +10,7 @@ import ChangeEmailModal from '../ChangeEmailModal/ChangeEmailModal';
 import Modal from '../Modal/Modal';
 
 import css from './EditProfile.module.css';
+import { AxiosError } from 'axios';
 
 const EditProfile = () => {
   const { user } = useAuthStore();
@@ -72,8 +73,12 @@ const EditProfile = () => {
         'На вашу стару пошту надіслано лист для підтвердження зміни.'
       );
       setIsEmailModalOpen(false);
-    } catch {
-      toast.error('Не вдалося змінити пошту');
+    } catch (error) {
+      if (error instanceof AxiosError && error.status === 409) {
+        toast.error('Пошта вже використовується іншим користувачем.');
+      } else {
+        toast.error('Не вдалося змінити пошту. Спробуйте ще раз.');
+      }
     }
   };
 
