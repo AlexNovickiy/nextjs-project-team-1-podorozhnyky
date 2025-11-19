@@ -65,6 +65,11 @@ export const TravellersStoriesItem = ({
       return;
     }
 
+    if (story?.ownerId._id === user?._id) {
+      toast.error('Ви не можете додати у вибране власну історію');
+      return;
+    }
+
     try {
       let updated: IFavoritesResponse;
 
