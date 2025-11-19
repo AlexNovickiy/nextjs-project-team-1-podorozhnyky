@@ -47,16 +47,19 @@ const TravellersClient = () => {
   const visibleUsers = allUsers.slice(0, visibleCount);
 
   const handleLoadMore = () => {
-    const newVisibleCount = visibleCount + 4;
+    // ✅ Показуємо або +4, або скільки залишилось
+    const newVisibleCount = Math.min(visibleCount + 4, allUsers.length);
 
-    if (newVisibleCount <= allUsers.length) {
+    // Якщо є ще користувачі в allUsers - просто показуємо їх
+    if (newVisibleCount > visibleCount && newVisibleCount <= allUsers.length) {
       setVisibleCount(newVisibleCount);
       return;
     }
 
+    // Якщо показали всіх і є наступна сторінка - завантажуємо
     if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage().then(() => {
-        setVisibleCount(newVisibleCount);
+        setVisibleCount(prev => prev + 4);
       });
     }
   };
