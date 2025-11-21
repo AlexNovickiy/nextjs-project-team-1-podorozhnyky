@@ -4,6 +4,7 @@ import axios from 'axios';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import * as Yup from 'yup';
 import { sendResetEmail } from '../../../lib/api/clientApi';
 import { openMailClient } from '../../../utils/openMailClient';
@@ -32,18 +33,22 @@ export default function SendResetEmailForm() {
         const status = err.response?.status;
 
         if (status === 400) {
+          toast.error('Некоректна пошта.');
           setMessage('Некоректна пошта.');
           return;
         }
         if (status === 404) {
+          toast.error('Користувача з даною поштою не існує.');
           setMessage('Користувача з даною поштою не існує.');
           return;
         }
         if (status === 500) {
+          toast.error('Помилка сервера. Спробуйте пізніше.');
           setMessage('Помилка сервера. Спробуйте пізніше.');
           return;
         }
       }
+      toast.error('Невідома помилка. Спробуйте ще раз.');
       setMessage('Невідома помилка. Спробуйте ще раз.');
     }
   };
@@ -106,8 +111,6 @@ export default function SendResetEmailForm() {
                 className={css.error}
               />
             </div>
-
-            {message && <div className={css.status}>{message}</div>}
 
             <button
               type="submit"

@@ -53,7 +53,7 @@
   width: 100%;
   object-fit: cover;
   border-radius: 8px;
-  background-color: #f2f2f2;
+  background-color: var(--background);
   object-position: center;
 }
 
@@ -121,11 +121,11 @@
 }
 
 .customSelectTrigger:hover {
-  border-color: var(--color-scheme-1-accent);
+  border-color: var(--accent);
 }
 
 .customSelectWrapper.open .customSelectTrigger {
-  border-color: var(--color-scheme-1-accent);
+  border-color: var(--accent);
   background-color: var(--background);
 }
 
@@ -145,7 +145,7 @@
   width: 24px;
   height: 24px;
   pointer-events: none;
-  fill: var(--color-neutral-darkest);
+  fill: var(--text);
   transition: transform 0.3s ease;
 }
 
@@ -156,12 +156,30 @@
   right: 0;
   max-height: 240px;
   overflow-y: auto;
-  background-color: var(--color-scheme-1-background);
+
+  background-color: var(--background);
   border: 1px solid var(--border);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   z-index: 100;
   animation: slideDown 0.2s ease;
+}
+.customSelectDropdown::-webkit-scrollbar {
+  width: 8px;
+}
+
+.customSelectDropdown::-webkit-scrollbar-track {
+  background: var(--foreground);
+  border-radius: 8px;
+}
+
+.customSelectDropdown::-webkit-scrollbar-thumb {
+  background: var(--text);
+  border-radius: 8px;
+}
+
+.customSelectDropdown::-webkit-scrollbar-thumb:hover {
+  opacity: 0.7;
 }
 
 @keyframes slideDown {
@@ -178,17 +196,18 @@
 .selectOption {
   padding: 12px;
   font-size: 14px;
-  color: var(--color-neutral-darkest);
+  color: var(--text);
   cursor: pointer;
   transition: background-color 0.15s ease;
 }
 
 .selectOption:hover {
-  background-color: var(--opacity-neutral-darkest-5);
+  background-color: var(--foreground);
 }
 
 .selectOption.selected {
   background-color: var(--color-neutral-lightest);
+  color: black;
 }
 
 .selectOption.selected:hover {
