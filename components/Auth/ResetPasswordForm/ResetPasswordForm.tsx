@@ -3,6 +3,7 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { FaEye } from 'react-icons/fa';
 import * as Yup from 'yup';
 import { resetPwd } from '../../../lib/api/clientApi';
@@ -37,6 +38,7 @@ export default function ResetPasswordForm() {
       });
       setStatus('Пароль успішно змінено.');
     } catch {
+      toast.error('Помилка під час зміни пароля. Спробуйте пізніше.');
       setStatus('Помилка під час зміни пароля. Спробуйте пізніше.');
     }
   };
@@ -120,10 +122,6 @@ export default function ResetPasswordForm() {
                 className={css.error}
               />
             </div>
-
-            {status && status !== 'Пароль успішно змінено.' && (
-              <div className={css.status}>{status}</div>
-            )}
 
             <button
               type="submit"
